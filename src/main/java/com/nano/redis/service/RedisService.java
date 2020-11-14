@@ -28,12 +28,12 @@ public interface RedisService {
     /**
      * 删除属性
      */
-    Boolean del(String key);
+    Boolean delete(String key);
 
     /**
      * 批量删除属性
      */
-    Long del(List<String> keys);
+    Long delete(List<String> keys);
 
     /**
      * 设置过期时间

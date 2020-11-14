@@ -1,0 +1,227 @@
+#
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+version: '2'  # 版本
+
+services:
+  ##################################################################################################################################################
+
+  # CA0名称
+  ca0:
+    # 镜像名称(环境变量在本目录.env文件里定义)
+    image: hyperledger/fabric-ca${IMAGE_TAG_FABRIC_CA}
+    # 环境变量
+    environment:
+      - FABRIC_CA_SERVER_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca0      # CA名称
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem  # CA证书文件
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/fcf776b02a05600408d0be9d9752afc59f64950b721cacb363b5b95a0fea6216_sk  # CA私钥文件
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem # TLS证书文件
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/fcf776b02a05600408d0be9d9752afc59f64950b721cacb363b5b95a0fea6216_sk # TLS私钥文件
+      - FABRIC_CA_SERVER_REGISTRY_MAXENROLLMENTS=-1
+    # 端口映射
+    ports:
+      - "7054:7054"
+    # 初始化后指令☆
+    command: bash -c 'cp -R /tmp/msp /etc/hyperledger/fabric-ca-server; mv /etc/hyperledger/fabric-ca-server/msp/*PublicKey /etc/hyperledger/fabric-ca-server; fabric-ca-server start -b admin:adminpw ${V11_IDENTITIES_ALLOWREMOVE} ${V11_AFFILIATIONS_ALLOWREMOVE} ${ORG_HYPERLEDGER_FABRIC_SDKTEST_INTEGRATIONTESTS_CA_TLS} -d'
+
+    # 文科路径映射
+    volumes:
+      - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}/crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config:ro
+      - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}/crypto-config/peerOrganizations/org3.example.com/msp/:/tmp/msp:ro
+    # 容器名
+    container_name: ca_peerOrg1
+
+  ##################################################################################################################################################
+  # CA1名称
+  ca1:
+    # 镜像名称
+    image: hyperledger/fabric-ca${IMAGE_TAG_FABRIC_CA}
+    # 环境变量
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b59bba37975dafcc4a93984aa01d3d29b64894617db9e0c9a2d486b5273cbd27_sk
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b59bba37975dafcc4a93984aa01d3d29b64894617db9e0c9a2d486b5273cbd27_sk
+      - FABRIC_CA_SERVER_REGISTRY_MAXENROLLMENTS=-1
+    # 端口映射
+    ports:
+      - "8054:7054"
+    command: bash -c 'cp -R /tmp/msp /etc/hyperledger/fabric-ca-server; mv /etc/hyperledger/fabric-ca-server/msp/*PublicKey /etc/hyperledger/fabric-ca-server; fabric-ca-server start -b admin:adminpw ${ORG_HYPERLEDGER_FABRIC_SDKTEST_INTEGRATIONTESTS_CA_TLS} -d'
+    volumes:
+      - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}/crypto-config/peerOrganizations/org2.example.com/ca/:/etc/hyperledger/fabric-ca-server-config:ro
+      - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}/crypto-config/peerOrganizations/org4.example.com/msp/:/tmp/msp:ro
+    container_name: ca_peerOrg2
+
+##################################################################################################################################################
+
+  # 排序结点名称
+  orderer.example.com:
+    container_name: orderer.example.com
+    # 镜像名称
+    image: hyperledger/fabric-orderer${IMAGE_TAG_FABRIC}
+    # 环境变量
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=debug      # 日志级别
+#     - ORDERER_GENERAL_LOGLEVEL=error
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0   # 监听地址
+      - ORDERER_GENERAL_GENESISMETHOD=file      # 创世区块文件类型
+      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/orderer.block # 创世区块位置
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP   # 本地MSP ID
+      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/msp/orderer/msp  # 本地MSP目录
+      - ORDERER_GENERAL_TLS_ENABLED=${ORG_HYPERLEDGER_FABRIC_SDKTEST_INTEGRATIONTESTS_TLS}    # 是否开启TLS
+      - ORDERER_GENERAL_TLS_CLIENTAUTHREQUIRED=${ORG_HYPERLEDGER_FABRIC_SDKTEST_INTEGRATIONTESTS_CLIENT_AUTH_REQUIRED}
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/msp/orderer/tls/server.key    # TLS私钥
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/msp/orderer/tls/server.crt   # TLS证书
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/msp/orderer/tls/ca.crt]         # TLS根CA
+      - ORDERER_GENERAL_TLS_CLIENTROOTCAS=[/etc/hyperledger/msp/peerOrg1/msp/tlscacerts/tlsca.org1.example.com-cert.pem, /etc/hyperledger/msp/peerOrg2/msp/tlscacerts/tlsca.org2.example.com-cert.pem]  # TLS客户端跟CA
+      - GRPC_TRACE=all=true,
+      - GRPC_VERBOSITY=debug
+      - ORDERER_GENERAL_AUTHENTICATION_TIMEWINDOW=3600s # !!!!!!!!生产环境不能要需要移除!!!!!!!!!!!!
+    # 工作目录
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+     - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}:/etc/hyperledger/configtx:ro
+     - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/:/etc/hyperledger/msp/orderer:ro
+     - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/:/etc/hyperledger/msp/peerOrg1:ro
+     - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/:/etc/hyperledger/msp/peerOrg2:ro
+    # 端口映射
+    ports:
+      - 7050:7050
+
+##################################################################################################################################################
+
+  # 组织1Peer0名称
+  peer0.org1.example.com:
+    container_name: peer0.org1.example.com
+    # Peer结点额外文件(参考：peer-base/peer-base.yaml文件)
+    extends:
+      file: peer-base/peer-base.yaml
+      service: peer-base
+    # 环境变量
+    environment:
+      - CORE_PEER_ID=peer0.org1.example.com
+      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+      - CORE_PEER_EVENTS_ADDRESS=0.0.0.0:7053
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0.org1.example.com:7051
+ #     - CORE_PEER_GOSSIP_ORGLEADER=true
+      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+
+#      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/msp/cacerts/ca.org1.example.com-cert.pem
+      - CORE_PEER_TLS_CLIENTROOTCAS_FILES=/etc/hyperledger/msp/peer/msp/tlscacerts/tlsca.org1.example.com-cert.pem
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/:/etc/hyperledger/msp/peer:ro
+    # 端口映射
+    ports:
+      - 7051:7051
+      - 7053:7053
+    depends_on:
+      - orderer.example.com
+
+##################################################################################################################################################
+
+  # 组织1Peer1名称
+  peer1.org1.example.com:
+    container_name: peer1.org1.example.com
+    extends:
+      file: peer-base/peer-base.yaml
+      service: peer-base
+    # 环境变量
+    environment:
+      - CORE_PEER_ID=peer1.org1.example.com
+      - CORE_PEER_ADDRESS=peer1.org1.example.com:7056
+      - CORE_PEER_LISTENADDRESS=peer1.org1.example.com:7056
+      - CORE_PEER_EVENTS_ADDRESS=0.0.0.0:7058
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.example.com:7056
+      - CORE_PEER_GOSSIP_ENDPOINT=peer1.org1.example.com:7056
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+      - CORE_PEER_LOCALMSPID=Org1MSP
+#      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/msp/cacerts/ca.org1.example.com-cert.pem
+      - CORE_PEER_TLS_CLIENTROOTCAS_FILES=/etc/hyperledger/msp/peer/msp/tlscacerts/tlsca.org1.example.com-cert.pem
+    volumes:
+         - /var/run/:/host/var/run/
+         - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/:/etc/hyperledger/msp/peer:ro
+    ports:
+       - 7056:7056
+       - 7058:7058
+    depends_on:
+       - orderer.example.com
+       - peer0.org1.example.com
+
+##################################################################################################################################################
+
+  # 组织2Peer0名称
+  peer0.org2.example.com:
+    container_name: peer0.org2.example.com
+    extends:
+      file: peer-base/peer-base.yaml
+      service: peer-base
+    # 环境变量
+    environment:
+      - CORE_PEER_ID=peer0.org2.example.com
+      - CORE_PEER_ADDRESS=peer0.org2.example.com:8051
+      - CORE_PEER_LISTENADDRESS=peer0.org2.example.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:8051
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0.org2.example.com:8051
+      - CORE_PEER_EVENTS_ADDRESS=0.0.0.0:8053
+ #     - CORE_PEER_GOSSIP_ORGLEADER=true
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:8051
+      - CORE_PEER_LOCALMSPID=Org2MSP
+#      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/msp/cacerts/ca.org2.example.com-cert.pem
+      - CORE_PEER_TLS_CLIENTROOTCAS_FILES=/etc/hyperledger/msp/peer/msp/tlscacerts/tlsca.org2.example.com-cert.pem
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/:/etc/hyperledger/msp/peer:ro
+    ports:
+      - 8051:8051
+      - 8053:8053
+    depends_on:
+      - orderer.example.com
+
+##################################################################################################################################################
+
+  # 组织2Peer1名称
+  peer1.org2.example.com:
+    container_name: peer1.org2.example.com
+    extends:
+      file: peer-base/peer-base.yaml
+      service: peer-base
+    # 环境变量
+    environment:
+      - CORE_PEER_ID=peer1.org2.example.com
+      - CORE_PEER_ADDRESS=peer1.org2.example.com:8056
+      - CORE_PEER_LISTENADDRESS=peer1.org2.example.com:8056
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.example.com:8056
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0.org1.example.com:8056
+      - CORE_PEER_EVENTS_ADDRESS=0.0.0.0:8058
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:8051
+      - CORE_PEER_LOCALMSPID=Org2MSP
+#      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/msp/cacerts/ca.org2.example.com-cert.pem
+      - CORE_PEER_TLS_CLIENTROOTCAS_FILES=/etc/hyperledger/msp/peer/msp/tlscacerts/tlsca.org2.example.com-cert.pem
+    volumes:
+         - /var/run/:/host/var/run/
+         - ./e2e-2Orgs/${FAB_CONFIG_GEN_VERS}/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/:/etc/hyperledger/msp/peer:ro
+    ports:
+       - 8056:8056
+       - 8058:8058
+    depends_on:
+       - orderer.example.com
+       - peer0.org2.example.com
+
+##################################################################################################################################################
+
+  # 通道配置工具镜像
+  configtxlator:
+      # 镜像名称
+      image: hyperledger/fabric-tools${IMAGE_TAG_FABRIC}
+      ports:
+        - "7059:7059"
+      command: /usr/local/bin/configtxlator start
+      container_name: configtxlator

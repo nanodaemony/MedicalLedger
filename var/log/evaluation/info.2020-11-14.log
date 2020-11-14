@@ -67,3 +67,661 @@ Using generated security password: 7ba84df7-5257-4644-81a0-514eb0553c67
 2020-11-14 14:04:56,342 - Closing JPA EntityManagerFactory for persistence unit 'default'
 2020-11-14 14:04:56,343 - Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
 2020-11-14 14:04:56,343 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:26:52,435 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 108320 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:26:52,435 - The following profiles are active: dev
+2020-11-14 15:26:53,201 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:26:53,404 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:26:53,404 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:26:53,420 - Finished Spring Data repository scanning in 10ms. Found 0 JPA repository interfaces.
+2020-11-14 15:26:53,435 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:26:53,435 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:26:53,451 - Finished Spring Data repository scanning in 3ms. Found 0 Redis repository interfaces.
+2020-11-14 15:26:54,232 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$f9fc5254] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:26:54,513 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:26:54,591 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:26:54,685 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:26:54,857 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:26:55,248 - HikariPool-1 - Starting...
+2020-11-14 15:26:55,388 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:26:58,451 - HHH000342: Could not obtain connection to query metadata : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-11-14 15:26:58,794 - 
+
+Using generated security password: 1657009d-96cf-4dc0-9639-4402b3a05457
+
+2020-11-14 15:26:59,060 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@37fef327, org.springframework.security.web.context.SecurityContextPersistenceFilter@749baa0c, org.springframework.security.web.header.HeaderWriterFilter@e2b3026, org.springframework.security.web.csrf.CsrfFilter@2347b7af, org.springframework.security.web.authentication.logout.LogoutFilter@14874a5d, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@4228f269, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@360d41d0, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@2cd3fc29, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@21a6a494, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@53f7a906, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7b7068d8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@55951fcd, org.springframework.security.web.session.SessionManagementFilter@6ef037e4, org.springframework.security.web.access.ExceptionTranslationFilter@15586843, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@762405bf]
+2020-11-14 15:26:59,341 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:26:59,419 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:26:59,419 - Spring Data repositories initialized!
+2020-11-14 15:26:59,435 - Started EnrollAndRegisterUser in 7.536 seconds (JVM running for 8.767)
+2020-11-14 15:26:59,669 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:27:00,091 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:27:00,216 - Starting without optional epoll library
+2020-11-14 15:27:00,216 - Starting without optional kqueue library
+2020-11-14 15:27:01,200 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVLdk9SNU55K0lRRFd5SEdpSmNTWGxhV2hCUmpEN2F3cApiWXE0NGxLMVZBNUc1QmV4TGhXblJaMjFqWU9oNjR1TWVBeFVWZUVSM1NrZUV4aEc3dW1vLytUcFRCWUFzbmhnCloxU04vdDlwSXBBVGZqN1BtNkhHM2xmYTZ6MStHalJwCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 15:27:01,450 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:27:01,450 - Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
+2020-11-14 15:27:01,450 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:27:17,517 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 79456 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:27:17,517 - The following profiles are active: dev
+2020-11-14 15:27:18,267 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:27:18,486 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:27:18,486 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:27:18,501 - Finished Spring Data repository scanning in 11ms. Found 0 JPA repository interfaces.
+2020-11-14 15:27:18,517 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:27:18,517 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:27:18,533 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 15:27:19,251 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$1caa43be] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:27:19,470 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:27:19,548 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:27:19,626 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:27:19,783 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:27:20,158 - HikariPool-1 - Starting...
+2020-11-14 15:27:20,251 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:27:23,360 - HHH000342: Could not obtain connection to query metadata : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-11-14 15:27:23,673 - 
+
+Using generated security password: 794b8289-2f46-4dcf-a2e4-6321fe03a55f
+
+2020-11-14 15:27:23,907 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2ff498b0, org.springframework.security.web.context.SecurityContextPersistenceFilter@21527b8, org.springframework.security.web.header.HeaderWriterFilter@8b670c0, org.springframework.security.web.csrf.CsrfFilter@12e5d3e1, org.springframework.security.web.authentication.logout.LogoutFilter@2c34402, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@7608a838, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@85ab964, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@b5312df, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@46b5f061, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7b7068d8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@61d2f267, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4300e240, org.springframework.security.web.session.SessionManagementFilter@22fb9a2c, org.springframework.security.web.access.ExceptionTranslationFilter@53f7a906, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@71e2c6d8]
+2020-11-14 15:27:24,345 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:27:24,407 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:27:24,407 - Spring Data repositories initialized!
+2020-11-14 15:27:24,423 - Started EnrollAndRegisterUser in 7.419 seconds (JVM running for 8.439)
+2020-11-14 15:27:24,532 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:27:24,923 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:27:25,048 - Starting without optional epoll library
+2020-11-14 15:27:25,048 - Starting without optional kqueue library
+2020-11-14 15:27:25,845 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:27:25,845 - Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
+2020-11-14 15:27:25,845 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:28:12,210 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 132380 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:28:12,210 - The following profiles are active: dev
+2020-11-14 15:28:12,976 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:28:13,179 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:28:13,179 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:28:13,194 - Finished Spring Data repository scanning in 11ms. Found 0 JPA repository interfaces.
+2020-11-14 15:28:13,210 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:28:13,210 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:28:13,226 - Finished Spring Data repository scanning in 4ms. Found 0 Redis repository interfaces.
+2020-11-14 15:28:13,913 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$1caa43be] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:28:14,147 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:28:14,225 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:28:14,304 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:28:14,460 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:28:14,804 - HikariPool-1 - Starting...
+2020-11-14 15:28:14,975 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:28:17,991 - HHH000342: Could not obtain connection to query metadata : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-11-14 15:28:18,288 - 
+
+Using generated security password: d21b9648-ee3c-4e9e-a281-128b60f9a8e0
+
+2020-11-14 15:28:18,553 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@b5312df, org.springframework.security.web.context.SecurityContextPersistenceFilter@7cc1f72c, org.springframework.security.web.header.HeaderWriterFilter@4c2ab536, org.springframework.security.web.csrf.CsrfFilter@5ed31735, org.springframework.security.web.authentication.logout.LogoutFilter@5f883d90, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@75839695, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6481dce5, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@4300e240, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@3ba3f40d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1d8e9d3e, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@26d40c77, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5f409872, org.springframework.security.web.session.SessionManagementFilter@2084e65a, org.springframework.security.web.access.ExceptionTranslationFilter@2154652c, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4228f269]
+2020-11-14 15:28:19,022 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:28:19,100 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:28:19,100 - Spring Data repositories initialized!
+2020-11-14 15:28:19,116 - Started EnrollAndRegisterUser in 7.443 seconds (JVM running for 8.512)
+2020-11-14 15:28:19,225 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:28:19,569 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:28:19,678 - Starting without optional epoll library
+2020-11-14 15:28:19,678 - Starting without optional kqueue library
+2020-11-14 15:28:20,616 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVLdk9SNU55K0lRRFd5SEdpSmNTWGxhV2hCUmpEN2F3cApiWXE0NGxLMVZBNUc1QmV4TGhXblJaMjFqWU9oNjR1TWVBeFVWZUVSM1NrZUV4aEc3dW1vLytUcFRCWUFzbmhnCloxU04vdDlwSXBBVGZqN1BtNkhHM2xmYTZ6MStHalJwCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 15:28:20,787 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:28:20,787 - Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
+2020-11-14 15:28:20,787 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:28:28,461 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 72020 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:28:28,461 - The following profiles are active: dev
+2020-11-14 15:28:29,320 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:28:29,539 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:28:29,539 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:28:29,555 - Finished Spring Data repository scanning in 10ms. Found 0 JPA repository interfaces.
+2020-11-14 15:28:29,570 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:28:29,586 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:28:29,586 - Finished Spring Data repository scanning in 3ms. Found 0 Redis repository interfaces.
+2020-11-14 15:28:30,336 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$e32840d6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:28:30,570 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:28:30,648 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:28:30,742 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:28:30,883 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:28:31,242 - HikariPool-1 - Starting...
+2020-11-14 15:28:31,383 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:28:34,445 - HHH000342: Could not obtain connection to query metadata : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-11-14 15:28:34,758 - 
+
+Using generated security password: 13e3c577-5455-4a11-a207-34d9cda45436
+
+2020-11-14 15:28:34,992 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@46ab4efc, org.springframework.security.web.context.SecurityContextPersistenceFilter@1b8fa2fa, org.springframework.security.web.header.HeaderWriterFilter@2154652c, org.springframework.security.web.csrf.CsrfFilter@b3fc6d8, org.springframework.security.web.authentication.logout.LogoutFilter@561d88ee, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@29b5533, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@26d40c77, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@2ff498b0, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@7534785a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7cc1f72c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@46d1b59, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@b5312df, org.springframework.security.web.session.SessionManagementFilter@4c2ab536, org.springframework.security.web.access.ExceptionTranslationFilter@1b3bec6c, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3686389]
+2020-11-14 15:28:35,445 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:28:35,523 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:28:35,523 - Spring Data repositories initialized!
+2020-11-14 15:28:35,539 - Started EnrollAndRegisterUser in 7.627 seconds (JVM running for 8.633)
+2020-11-14 15:28:35,648 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:28:36,054 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:28:36,148 - Starting without optional epoll library
+2020-11-14 15:28:36,164 - Starting without optional kqueue library
+2020-11-14 15:28:36,914 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:28:36,914 - Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
+2020-11-14 15:28:36,914 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:28:51,038 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 159204 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:28:51,038 - The following profiles are active: dev
+2020-11-14 15:28:51,804 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:28:52,007 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:28:52,007 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:28:52,022 - Finished Spring Data repository scanning in 11ms. Found 0 JPA repository interfaces.
+2020-11-14 15:28:52,038 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:28:52,038 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:28:52,054 - Finished Spring Data repository scanning in 3ms. Found 0 Redis repository interfaces.
+2020-11-14 15:28:52,757 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$3a824372] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:28:52,976 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:28:53,054 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:28:53,132 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:28:53,304 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:28:53,663 - HikariPool-1 - Starting...
+2020-11-14 15:28:53,819 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:28:56,819 - HHH000342: Could not obtain connection to query metadata : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-11-14 15:28:57,085 - 
+
+Using generated security password: 65e56fe1-7cf8-49bf-a488-4720385cb937
+
+2020-11-14 15:28:57,319 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@75839695, org.springframework.security.web.context.SecurityContextPersistenceFilter@e2b3026, org.springframework.security.web.header.HeaderWriterFilter@baa227e, org.springframework.security.web.csrf.CsrfFilter@18d30e7, org.springframework.security.web.authentication.logout.LogoutFilter@61d2f267, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@4cd7d5e1, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@1b8fa2fa, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@21a6a494, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@77ce88c4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6ef037e4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@22fb9a2c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@794c5f5e, org.springframework.security.web.session.SessionManagementFilter@2b682e9, org.springframework.security.web.access.ExceptionTranslationFilter@668a32a4, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@32dcfeea]
+2020-11-14 15:28:57,830 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:28:57,893 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:28:57,893 - Spring Data repositories initialized!
+2020-11-14 15:28:57,924 - Started EnrollAndRegisterUser in 7.449 seconds (JVM running for 8.523)
+2020-11-14 15:28:58,018 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:28:58,409 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:28:58,534 - Starting without optional epoll library
+2020-11-14 15:28:58,534 - Starting without optional kqueue library
+2020-11-14 15:28:59,237 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:28:59,237 - Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
+2020-11-14 15:28:59,237 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:29:34,626 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 53552 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:29:34,626 - The following profiles are active: dev
+2020-11-14 15:29:35,313 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:29:35,516 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:29:35,516 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:29:35,532 - Finished Spring Data repository scanning in 10ms. Found 0 JPA repository interfaces.
+2020-11-14 15:29:35,547 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:29:35,547 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:29:35,547 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 15:29:36,313 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$b5a0684d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:29:36,563 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:29:36,657 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:29:36,735 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:29:36,922 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:29:37,329 - HikariPool-1 - Starting...
+2020-11-14 15:29:37,500 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:29:40,516 - HHH000342: Could not obtain connection to query metadata : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-11-14 15:29:40,828 - 
+
+Using generated security password: 8bb39860-8168-4544-9e2a-533cc81917b8
+
+2020-11-14 15:29:41,063 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7534785a, org.springframework.security.web.context.SecurityContextPersistenceFilter@8b670c0, org.springframework.security.web.header.HeaderWriterFilter@2e2b9f53, org.springframework.security.web.csrf.CsrfFilter@4e94669c, org.springframework.security.web.authentication.logout.LogoutFilter@2d74cbbd, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1552da16, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@819fb19, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@46b5f061, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@37fef327, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@22fb9a2c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3dc82e6a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3ba3f40d, org.springframework.security.web.session.SessionManagementFilter@1b3bec6c, org.springframework.security.web.access.ExceptionTranslationFilter@6ef037e4, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@9d99851]
+2020-11-14 15:29:41,297 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:29:41,375 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:29:41,375 - Spring Data repositories initialized!
+2020-11-14 15:29:41,391 - Started EnrollAndRegisterUser in 7.295 seconds (JVM running for 8.306)
+2020-11-14 15:29:41,641 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:29:42,031 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:29:42,172 - Starting without optional epoll library
+2020-11-14 15:29:42,172 - Starting without optional kqueue library
+2020-11-14 15:29:43,141 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVLdk9SNU55K0lRRFd5SEdpSmNTWGxhV2hCUmpEN2F3cApiWXE0NGxLMVZBNUc1QmV4TGhXblJaMjFqWU9oNjR1TWVBeFVWZUVSM1NrZUV4aEc3dW1vLytUcFRCWUFzbmhnCloxU04vdDlwSXBBVGZqN1BtNkhHM2xmYTZ6MStHalJwCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 15:29:43,391 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:29:43,391 - Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
+2020-11-14 15:29:43,391 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:29:51,214 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 130784 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:29:51,214 - The following profiles are active: dev
+2020-11-14 15:29:51,933 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:29:52,152 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:29:52,152 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:29:52,167 - Finished Spring Data repository scanning in 12ms. Found 0 JPA repository interfaces.
+2020-11-14 15:29:52,183 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:29:52,183 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:29:52,198 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 15:29:52,902 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$13daa6a6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:29:53,136 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:29:53,198 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:29:53,308 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:29:53,480 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:29:53,855 - HikariPool-1 - Starting...
+2020-11-14 15:29:54,011 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:29:57,073 - HHH000342: Could not obtain connection to query metadata : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-11-14 15:29:57,354 - 
+
+Using generated security password: c7e39eee-54e2-4983-957a-26a83cd5462b
+
+2020-11-14 15:29:57,604 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@236861da, org.springframework.security.web.context.SecurityContextPersistenceFilter@2e2b9f53, org.springframework.security.web.header.HeaderWriterFilter@4fbb1144, org.springframework.security.web.csrf.CsrfFilter@71dd4624, org.springframework.security.web.authentication.logout.LogoutFilter@12365bd8, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@71e2c6d8, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@1d8e9d3e, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@37fef327, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@75839695, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1b3bec6c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7cc1f72c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2cd3fc29, org.springframework.security.web.session.SessionManagementFilter@38bc5ac0, org.springframework.security.web.access.ExceptionTranslationFilter@2b682e9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5103eea2]
+2020-11-14 15:29:58,057 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:29:58,120 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:29:58,120 - Spring Data repositories initialized!
+2020-11-14 15:29:58,151 - Started EnrollAndRegisterUser in 7.449 seconds (JVM running for 8.447)
+2020-11-14 15:29:58,260 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:29:58,667 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:29:58,792 - Starting without optional epoll library
+2020-11-14 15:29:58,792 - Starting without optional kqueue library
+2020-11-14 15:29:59,589 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:29:59,589 - Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
+2020-11-14 15:29:59,589 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:30:12,530 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 154440 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:30:12,530 - The following profiles are active: dev
+2020-11-14 15:30:13,358 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:30:13,561 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:30:13,561 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:30:13,577 - Finished Spring Data repository scanning in 9ms. Found 0 JPA repository interfaces.
+2020-11-14 15:30:13,592 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:30:13,592 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:30:13,592 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 15:30:14,373 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$f764a498] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:30:14,608 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:30:14,686 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:30:14,764 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:30:14,936 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:30:15,311 - HikariPool-1 - Starting...
+2020-11-14 15:30:15,483 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:30:18,514 - HHH000342: Could not obtain connection to query metadata : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-11-14 15:30:18,846 - 
+
+Using generated security password: 2361cd2c-fd59-4fba-831a-1e2c98817c19
+
+2020-11-14 15:30:19,096 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@236861da, org.springframework.security.web.context.SecurityContextPersistenceFilter@2e2b9f53, org.springframework.security.web.header.HeaderWriterFilter@4fbb1144, org.springframework.security.web.csrf.CsrfFilter@71dd4624, org.springframework.security.web.authentication.logout.LogoutFilter@12365bd8, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@71e2c6d8, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@1d8e9d3e, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@37fef327, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@75839695, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1b3bec6c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7cc1f72c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2cd3fc29, org.springframework.security.web.session.SessionManagementFilter@38bc5ac0, org.springframework.security.web.access.ExceptionTranslationFilter@2b682e9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5103eea2]
+2020-11-14 15:30:19,409 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:30:19,471 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:30:19,471 - Spring Data repositories initialized!
+2020-11-14 15:30:19,487 - Started EnrollAndRegisterUser in 7.546 seconds (JVM running for 8.566)
+2020-11-14 15:30:19,612 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:30:20,096 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:30:20,221 - Starting without optional epoll library
+2020-11-14 15:30:20,221 - Starting without optional kqueue library
+2020-11-14 15:30:21,080 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:30:21,080 - Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
+2020-11-14 15:30:21,080 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:30:51,882 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 157128 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:30:51,882 - The following profiles are active: dev
+2020-11-14 15:30:52,632 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:30:52,835 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:30:52,835 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:30:52,850 - Finished Spring Data repository scanning in 9ms. Found 0 JPA repository interfaces.
+2020-11-14 15:30:52,866 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:30:52,866 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:30:52,866 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 15:30:53,616 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$f9fc5254] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:30:53,881 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:30:53,944 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:30:54,038 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:30:54,210 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:30:54,616 - HikariPool-1 - Starting...
+2020-11-14 15:30:54,788 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:30:57,787 - HHH000342: Could not obtain connection to query metadata : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-11-14 15:30:58,084 - 
+
+Using generated security password: ca8840f2-dd1e-4f5e-8550-37d6f200972f
+
+2020-11-14 15:30:58,365 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@37fef327, org.springframework.security.web.context.SecurityContextPersistenceFilter@749baa0c, org.springframework.security.web.header.HeaderWriterFilter@e2b3026, org.springframework.security.web.csrf.CsrfFilter@2347b7af, org.springframework.security.web.authentication.logout.LogoutFilter@14874a5d, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@4228f269, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@360d41d0, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@2cd3fc29, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@21a6a494, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@53f7a906, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7b7068d8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@55951fcd, org.springframework.security.web.session.SessionManagementFilter@6ef037e4, org.springframework.security.web.access.ExceptionTranslationFilter@15586843, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@762405bf]
+2020-11-14 15:30:58,678 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:30:58,756 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:30:58,756 - Spring Data repositories initialized!
+2020-11-14 15:30:58,772 - Started EnrollAndRegisterUser in 7.487 seconds (JVM running for 8.471)
+2020-11-14 15:30:59,037 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:30:59,444 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:30:59,553 - Starting without optional epoll library
+2020-11-14 15:30:59,553 - Starting without optional kqueue library
+2020-11-14 15:31:00,506 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVLdk9SNU55K0lRRFd5SEdpSmNTWGxhV2hCUmpEN2F3cApiWXE0NGxLMVZBNUc1QmV4TGhXblJaMjFqWU9oNjR1TWVBeFVWZUVSM1NrZUV4aEc3dW1vLytUcFRCWUFzbmhnCloxU04vdDlwSXBBVGZqN1BtNkhHM2xmYTZ6MStHalJwCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 15:31:01,068 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:31:01,068 - Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
+2020-11-14 15:31:01,068 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:31:49,044 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 158580 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:31:49,044 - The following profiles are active: dev
+2020-11-14 15:31:49,779 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:31:49,966 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:31:49,966 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:31:49,982 - Finished Spring Data repository scanning in 16ms. Found 0 JPA repository interfaces.
+2020-11-14 15:31:49,997 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:31:49,997 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:31:50,013 - Finished Spring Data repository scanning in 3ms. Found 0 Redis repository interfaces.
+2020-11-14 15:31:50,716 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$8acd606d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:31:50,950 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:31:51,013 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:31:51,107 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:31:51,247 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:31:51,607 - HikariPool-1 - Starting...
+2020-11-14 15:31:51,732 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:31:51,810 - HikariPool-1 - Start completed.
+2020-11-14 15:31:51,857 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 15:31:52,263 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 15:31:52,278 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:31:53,263 - 
+
+Using generated security password: d8aa3a09-964c-4234-a725-2d003931d7a1
+
+2020-11-14 15:31:53,513 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2f86f9cf, org.springframework.security.web.context.SecurityContextPersistenceFilter@ce561cc, org.springframework.security.web.header.HeaderWriterFilter@fabef2e, org.springframework.security.web.csrf.CsrfFilter@5d3f99d7, org.springframework.security.web.authentication.logout.LogoutFilter@1736c1e4, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@76596288, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6658f08a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@adafe19, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@4b6b5352, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f8c3646, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@52ca0ad4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7e2bd5e6, org.springframework.security.web.session.SessionManagementFilter@7e848aea, org.springframework.security.web.access.ExceptionTranslationFilter@63f2e0b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@54be6213]
+2020-11-14 15:31:53,856 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:31:53,903 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:31:53,903 - Spring Data repositories initialized!
+2020-11-14 15:31:53,919 - Started EnrollAndRegisterUser in 5.401 seconds (JVM running for 6.44)
+2020-11-14 15:31:54,013 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:31:54,419 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:31:54,528 - Starting without optional epoll library
+2020-11-14 15:31:54,528 - Starting without optional kqueue library
+2020-11-14 15:31:55,372 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:31:55,372 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:31:55,372 - HikariPool-1 - Shutdown initiated...
+2020-11-14 15:31:55,388 - HikariPool-1 - Shutdown completed.
+2020-11-14 15:32:27,113 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 40172 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:32:27,113 - The following profiles are active: dev
+2020-11-14 15:32:27,832 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:32:28,019 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:32:28,019 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:32:28,035 - Finished Spring Data repository scanning in 9ms. Found 0 JPA repository interfaces.
+2020-11-14 15:32:28,051 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:32:28,051 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:32:28,051 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 15:32:28,769 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$97e204e9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:32:28,988 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:32:29,050 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:32:29,144 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:32:29,300 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:32:29,660 - HikariPool-1 - Starting...
+2020-11-14 15:32:29,769 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:32:29,847 - HikariPool-1 - Start completed.
+2020-11-14 15:32:29,879 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 15:32:30,238 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 15:32:30,253 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:32:31,300 - 
+
+Using generated security password: d31a635f-84f6-420a-814f-7b1aac737901
+
+2020-11-14 15:32:31,535 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1d6713dd, org.springframework.security.web.context.SecurityContextPersistenceFilter@7e848aea, org.springframework.security.web.header.HeaderWriterFilter@9f0fc36, org.springframework.security.web.csrf.CsrfFilter@2d74cbbd, org.springframework.security.web.authentication.logout.LogoutFilter@5cdf221a, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@21c75084, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@47f2c722, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@3b39e79b, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@7e050be1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@286866cb, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5889fc44, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3ee6dc82, org.springframework.security.web.session.SessionManagementFilter@5a06904, org.springframework.security.web.access.ExceptionTranslationFilter@1805383, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6b2ef50e]
+2020-11-14 15:32:31,816 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:32:31,894 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:32:31,894 - Spring Data repositories initialized!
+2020-11-14 15:32:31,910 - Started EnrollAndRegisterUser in 5.353 seconds (JVM running for 6.361)
+2020-11-14 15:32:32,019 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:32:32,441 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:32:32,581 - Starting without optional epoll library
+2020-11-14 15:32:32,581 - Starting without optional kqueue library
+2020-11-14 15:32:33,519 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVLdk9SNU55K0lRRFd5SEdpSmNTWGxhV2hCUmpEN2F3cApiWXE0NGxLMVZBNUc1QmV4TGhXblJaMjFqWU9oNjR1TWVBeFVWZUVSM1NrZUV4aEc3dW1vLytUcFRCWUFzbmhnCloxU04vdDlwSXBBVGZqN1BtNkhHM2xmYTZ6MStHalJwCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 15:32:33,988 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:32:33,988 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:32:33,988 - HikariPool-1 - Shutdown initiated...
+2020-11-14 15:32:34,003 - HikariPool-1 - Shutdown completed.
+2020-11-14 15:33:39,241 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 15644 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:33:39,241 - The following profiles are active: dev
+2020-11-14 15:33:40,038 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:33:40,210 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:33:40,225 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:33:40,241 - Finished Spring Data repository scanning in 9ms. Found 0 JPA repository interfaces.
+2020-11-14 15:33:40,256 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:33:40,256 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:33:40,256 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 15:33:40,960 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$1caa43be] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:33:41,194 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:33:41,256 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:33:41,366 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:33:41,522 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:33:41,897 - HikariPool-1 - Starting...
+2020-11-14 15:33:42,053 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:33:42,084 - HikariPool-1 - Start completed.
+2020-11-14 15:33:42,131 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 15:33:42,538 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 15:33:42,553 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:33:43,662 - 
+
+Using generated security password: efad3fcf-0a44-4ac3-aede-fbca3bf4a404
+
+2020-11-14 15:33:43,897 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7e2bd5e6, org.springframework.security.web.context.SecurityContextPersistenceFilter@7f8c3646, org.springframework.security.web.header.HeaderWriterFilter@7e848aea, org.springframework.security.web.csrf.CsrfFilter@2c34402, org.springframework.security.web.authentication.logout.LogoutFilter@738a815c, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@51af8049, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@35dcd032, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@76a1146d, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@3b39e79b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3375b118, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6658f08a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6ef1c3f7, org.springframework.security.web.session.SessionManagementFilter@286866cb, org.springframework.security.web.access.ExceptionTranslationFilter@fabef2e, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@1426370c]
+2020-11-14 15:33:44,241 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:33:44,303 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:33:44,303 - Spring Data repositories initialized!
+2020-11-14 15:33:44,319 - Started EnrollAndRegisterUser in 5.629 seconds (JVM running for 6.655)
+2020-11-14 15:33:44,428 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:33:44,803 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:33:44,928 - Starting without optional epoll library
+2020-11-14 15:33:44,944 - Starting without optional kqueue library
+2020-11-14 15:33:45,865 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVjc0xQU252MGtWTnU5cCtmekkwRXkzNk9MYjJEWVJobgpQRDRaUXJqdXczbVd5T2ZYVmFRQS8wdkFVTHBHazJRTXI1NkRtRXcrRnZ4SE9Nazltc2EvTHhZaFFhSXlGdERFCkt6K2NFVDJsWGRvMXlYaGd6ZnQwQjBUcnhNa2JYNjNXCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 15:33:46,444 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:33:46,444 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:33:46,444 - HikariPool-1 - Shutdown initiated...
+2020-11-14 15:33:46,490 - HikariPool-1 - Shutdown completed.
+2020-11-14 15:34:59,284 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 102952 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:34:59,284 - The following profiles are active: dev
+2020-11-14 15:35:00,034 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:35:00,252 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:35:00,252 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:35:00,268 - Finished Spring Data repository scanning in 9ms. Found 0 JPA repository interfaces.
+2020-11-14 15:35:00,284 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:35:00,284 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:35:00,299 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 15:35:01,049 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$8acd606d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:35:01,283 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:35:01,362 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:35:01,455 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:35:01,612 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:35:01,955 - HikariPool-1 - Starting...
+2020-11-14 15:35:02,065 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:35:02,158 - HikariPool-1 - Start completed.
+2020-11-14 15:35:02,190 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 15:35:02,580 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 15:35:02,580 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:35:03,565 - 
+
+Using generated security password: 179ff3bc-9671-459c-a217-748ba73f69fe
+
+2020-11-14 15:35:03,815 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2f86f9cf, org.springframework.security.web.context.SecurityContextPersistenceFilter@ce561cc, org.springframework.security.web.header.HeaderWriterFilter@fabef2e, org.springframework.security.web.csrf.CsrfFilter@5d3f99d7, org.springframework.security.web.authentication.logout.LogoutFilter@1736c1e4, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@76596288, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6658f08a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@adafe19, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@4b6b5352, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f8c3646, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@52ca0ad4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7e2bd5e6, org.springframework.security.web.session.SessionManagementFilter@7e848aea, org.springframework.security.web.access.ExceptionTranslationFilter@63f2e0b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@54be6213]
+2020-11-14 15:35:04,096 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:35:04,158 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:35:04,158 - Spring Data repositories initialized!
+2020-11-14 15:35:04,190 - Started EnrollAndRegisterUser in 5.414 seconds (JVM running for 6.417)
+2020-11-14 15:35:04,283 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:35:04,705 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:35:04,814 - Starting without optional epoll library
+2020-11-14 15:35:04,830 - Starting without optional kqueue library
+2020-11-14 15:35:05,783 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVjc0xQU252MGtWTnU5cCtmekkwRXkzNk9MYjJEWVJobgpQRDRaUXJqdXczbVd5T2ZYVmFRQS8wdkFVTHBHazJRTXI1NkRtRXcrRnZ4SE9Nazltc2EvTHhZaFFhSXlGdERFCkt6K2NFVDJsWGRvMXlYaGd6ZnQwQjBUcnhNa2JYNjNXCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 15:35:06,268 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:35:06,268 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:35:06,268 - HikariPool-1 - Shutdown initiated...
+2020-11-14 15:35:06,283 - HikariPool-1 - Shutdown completed.
+2020-11-14 15:36:48,637 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 59824 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:36:48,637 - The following profiles are active: dev
+2020-11-14 15:36:49,340 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:36:49,543 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:36:49,543 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:36:49,559 - Finished Spring Data repository scanning in 9ms. Found 0 JPA repository interfaces.
+2020-11-14 15:36:49,574 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:36:49,574 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:36:49,590 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 15:36:50,324 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$15514b5] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:36:50,558 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:36:50,621 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:36:50,699 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:36:50,887 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:36:51,277 - HikariPool-1 - Starting...
+2020-11-14 15:36:51,387 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:36:51,449 - HikariPool-1 - Start completed.
+2020-11-14 15:36:51,480 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 15:36:51,887 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 15:36:51,887 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:36:52,902 - 
+
+Using generated security password: 12081434-85fd-4400-93a1-84fcf6f78a33
+
+2020-11-14 15:36:53,136 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1b47b7f5, org.springframework.security.web.context.SecurityContextPersistenceFilter@5a06904, org.springframework.security.web.header.HeaderWriterFilter@4fd80300, org.springframework.security.web.csrf.CsrfFilter@49cb5030, org.springframework.security.web.authentication.logout.LogoutFilter@17b6ad97, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2ef041bb, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@46ea78f0, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@506aa618, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@6d0114c0, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1b4a3a1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@667797f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4b6b5352, org.springframework.security.web.session.SessionManagementFilter@64fdcf99, org.springframework.security.web.access.ExceptionTranslationFilter@2ab9e43e, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3356ff58]
+2020-11-14 15:36:53,449 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:36:53,496 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:36:53,511 - Spring Data repositories initialized!
+2020-11-14 15:36:53,527 - Started EnrollAndRegisterUser in 5.409 seconds (JVM running for 6.417)
+2020-11-14 15:36:53,621 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:36:54,043 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:36:54,152 - Starting without optional epoll library
+2020-11-14 15:36:54,168 - Starting without optional kqueue library
+2020-11-14 15:36:55,136 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVjc0xQU252MGtWTnU5cCtmekkwRXkzNk9MYjJEWVJobgpQRDRaUXJqdXczbVd5T2ZYVmFRQS8wdkFVTHBHazJRTXI1NkRtRXcrRnZ4SE9Nazltc2EvTHhZaFFhSXlGdERFCkt6K2NFVDJsWGRvMXlYaGd6ZnQwQjBUcnhNa2JYNjNXCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 15:36:55,746 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:36:55,746 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:36:55,746 - HikariPool-1 - Shutdown initiated...
+2020-11-14 15:36:55,777 - HikariPool-1 - Shutdown completed.
+2020-11-14 15:37:18,334 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 127688 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:37:18,334 - The following profiles are active: dev
+2020-11-14 15:37:19,084 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:37:19,272 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:37:19,272 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:37:19,287 - Finished Spring Data repository scanning in 9ms. Found 0 JPA repository interfaces.
+2020-11-14 15:37:19,303 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:37:19,303 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:37:19,319 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 15:37:20,037 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$f9fc5254] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:37:20,256 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:37:20,318 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:37:20,397 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:37:20,553 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:37:20,928 - HikariPool-1 - Starting...
+2020-11-14 15:37:21,084 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:37:21,115 - HikariPool-1 - Start completed.
+2020-11-14 15:37:21,147 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 15:37:21,553 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 15:37:21,568 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:37:22,615 - 
+
+Using generated security password: 3d219639-ed42-4e9a-8ca2-c61ff53fa356
+
+2020-11-14 15:37:22,865 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@203765b2, org.springframework.security.web.context.SecurityContextPersistenceFilter@9f0fc36, org.springframework.security.web.header.HeaderWriterFilter@2ab9e43e, org.springframework.security.web.csrf.CsrfFilter@12365bd8, org.springframework.security.web.authentication.logout.LogoutFilter@64dfb31d, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1426370c, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@667797f, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@7e050be1, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@376af784, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5a06904, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@14b95942, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1b47b7f5, org.springframework.security.web.session.SessionManagementFilter@4fd80300, org.springframework.security.web.access.ExceptionTranslationFilter@3eac2e8a, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4afd65fd]
+2020-11-14 15:37:23,178 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:37:23,240 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:37:23,240 - Spring Data repositories initialized!
+2020-11-14 15:37:23,256 - Started EnrollAndRegisterUser in 5.436 seconds (JVM running for 6.453)
+2020-11-14 15:37:23,365 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:37:23,787 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:37:23,912 - Starting without optional epoll library
+2020-11-14 15:37:23,912 - Starting without optional kqueue library
+2020-11-14 15:37:24,646 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:37:24,646 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:37:24,646 - HikariPool-1 - Shutdown initiated...
+2020-11-14 15:37:24,662 - HikariPool-1 - Shutdown completed.
+2020-11-14 15:37:34,467 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 115968 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:37:34,467 - The following profiles are active: dev
+2020-11-14 15:37:35,185 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:37:35,373 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:37:35,373 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:37:35,388 - Finished Spring Data repository scanning in 9ms. Found 0 JPA repository interfaces.
+2020-11-14 15:37:35,420 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:37:35,420 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:37:35,435 - Finished Spring Data repository scanning in 3ms. Found 0 Redis repository interfaces.
+2020-11-14 15:37:36,138 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$fc885a57] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:37:36,373 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:37:36,435 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:37:36,529 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:37:36,716 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:37:37,076 - HikariPool-1 - Starting...
+2020-11-14 15:37:37,185 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:37:37,263 - HikariPool-1 - Start completed.
+2020-11-14 15:37:37,294 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 15:37:37,701 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 15:37:37,716 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:37:38,685 - 
+
+Using generated security password: c8e8e9a2-51f4-4d7c-bcba-671646deb9bf
+
+2020-11-14 15:37:38,935 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6ef1c3f7, org.springframework.security.web.context.SecurityContextPersistenceFilter@3375b118, org.springframework.security.web.header.HeaderWriterFilter@286866cb, org.springframework.security.web.csrf.CsrfFilter@7e58f697, org.springframework.security.web.authentication.logout.LogoutFilter@4fd7b79, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@a9a8ec3, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@64dfb31d, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@3386c206, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@2f86f9cf, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@184751f3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@35dcd032, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1322b575, org.springframework.security.web.session.SessionManagementFilter@56ec6960, org.springframework.security.web.access.ExceptionTranslationFilter@7e848aea, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2ef041bb]
+2020-11-14 15:37:39,263 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:37:39,326 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:37:39,326 - Spring Data repositories initialized!
+2020-11-14 15:37:39,341 - Started EnrollAndRegisterUser in 5.413 seconds (JVM running for 6.503)
+2020-11-14 15:37:39,451 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:37:39,810 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:37:39,950 - Starting without optional epoll library
+2020-11-14 15:37:39,966 - Starting without optional kqueue library
+2020-11-14 15:37:40,700 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:37:40,700 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:37:40,700 - HikariPool-1 - Shutdown initiated...
+2020-11-14 15:37:40,716 - HikariPool-1 - Shutdown completed.
+2020-11-14 15:48:11,385 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 57172 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:48:11,385 - The following profiles are active: dev
+2020-11-14 15:48:12,104 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:48:12,307 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:48:12,307 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:48:12,338 - Finished Spring Data repository scanning in 10ms. Found 0 JPA repository interfaces.
+2020-11-14 15:48:12,354 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:48:12,354 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:48:12,369 - Finished Spring Data repository scanning in 3ms. Found 0 Redis repository interfaces.
+2020-11-14 15:48:13,073 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$9f74df9] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:48:13,338 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:48:13,401 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:48:13,494 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:48:13,651 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:48:14,041 - HikariPool-1 - Starting...
+2020-11-14 15:48:14,166 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:48:14,213 - HikariPool-1 - Start completed.
+2020-11-14 15:48:14,244 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 15:48:14,635 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 15:48:14,651 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:48:15,682 - 
+
+Using generated security password: 81ec4f80-554b-4f5b-8b3b-7046b30879ad
+
+2020-11-14 15:48:15,916 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2f86f9cf, org.springframework.security.web.context.SecurityContextPersistenceFilter@ce561cc, org.springframework.security.web.header.HeaderWriterFilter@fabef2e, org.springframework.security.web.csrf.CsrfFilter@5d3f99d7, org.springframework.security.web.authentication.logout.LogoutFilter@1736c1e4, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@76596288, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6658f08a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@adafe19, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@4b6b5352, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f8c3646, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@52ca0ad4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7e2bd5e6, org.springframework.security.web.session.SessionManagementFilter@7e848aea, org.springframework.security.web.access.ExceptionTranslationFilter@63f2e0b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@54be6213]
+2020-11-14 15:48:16,244 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:48:16,307 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:48:16,307 - Spring Data repositories initialized!
+2020-11-14 15:48:16,322 - Started EnrollAndRegisterUser in 5.455 seconds (JVM running for 6.466)
+2020-11-14 15:48:16,432 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:48:16,869 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:48:17,025 - Starting without optional epoll library
+2020-11-14 15:48:17,025 - Starting without optional kqueue library
+2020-11-14 15:48:17,994 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVjc0xQU252MGtWTnU5cCtmekkwRXkzNk9MYjJEWVJobgpQRDRaUXJqdXczbVd5T2ZYVmFRQS8wdkFVTHBHazJRTXI1NkRtRXcrRnZ4SE9Nazltc2EvTHhZaFFhSXlGdERFCkt6K2NFVDJsWGRvMXlYaGd6ZnQwQjBUcnhNa2JYNjNXCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 15:48:18,447 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:48:18,447 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:48:18,447 - HikariPool-1 - Shutdown initiated...
+2020-11-14 15:48:18,463 - HikariPool-1 - Shutdown completed.
+2020-11-14 15:50:53,561 - Starting EnrollAndRegisterUser on DESKTOP-660D7OS with PID 110184 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 15:50:53,561 - The following profiles are active: dev
+2020-11-14 15:50:54,296 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 15:50:54,499 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:50:54,499 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 15:50:54,514 - Finished Spring Data repository scanning in 10ms. Found 0 JPA repository interfaces.
+2020-11-14 15:50:54,530 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 15:50:54,530 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 15:50:54,546 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 15:50:55,249 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$8acd606d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 15:50:55,483 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:50:55,561 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 15:50:55,639 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 15:50:55,795 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 15:50:56,155 - HikariPool-1 - Starting...
+2020-11-14 15:50:56,327 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 15:50:56,342 - HikariPool-1 - Start completed.
+2020-11-14 15:50:56,374 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 15:50:56,764 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 15:50:56,780 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:50:57,873 - 
+
+Using generated security password: 2e99aa48-deab-4286-8267-0988b211c8e3
+
+2020-11-14 15:50:58,108 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@adafe19, org.springframework.security.web.context.SecurityContextPersistenceFilter@56ec6960, org.springframework.security.web.header.HeaderWriterFilter@1b4a3a1, org.springframework.security.web.csrf.CsrfFilter@561d88ee, org.springframework.security.web.authentication.logout.LogoutFilter@32dcfeea, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6d815fb7, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@37c2f0b4, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@7e2bd5e6, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@1d6713dd, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@14b95942, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4536a715, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@76a1146d, org.springframework.security.web.session.SessionManagementFilter@786a3477, org.springframework.security.web.access.ExceptionTranslationFilter@5a06904, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@48a46b0f]
+2020-11-14 15:50:58,405 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 15:50:58,452 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 15:50:58,452 - Spring Data repositories initialized!
+2020-11-14 15:50:58,467 - Started EnrollAndRegisterUser in 5.438 seconds (JVM running for 6.458)
+2020-11-14 15:50:58,577 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:50:58,983 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 15:50:59,092 - Starting without optional epoll library
+2020-11-14 15:50:59,108 - Starting without optional kqueue library
+2020-11-14 15:51:00,030 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVjc0xQU252MGtWTnU5cCtmekkwRXkzNk9MYjJEWVJobgpQRDRaUXJqdXczbVd5T2ZYVmFRQS8wdkFVTHBHazJRTXI1NkRtRXcrRnZ4SE9Nazltc2EvTHhZaFFhSXlGdERFCkt6K2NFVDJsWGRvMXlYaGd6ZnQwQjBUcnhNa2JYNjNXCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 15:51:00,545 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 15:51:00,545 - Shutting down ExecutorService 'applicationTaskExecutor'
+2020-11-14 15:51:00,545 - HikariPool-1 - Shutdown initiated...
+2020-11-14 15:51:00,576 - HikariPool-1 - Shutdown completed.

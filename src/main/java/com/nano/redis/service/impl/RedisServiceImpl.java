@@ -14,8 +14,8 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * redis操作实现类
- * Created by macro on 2020/3/3.
+ * Redis操作实现类
+ * @author nano
  */
 @Service
 public class RedisServiceImpl implements RedisService {
@@ -45,12 +45,12 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public Boolean del(String key) {
+    public Boolean delete(String key) {
         return redisTemplate.delete(key);
     }
 
     @Override
-    public Long del(List<String> keys) {
+    public Long delete(List<String> keys) {
         return redisTemplate.delete(keys);
     }
 

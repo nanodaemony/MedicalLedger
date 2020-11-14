@@ -1,0 +1,7 @@
+
+1. 通过Enrollment获取证书:HFCAClientIT -- 1418行
+
+2. 需要在configtx.yaml中指定排序服务为Kafka
+
+3. 可以给字段创建索引: EndToEnd,java 509行
+
