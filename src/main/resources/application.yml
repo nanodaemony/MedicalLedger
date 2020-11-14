@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: NanoMedical
+  profiles:
+    active: dev
+  data:
+    jpa:
+      properties:
+        hibernate:
+          jdbc:
+            time_zone: HongKong
+      repositories:
+        bootstrap-mode: deferred
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+
+server:
+  port: 10086
+  servlet:
+    context-path: /eval
+
+myConfig:
+  isPrintDeviceDataLog: true
+
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: nano-evaluation-secret #JWT加解密使用的密钥
+  expiration: 86400 #JWT的超期限时间(60*60*24) 秒
+  tokenHead: token  #JWT负载中的前缀
+
+# 自定义redis key
+redis:
+  key:
+    prefix:
+      authCode: "portal:authCode:"
+    expire:
+      authCode: 120 # 验证码超期时间
+
+
+secure:
+  ignored:
+    urls: #安全路径白名单
+    - /swagger-ui.html
+    - /swagger-resources/**
+    - /swagger/**
+    - /**/v2/api-docs
+    - /**/*.js
+    - /**/*.css
+    - /**/*.png
+    - /**/*.ico
+    - /webjars/springfox-swagger-ui/**
+    - /actuator/**
+    - /druid/**
+    - /user/login
+    - /user/register
+    - /user/info
+    - /user/logout
+    - /user/upload
+

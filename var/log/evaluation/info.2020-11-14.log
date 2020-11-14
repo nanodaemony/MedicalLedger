@@ -1,0 +1,36 @@
+2020-11-14 13:55:00,446 - Starting NanoEvaluationApplication on DESKTOP-660D7OS with PID 111708 (D:\code\12_Paper\MedicalLedger\target\classes started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 13:55:00,556 - The following profiles are active: dev
+2020-11-14 13:55:01,547 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 13:55:01,738 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 13:55:01,740 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 13:55:01,756 - Finished Spring Data repository scanning in 7ms. Found 0 JPA repository interfaces.
+2020-11-14 13:55:01,770 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 13:55:01,771 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 13:55:01,782 - Finished Spring Data repository scanning in 0ms. Found 0 Redis repository interfaces.
+2020-11-14 13:55:02,992 - Tomcat initialized with port(s): 10086 (http)
+2020-11-14 13:55:03,004 - Initializing ProtocolHandler ["http-nio-10086"]
+2020-11-14 13:55:03,005 - Starting service [Tomcat]
+2020-11-14 13:55:03,005 - Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-11-14 13:55:03,164 - Initializing Spring embedded WebApplicationContext
+2020-11-14 13:55:03,164 - Root WebApplicationContext: initialization completed in 2480 ms
+2020-11-14 13:55:03,826 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 13:55:03,879 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 13:55:03,924 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 13:55:04,000 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 13:55:04,220 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 13:55:04,380 - HikariPool-1 - Starting...
+2020-11-14 13:55:07,523 - HHH000342: Could not obtain connection to query metadata : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-11-14 13:55:07,758 - 
+
+Using generated security password: dc31e187-68fa-49d4-b009-8112a6db3695
+
+2020-11-14 13:55:07,925 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@733f1395, org.springframework.security.web.context.SecurityContextPersistenceFilter@33d230ce, org.springframework.security.web.header.HeaderWriterFilter@7a572ea0, org.springframework.security.web.csrf.CsrfFilter@159ac15f, org.springframework.security.web.authentication.logout.LogoutFilter@5ebbde60, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6c8f4bc7, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@38087342, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@21dea711, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@7282af25, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@a316f6b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5c234920, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7772d266, org.springframework.security.web.session.SessionManagementFilter@7159d601, org.springframework.security.web.access.ExceptionTranslationFilter@1144a02b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@57a667c8]
+2020-11-14 13:55:08,294 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 13:55:08,326 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 13:55:08,326 - Spring Data repositories initialized!
+2020-11-14 13:55:08,343 - Starting ProtocolHandler ["http-nio-10086"]
+2020-11-14 13:55:08,369 - Tomcat started on port(s): 10086 (http) with context path '/eval'
+2020-11-14 13:55:08,372 - Started NanoEvaluationApplication in 9.862 seconds (JVM running for 11.397)
+2020-11-14 13:55:08,404 - 成功开启项目...
