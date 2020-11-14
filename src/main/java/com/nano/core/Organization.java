@@ -57,17 +57,17 @@ public class Organization {
     /**
      * Peer结点路径Map
      */
-    Map<String, String> peerLocations = new HashMap<>();
+    Map<String, String> peerLocationMap = new HashMap<>();
 
     /**
      * Orderer结点路径Map
      */
-    Map<String, String> ordererLocations = new HashMap<>();
+    Map<String, String> ordererLocationMap = new HashMap<>();
 
     /**
      * 事件Hub路径Map
      */
-    Map<String, String> eventHubLocations = new HashMap<>();
+    Map<String, String> eventHubLocationMap = new HashMap<>();
 
     /**
      * 组织的Admin用户
@@ -95,9 +95,9 @@ public class Organization {
                 ", caLocation='" + caLocation + '\'' +
                 ", caProperties=" + caProperties +
                 ", userMap=" + userMap +
-                ", peerLocations=" + peerLocations +
-                ", ordererLocations=" + ordererLocations +
-                ", eventHubLocations=" + eventHubLocations +
+                ", peerLocations=" + peerLocationMap +
+                ", ordererLocations=" + ordererLocationMap +
+                ", eventHubLocations=" + eventHubLocationMap +
                 ", adminUser=" + adminUser +
                 ", adminPeer=" + adminPeer +
                 ", domainName='" + domainName + '\'' +
@@ -134,49 +134,47 @@ public class Organization {
     }
 
     public void addPeerLocation(String name, String location) {
-
-        peerLocations.put(name, location);
+        peerLocationMap.put(name, location);
     }
 
     public void addOrdererLocation(String name, String location) {
-
-        ordererLocations.put(name, location);
+        ordererLocationMap.put(name, location);
     }
 
     public void addEventHubLocation(String name, String location) {
 
-        eventHubLocations.put(name, location);
+        eventHubLocationMap.put(name, location);
     }
 
     public String getPeerLocation(String name) {
-        return peerLocations.get(name);
+        return peerLocationMap.get(name);
 
     }
 
     public String getOrdererLocation(String name) {
-        return ordererLocations.get(name);
+        return ordererLocationMap.get(name);
 
     }
 
     public String getEventHubLocation(String name) {
-        return eventHubLocations.get(name);
+        return eventHubLocationMap.get(name);
 
     }
 
     public Set<String> getPeerNames() {
 
-        return Collections.unmodifiableSet(peerLocations.keySet());
+        return Collections.unmodifiableSet(peerLocationMap.keySet());
     }
 
 
     public Set<String> getOrdererNames() {
 
-        return Collections.unmodifiableSet(ordererLocations.keySet());
+        return Collections.unmodifiableSet(ordererLocationMap.keySet());
     }
 
     public Set<String> getEventHubNames() {
 
-        return Collections.unmodifiableSet(eventHubLocations.keySet());
+        return Collections.unmodifiableSet(eventHubLocationMap.keySet());
     }
 
     public HFCAClient getCAClient() {
@@ -200,12 +198,12 @@ public class Organization {
         return userMap.get(name);
     }
 
-    public Collection<String> getOrdererLocations() {
-        return Collections.unmodifiableCollection(ordererLocations.values());
+    public Collection<String> getOrdererLocationMap() {
+        return Collections.unmodifiableCollection(ordererLocationMap.values());
     }
 
-    public Collection<String> getEventHubLocations() {
-        return Collections.unmodifiableCollection(eventHubLocations.values());
+    public Collection<String> getEventHubLocationMap() {
+        return Collections.unmodifiableCollection(eventHubLocationMap.values());
     }
 
 

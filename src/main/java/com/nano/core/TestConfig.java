@@ -134,104 +134,67 @@ public class TestConfig {
             // 初始化系统环境变量(重点配置)
             initSystemEnvironment();
 
+            // 初始化两个组织
+            Organization peerOrganization1 = new Organization("peerOrg1", "Org1MSP");
+            Organization peerOrganization2 = new Organization("peerOrg2", "Org2MSP");
 
+            peerOrganization1.addPeerLocation("peer0.org1.example.com", "grpc://172.20.29.67:7051");
+            peerOrganization1.addPeerLocation("peer1.org1.example.com", "grpc://172.20.29.67:7056");
+            peerOrganization2.addPeerLocation("peer0.org2.example.com", "grpc://172.20.29.67:8051");
+            peerOrganization2.addPeerLocation("peer1.org2.example.com", "grpc://172.20.29.67:8056");
 
-            // 这里初始化组织org信息
-            // 往Map里面放入组织名称与组织对象
-            for (Map.Entry<Object, Object> x : systemProperties.entrySet()) {
-                final String key = x.getKey() + "";
-                final String val = x.getValue() + "";
-                if (key.startsWith(INTEGRATIONTESTS_ORG)) {
-                    Matcher match = orgPattern.matcher(key);
-                    if (match.matches() && match.groupCount() == 1) {
-                        String orgName = match.group(1).trim();
-                        // 这里初始化两个组织名称: peerOrg1, peerOrg2
-                        organizationMap.put(orgName, new Organization(orgName, val.trim()));
-                    }
+            // 设置组织域名
+            peerOrganization1.setDomainName("org1.example.com");
+            peerOrganization2.setDomainName("org2.example.com");
+
+            // 设置Orderer结点地址(注意这里只有一个地址,如果有多个地址可以像上面这样重复添加)
+            peerOrganization1.addOrdererLocation("orderer.example.com", "grpc://172.20.29.67:7050");
+            peerOrganization2.addOrdererLocation("orderer.example.com", "grpc://172.20.29.67:7050");
+
+            // 设置CA地址
+            peerOrganization1.setCALocation("http://172.20.29.67:7054");
+            peerOrganization2.setCALocation("http://172.20.29.67:8054");
+
+            // 设置CA名称
+            peerOrganization1.setCAName("ca0");
+            peerOrganization2.setCAName(null);
+
+            // 如果开启了TLS
+            if (true) {
+                // 证书路径
+                String cert1 = "src/test/fixture/sdkintegration/e2e-2Orgs/v1.3/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem";
+                String cert2 = "src/test/fixture/sdkintegration/e2e-2Orgs/v1.3/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem";
+
+                // 证书文件
+                File certFile1 = new File(cert1);
+                File certFile2 = new File(cert2);
+                // 判断证书是否存在
+                if (!certFile1.exists() || !certFile1.isFile() || !certFile2.exists() || !certFile2.isFile()) {
+                    throw new RuntimeException("TEST is missing cert file." + certFile1.getAbsolutePath() + certFile2.getAbsolutePath());
                 }
+                // 设置CA的属性
+                Properties properties1 = new Properties();
+                // 设置证书文件的绝对路径
+                properties1.setProperty("pemFile", certFile1.getAbsolutePath());
+                // testing environment only NOT FOR PRODUCTION!
+                // 仅仅是用于测试环境,不能用于生产环境!!!
+                properties1.setProperty("allowAllHostNames", "true");
+                // 将CA属性设置到组织属性里面
+                peerOrganization1.setCAProperties(properties1);
+
+                // 设置CA的属性
+                Properties properties2 = new Properties();
+                // 设置证书文件的绝对路径
+                properties2.setProperty("pemFile", certFile2.getAbsolutePath());
+                // testing environment only NOT FOR PRODUCTION!
+                // 仅仅是用于测试环境,不能用于生产环境!!!
+                properties2.setProperty("allowAllHostNames", "true");
+                // 将CA属性设置到组织属性里面
+                peerOrganization2.setCAProperties(properties2);
             }
-            // 遍历组织Map进行处理
-            for (Map.Entry<String, Organization> org : organizationMap.entrySet()) {
-                // 获取组织名称: peerOrg1, peerOrg2
-                final String orgName = org.getKey();
-                // System.out.println(orgName);
-                // 获取对应的组织对象
-                final Organization sampleOrg = org.getValue();
-                // 构造Peer名称
-                // peer0.org1.example.com@grpc://localhost:7051, peer1.org1.example.com@grpc://localhost:7056
-                // peer0.org2.example.com@grpc://localhost:8051,peer1.org2.example.com@grpc://localhost:8056
-                String peerNames = systemProperties.getProperty(INTEGRATIONTESTS_ORG + orgName + ".peer_locations");
-                String[] ps = peerNames.split("[ \t]*,[ \t]*");
-                for (String peer : ps) {
-                    String[] nl = peer.split("[ \t]*@[ \t]*");
-                    // 添加Peer结点的路径到组织对象中
-                    sampleOrg.addPeerLocation(nl[0], grpcTLSify(nl[1]));
-                }
-                // 设置组织域名
-                // org1.example.com
-                // org2.example.com
-                final String domainName = systemProperties.getProperty(INTEGRATIONTESTS_ORG + orgName + ".domname");
-                sampleOrg.setDomainName(domainName);
-
-                // 设置Orderer名称
-                // orderer.example.com@grpc://localhost:7050
-                // orderer.example.com@grpc://localhost:7050
-                String ordererNames = systemProperties.getProperty(INTEGRATIONTESTS_ORG + orgName + ".orderer_locations");
-                ps = ordererNames.split("[ \t]*,[ \t]*");
-                for (String peer : ps) {
-                    String[] nl = peer.split("[ \t]*@[ \t]*");
-                    // 添加Orderer结点的路径到组织对象中
-                    sampleOrg.addOrdererLocation(nl[0], grpcTLSify(nl[1]));
-                }
-                // 判断Fabric是否是1.3之前的版本(这里没有配置)
-                if (isFabricVersionBefore("1.3")) { // Eventhubs supported.
-                    String eventHubNames = systemProperties.getProperty(INTEGRATIONTESTS_ORG + orgName + ".eventhub_locations");
-                    System.out.println(eventHubNames);
-                    ps = eventHubNames.split("[ \t]*,[ \t]*");
-                    for (String peer : ps) {
-                        String[] nl = peer.split("[ \t]*@[ \t]*");
-                        sampleOrg.addEventHubLocation(nl[0], grpcTLSify(nl[1]));
-                    }
-                }
-                // 配置CA地址
-                // http://localhost:7054
-                // http://localhost:8054
-                sampleOrg.setCALocation(httpTLSify(systemProperties.getProperty((INTEGRATIONTESTS_ORG + org.getKey() + ".ca_location"))));
-
-                // 配置CA名称
-                // ca0与null
-                sampleOrg.setCAName(systemProperties.getProperty((INTEGRATIONTESTS_ORG + org.getKey() + ".caName")));
-
-                // 默认runningFabricCATLS为false
-                // 如果开启了TLS
-                if (true) {
-                    // 证书路径
-                    // src/test/fixture/sdkintegration/e2e-2Orgs/v1.3/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
-                    // src/test/fixture/sdkintegration/e2e-2Orgs/v1.3/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
-                    String cert = "src/test/fixture/sdkintegration/e2e-2Orgs/FAB_CONFIG_GEN_VERS/crypto-config/peerOrganizations/DNAME/ca/ca.DNAME-cert.pem"
-                            .replaceAll("DNAME", domainName).replaceAll("FAB_CONFIG_GEN_VERS", FAB_CONFIG_GEN_VERS);
-
-                    // 证书文件
-                    File certFile = new File(cert);
-                    // 判断证书是否存在
-                    if (!certFile.exists() || !certFile.isFile()) {
-                        throw new RuntimeException("TEST is missing cert file " + certFile.getAbsolutePath());
-                    }
-                    // 设置CA的属性
-                    Properties properties = new Properties();
-                    // 设置证书文件的绝对路径
-                    properties.setProperty("pemFile", certFile.getAbsolutePath());
-                    // D:\code\12_Paper\fabric-sdk-java\src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\peerOrganizations\org1.example.com\ca\ca.org1.example.com-cert.pem
-                    // D:\code\12_Paper\fabric-sdk-java\src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\peerOrganizations\org2.example.com\ca\ca.org2.example.com-cert.pem
-                    properties.setProperty("allowAllHostNames", "true"); //testing environment only NOT FOR PRODUCTION!
-                    // 将CA属性设置到组织属性里面
-                    sampleOrg.setCAProperties(properties);
-                }
-                // 打印初始化配置好的组织信息
-                // SampleOrg{name='peerOrg1', mspid='Org1MSP', caClient=null, caName='ca0', caLocation='http://localhost:7054', caProperties={allowAllHostNames=true, pemFile=D:\code\12_Paper\fabric-sdk-java\src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\peerOrganizations\org1.example.com\ca\ca.org1.example.com-cert.pem}, userMap={}, peerLocations={peer0.org1.example.com=grpc://localhost:7051, peer1.org1.example.com=grpc://localhost:7056}, ordererLocations={orderer.example.com=grpc://localhost:7050}, eventHubLocations={}, adminUser=null, adminPeer=null, domainName='org1.example.com'}
-                // SampleOrg{name='peerOrg2', mspid='Org2MSP', caClient=null, caName='null', caLocation='http://localhost:8054', caProperties={allowAllHostNames=true, pemFile=D:\code\12_Paper\fabric-sdk-java\src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\peerOrganizations\org2.example.com\ca\ca.org2.example.com-cert.pem}, userMap={}, peerLocations={peer0.org2.example.com=grpc://localhost:8051, peer1.org2.example.com=grpc://localhost:8056}, ordererLocations={orderer.example.com=grpc://localhost:7050}, eventHubLocations={}, adminUser=null, adminPeer=null, domainName='org2.example.com'}
-                // System.out.println(sampleOrg.toString());
-            }
+            // 组织信息加入Map
+            organizationMap.put("peerOrg1", peerOrganization1);
+            organizationMap.put("peerOrg2", peerOrganization2);
         }
     }
 
@@ -309,8 +272,6 @@ public class TestConfig {
         runningFabricTLS = runningTLS;
     }
 
-
-
     // 获取Fabric配置版本
     // 打印出V1.3
     public String getFabricConfigGenVers() {
@@ -370,7 +331,6 @@ public class TestConfig {
      */
     private String httpTLSify(String location) {
         location = location.trim();
-
         return runningFabricCATLS ? location.replaceFirst("^http://", "https://") : location;
     }
 
@@ -636,6 +596,7 @@ public class TestConfig {
         // C:\Users\nano\AppData\Local\Temp\network-config.yaml3043783252187129749-FixedUp.yaml
         System.out.println(config.getTestNetworkConfigFileYAML());
         System.out.println(config.isRunningAgainstFabric10());
+
     }
 
 }
