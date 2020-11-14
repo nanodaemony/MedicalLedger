@@ -18,7 +18,7 @@ import static java.lang.String.format;
     creation of the channels. None of that is specific to chaincode deployment language.
  */
 
-public class End2endNodeIT extends End2endIT {
+public class End2endNodeIT extends FabricCore {
 
     {
 

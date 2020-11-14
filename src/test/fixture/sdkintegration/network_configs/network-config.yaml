@@ -316,4 +316,4 @@ certificateAuthorities:
          enrollSecret: adminpw
       # [Optional] The optional name of the CA.
             ## caName: ca0 no ca name!
-
+    caName: ca1

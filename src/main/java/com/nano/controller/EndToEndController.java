@@ -1,7 +1,7 @@
 package com.nano.controller;
 
 import com.nano.common.vo.CommonResult;
-import com.nano.core.End2endIT;
+import com.nano.core.FabricCore;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,13 +21,13 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @Slf4j
-@Api(tags = "NetworkController", description = "网络相关控制器")
-@RequestMapping("/network")
-public class NetworkController {
+@Api(tags = "EndToEndController", description = "测试控制器")
+@RequestMapping("/endtoend")
+public class EndToEndController {
 
 
     @Autowired
-    private End2endIT end2endIT;
+    private FabricCore fabricCore;
 
     /**
      * 接收平板上传的各种仪器数据并解析并存储
@@ -38,7 +38,7 @@ public class NetworkController {
     @ApiOperation(value = "初始化网络")
     public CommonResult<String> handleCollectorPostData() {
 
-        end2endIT.init();
+        fabricCore.init();
 
         // 进行数据处理并返回结果
         return CommonResult.success();

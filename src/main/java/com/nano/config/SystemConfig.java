@@ -13,7 +13,7 @@
  */
 package com.nano.config;
 
-import com.nano.core.SampleOrg;
+import com.nano.core.Organization;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -94,7 +94,7 @@ public class SystemConfig {
     /**
      * 组织的Map
      */
-    private final HashMap<String, SampleOrg> sampleOrgMap = new HashMap<>();
+    private final HashMap<String, Organization> sampleOrgMap = new HashMap<>();
 
     /**
      * Hyperledger版本
@@ -180,17 +180,17 @@ public class SystemConfig {
                     if (match.matches() && match.groupCount() == 1) {
                         String orgName = match.group(1).trim();
                         // 这里初始化两个组织名称: peerOrg1, peerOrg2
-                        sampleOrgMap.put(orgName, new SampleOrg(orgName, val.trim()));
+                        sampleOrgMap.put(orgName, new Organization(orgName, val.trim()));
                     }
                 }
             }
             // 遍历组织Map进行处理
-            for (Map.Entry<String, SampleOrg> org : sampleOrgMap.entrySet()) {
+            for (Map.Entry<String, Organization> org : sampleOrgMap.entrySet()) {
                 // 获取组织名称: peerOrg1, peerOrg2
                 final String orgName = org.getKey();
                 // System.out.println(orgName);
                 // 获取对应的组织对象
-                final SampleOrg sampleOrg = org.getValue();
+                final Organization organization = org.getValue();
                 // 构造Peer名称
                 // peer0.org1.example.com@grpc://localhost:7051, peer1.org1.example.com@grpc://localhost:7056
                 // peer0.org2.example.com@grpc://localhost:8051,peer1.org2.example.com@grpc://localhost:8056
@@ -199,13 +199,13 @@ public class SystemConfig {
                 for (String peer : ps) {
                     String[] nl = peer.split("[ \t]*@[ \t]*");
                     // 添加Peer结点的路径到组织对象中
-                    sampleOrg.addPeerLocation(nl[0], grpcTLSify(nl[1]));
+                    organization.addPeerLocation(nl[0], grpcTLSify(nl[1]));
                 }
                 // 设置组织域名
                 // org1.example.com
                 // org2.example.com
                 final String domainName = sdkProperties.getProperty(INTEGRATIONTESTS_ORG + orgName + ".domname");
-                sampleOrg.setDomainName(domainName);
+                organization.setDomainName(domainName);
 
                 // 设置Orderer名称
                 // orderer.example.com@grpc://localhost:7050
@@ -215,7 +215,7 @@ public class SystemConfig {
                 for (String peer : ps) {
                     String[] nl = peer.split("[ \t]*@[ \t]*");
                     // 添加Orderer结点的路径到组织对象中
-                    sampleOrg.addOrdererLocation(nl[0], grpcTLSify(nl[1]));
+                    organization.addOrdererLocation(nl[0], grpcTLSify(nl[1]));
                 }
                 // 判断Fabric是否是1.3之前的版本(这里没有配置)
                 if (isFabricVersionBefore("1.3")) { // Eventhubs supported.
@@ -224,17 +224,17 @@ public class SystemConfig {
                     ps = eventHubNames.split("[ \t]*,[ \t]*");
                     for (String peer : ps) {
                         String[] nl = peer.split("[ \t]*@[ \t]*");
-                        sampleOrg.addEventHubLocation(nl[0], grpcTLSify(nl[1]));
+                        organization.addEventHubLocation(nl[0], grpcTLSify(nl[1]));
                     }
                 }
                 // 配置CA地址
                 // http://localhost:7054
                 // http://localhost:8054
-                sampleOrg.setCALocation(httpTLSify(sdkProperties.getProperty((INTEGRATIONTESTS_ORG + org.getKey() + ".ca_location"))));
+                organization.setCALocation(httpTLSify(sdkProperties.getProperty((INTEGRATIONTESTS_ORG + org.getKey() + ".ca_location"))));
 
                 // 配置CA名称
                 // ca0与null
-                sampleOrg.setCAName(sdkProperties.getProperty((INTEGRATIONTESTS_ORG + org.getKey() + ".caName")));
+                organization.setCAName(sdkProperties.getProperty((INTEGRATIONTESTS_ORG + org.getKey() + ".caName")));
 
                 // 默认runningFabricCATLS为false
                 // 如果开启了TLS
@@ -259,7 +259,7 @@ public class SystemConfig {
                     // D:\code\12_Paper\fabric-sdk-java\src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\peerOrganizations\org2.example.com\ca\ca.org2.example.com-cert.pem
                     properties.setProperty("allowAllHostNames", "true"); //testing environment only NOT FOR PRODUCTION!
                     // 将CA属性设置到组织属性里面
-                    sampleOrg.setCAProperties(properties);
+                    organization.setCAProperties(properties);
                 }
                 // 打印初始化配置好的组织信息
                 // SampleOrg{name='peerOrg1', mspid='Org1MSP', caClient=null, caName='ca0', caLocation='http://localhost:7054', caProperties={allowAllHostNames=true, pemFile=D:\code\12_Paper\fabric-sdk-java\src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\peerOrganizations\org1.example.com\ca\ca.org1.example.com-cert.pem}, userMap={}, peerLocations={peer0.org1.example.com=grpc://localhost:7051, peer1.org1.example.com=grpc://localhost:7056}, ordererLocations={orderer.example.com=grpc://localhost:7050}, eventHubLocations={}, adminUser=null, adminPeer=null, domainName='org1.example.com'}
@@ -402,7 +402,7 @@ public class SystemConfig {
     /**
      * 生成用于测试的组织对象
      */
-    public Collection<SampleOrg> getIntegrationTestsSampleOrgs() {
+    public Collection<Organization> getIntegrationTestsSampleOrgs() {
         // 复制上面的组织中的值
         return Collections.unmodifiableCollection(sampleOrgMap.values());
     }
@@ -410,7 +410,7 @@ public class SystemConfig {
     /**
      * 获取指定的组织信息
      */
-    public SampleOrg getIntegrationTestsSampleOrg(String name) {
+    public Organization getIntegrationTestsSampleOrg(String name) {
         return sampleOrgMap.get(name);
     }
 
@@ -572,7 +572,7 @@ public class SystemConfig {
      * 获取组织的Map
      * @return Map
      */
-    public Map<String, SampleOrg> getSampleOrgMap() {
+    public Map<String, Organization> getSampleOrgMap() {
         return sampleOrgMap;
     }
 

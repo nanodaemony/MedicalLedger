@@ -12,28 +12,7 @@
  *  limitations under the License.
  */
 
-package org.hyperledger.fabric.sdkintegration;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.nio.file.Paths;
-import java.security.PrivateKey;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
-import java.util.Set;
-import java.util.Vector;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
+package com.nano.core;
 
 import org.apache.commons.codec.binary.Hex;
 import org.bouncycastle.openssl.PEMWriter;
@@ -57,7 +36,6 @@ import org.hyperledger.fabric.sdk.Peer.PeerRole;
 import org.hyperledger.fabric.sdk.ProposalResponse;
 import org.hyperledger.fabric.sdk.QueryByChaincodeRequest;
 import org.hyperledger.fabric.sdk.SDKUtils;
-import org.hyperledger.fabric.sdk.TestConfigHelper;
 import org.hyperledger.fabric.sdk.TransactionInfo;
 import org.hyperledger.fabric.sdk.TransactionProposalRequest;
 import org.hyperledger.fabric.sdk.TransactionRequest.Type;
@@ -67,33 +45,51 @@ import org.hyperledger.fabric.sdk.exception.InvalidProtocolBufferRuntimeExceptio
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.hyperledger.fabric.sdk.exception.TransactionEventException;
 import org.hyperledger.fabric.sdk.security.CryptoSuite;
-import org.hyperledger.fabric.sdk.testutils.TestConfig;
 import org.hyperledger.fabric_ca.sdk.EnrollmentRequest;
 import org.hyperledger.fabric_ca.sdk.HFCAClient;
 import org.hyperledger.fabric_ca.sdk.HFCAInfo;
 import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
-import org.junit.Before;
-import org.junit.Test;
+import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.nio.file.Paths;
+import java.security.PrivateKey;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
+
+import static com.nano.core.TestUtils.resetConfig;
+import static com.nano.core.TestUtils.testRemovingAddingPeersOrderers;
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hyperledger.fabric.sdk.BlockInfo.EnvelopeType.TRANSACTION_ENVELOPE;
 import static org.hyperledger.fabric.sdk.Channel.NOfEvents.createNofEvents;
 import static org.hyperledger.fabric.sdk.Channel.PeerOptions.createPeerOptions;
 import static org.hyperledger.fabric.sdk.Channel.TransactionOptions.createTransactionOptions;
-import static org.hyperledger.fabric.sdk.testutils.TestUtils.resetConfig;
-import static org.hyperledger.fabric.sdk.testutils.TestUtils.testRemovingAddingPeersOrderers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * Test end to end scenario
+ * The full process of the procedure.
+ * @author nano
  */
-public class End2endIT {
+@Component
+public class FabricCore {
 
     /**
      * 测试配置
@@ -130,23 +126,17 @@ public class End2endIT {
     private static final String EXPECTED_EVENT_NAME = "event";
     private static final Map<String, String> TX_EXPECTED;
 
-    /**
-     * 测试名称
-     */
-    String testName = "End2endIT";
 
     /**
      * 链码相关配置
      */
-    String CHAIN_CODE_FILEPATH = "sdkintegration/gocc/sample1";
-    String CHAIN_CODE_NAME = "example_cc_go";
-    String CHAIN_CODE_PATH = "github.com/example_cc";
-    String CHAIN_CODE_VERSION = "1";
-    Type CHAIN_CODE_LANG = Type.GO_LANG;
+    private static final String CHAIN_CODE_FILEPATH = "sdkintegration/gocc/sample1";
+    private static final String CHAIN_CODE_NAME = "example_cc_go";
+    private static final String CHAIN_CODE_PATH = "github.com/example_cc";
+    private static final String CHAIN_CODE_VERSION = "1";
+    private static final Type CHAIN_CODE_LANG = Type.GO_LANG;
 
-    /**
-     * 静态初始化
-     */
+    // 静态初始化
     static {
         TX_EXPECTED = new HashMap<>();
         TX_EXPECTED.put("readset1", "Missing readset for channel bar block 1");
@@ -170,7 +160,7 @@ public class End2endIT {
     /**
      * 测试组织集合
      */
-    private Collection<SampleOrg> orgCollection;
+    private Collection<Organization> orgCollection;
 
     /**
      * 测试用户
@@ -178,32 +168,19 @@ public class End2endIT {
     static String testUser1 = "user" + System.currentTimeMillis();
 
     /**
-     * 测试之前执行的默认配置
+     * Fabric代理对象
      */
-    @Before
-    public void checkConfig() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, MalformedURLException, org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException {
-        print("\n\n\nRUNNING: %s.\n", testName);
-        // configHelper.clearConfig();
-        // assertEquals(256, Config.getConfig().getSecurityLevel());
-        resetConfig();
-        configHelper.customizeConfig();
+    public HFClient fabricClient;
 
-        // 初始化组织集合
-        // orgCollection = testConfig.getIntegrationTestsSampleOrgs();
-        orgCollection = testConfig.getSampleOrgMap().values();
+    /**
+     * Foo通道对象
+     */
+    public Channel fooChannel;
 
-        // 为每个组织设置HFCA
-        for (SampleOrg sampleOrg : orgCollection) {
-            // Try one of each name and no name.
-            // ca0 与 null
-            String caName = sampleOrg.getCAName();
-            if (caName != null && !caName.isEmpty()) {
-                sampleOrg.setCAClient(HFCAClient.createNewInstance(caName, sampleOrg.getCALocation(), sampleOrg.getCAProperties()));
-            } else {
-                sampleOrg.setCAClient(HFCAClient.createNewInstance(sampleOrg.getCALocation(), sampleOrg.getCAProperties()));
-            }
-        }
-    }
+    /**
+     * 链码ID对象
+     */
+    public ChaincodeID chaincodeId;
 
     /**
      * 客户端TLS属性
@@ -216,11 +193,93 @@ public class End2endIT {
     // File sampleStoreFile = new File(System.getProperty("java.io.tmpdir") + "/HFCSampletest.properties");
     File sampleStoreFile = new File("G:\\HFCSampletest.properties");
 
+    /**
+     * 初始化方法
+     */
+    public void init() {
+        try {
+            checkConfig();
+            setup();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 查询方法
+     */
+    public void query() {
+        try {
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            // 发送查询提案给所有Peer结点
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            String expect = "" + 300;
+            print("Now query chaincode for the value of b.");
+            // 构造查询请求
+            QueryByChaincodeRequest queryByChaincodeRequest = fabricClient.newQueryProposalRequest();
+            // 设置参数
+            queryByChaincodeRequest.setArgs("b");
+            // 设置调用方法
+            queryByChaincodeRequest.setFcn("query");
+            // 设置链码Id
+            queryByChaincodeRequest.setChaincodeID(chaincodeId);
+            // 不知道在干啥
+            Map<String, byte[]> tm2 = new HashMap<>();
+            tm2.put("HyperLedgerFabric", "QueryByChaincodeRequest:JavaSDK".getBytes(UTF_8));
+            tm2.put("method", "QueryByChaincodeRequest".getBytes(UTF_8));
+            queryByChaincodeRequest.setTransientMap(tm2);
+
+            // 发送查询请求并获取响应结果
+            Collection<ProposalResponse> queryResponses = fooChannel.queryByChaincode(queryByChaincodeRequest, fooChannel.getPeers());
+            // 分析响应结果
+            for (ProposalResponse proposalResponse : queryResponses) {
+                if (!proposalResponse.isVerified() || proposalResponse.getStatus() != ProposalResponse.Status.SUCCESS) {
+                    fail("Failed query proposal from peer " + proposalResponse.getPeer().getName() + " status: " + proposalResponse.getStatus() +
+                            ". Messages: " + proposalResponse.getMessage() + ". Was verified : " + proposalResponse.isVerified());
+                } else {
+                    // 查询成功,获取返回的数据
+                    String payload = proposalResponse.getProposalResponse().getResponse().getPayload().toStringUtf8();
+                    print(payload);
+                    print("Query payload of b from peer %s returned %s", proposalResponse.getPeer().getName(), payload);
+                    assertEquals(payload, expect);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 测试之前执行的默认配置
+     */
+    public void checkConfig() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, MalformedURLException, org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException {
+        // configHelper.clearConfig();
+        // assertEquals(256, Config.getConfig().getSecurityLevel());
+        resetConfig();
+        configHelper.customizeConfig();
+
+        // 初始化组织集合
+        // orgCollection = testConfig.getIntegrationTestsSampleOrgs();
+        orgCollection = testConfig.getOrganization().values();
+        // 为每个组织设置HFCA
+        for (Organization organization : orgCollection) {
+            // Try one of each name and no name.
+            // ca0 与 null
+            String caName = organization.getCAName();
+            if (caName != null && !caName.isEmpty()) {
+                organization.setCAClient(HFCAClient.createNewInstance(caName, organization.getCALocation(), organization.getCAProperties()));
+            } else {
+                organization.setCAClient(HFCAClient.createNewInstance(organization.getCALocation(), organization.getCAProperties()));
+            }
+        }
+    }
+
 
     /**
      * 测试初始化网络
      */
-    @Test
     public void setup() throws Exception {
         // 持久化不是SDK的一部分,生产环境别用SampleFile这个类,需要自己做实现!!!!!!
         // 每次都删除掉之前的存储文件
@@ -244,46 +303,46 @@ public class End2endIT {
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // 创建Fabric客户端
-        HFClient client = HFClient.createNewInstance();
+        fabricClient = HFClient.createNewInstance();
         // 设置加密套件
-        client.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
+        fabricClient.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // 构造并运行Channel
         // 获取组织peerOrg1
-        SampleOrg organization = testConfig.getIntegrationTestsSampleOrg("peerOrg1");
+        Organization organization = testConfig.getIntegrationTestsSampleOrg("peerOrg1");
         // 创建Foo通道(完成网络中通道的创建与结点的加入)
-        Channel fooChannel = constructChannel(FOO_CHANNEL_NAME, client, organization);
+        fooChannel = constructChannel(FOO_CHANNEL_NAME, fabricClient, organization);
         // 将创建好的通道对象存入本地
         sampleStore.saveChannel(fooChannel);
 
         // 运行Channel(设置事件监听器,安装链码,转账,查询等操作)
-        runChannel(client, fooChannel, true, organization, 0);
-        assertFalse(fooChannel.isShutdown());
+        runChannel(fabricClient, fooChannel, true, organization, 0);
+        // assertFalse(fooChannel.isShutdown());
         // Force foo channel to shutdown clean up resources.
         // 强制关掉Foo通道并清理资源
-        fooChannel.shutdown(true);
-        assertTrue(fooChannel.isShutdown());
+        // fooChannel.shutdown(true);
+        // assertTrue(fooChannel.isShutdown());
         // 现在已经查询不到Foo通道了
-        assertNull(client.getChannel(FOO_CHANNEL_NAME));
-        print("\n\n");
+        // assertNull(fabricClient.getChannel(FOO_CHANNEL_NAME));
+        // print("\n\n");
 
         // 获取组织peerOrg2的实体
         organization = testConfig.getIntegrationTestsSampleOrg("peerOrg2");
         // 通过组织2构建barChannel
-        Channel barChannel = constructChannel(BAR_CHANNEL_NAME, client, organization);
+        Channel barChannel = constructChannel(BAR_CHANNEL_NAME, fabricClient, organization);
         assertTrue(barChannel.isInitialized());
         // 持久化channel
         sampleStore.saveChannel(barChannel);
         assertFalse(barChannel.isShutdown());
         // 运行第二个Bar通道
-        runChannel(client, barChannel, true, organization, 100);
+        runChannel(fabricClient, barChannel, true, organization, 100);
         // let bar channel just shutdown so we have both scenarios.
         print("\nTraverse the blocks for chain %s ", barChannel.getName());
-        blockWalker(client, barChannel);
+        blockWalker(fabricClient, barChannel);
 
-        assertFalse(barChannel.isShutdown());
-        assertTrue(barChannel.isInitialized());
+        // assertFalse(barChannel.isShutdown());
+        // assertTrue(barChannel.isInitialized());
         print("That's all folks!");
     }
 
@@ -297,7 +356,7 @@ public class End2endIT {
         print("***** Enrolling Users *****");
 
         // 对每个组织进行操作
-        for (SampleOrg organization : orgCollection) {
+        for (Organization organization : orgCollection) {
             // 获取CA代理
             HFCAClient ca = organization.getCAClient();
             // 获取组织名称
@@ -335,24 +394,20 @@ public class End2endIT {
             }
             // 获取CA信息来判断是否连接成功
             HFCAInfo info = ca.info();
-            if (info == null) {
-                print("CA Server Connection Failed.");
-                return;
-            }
             // 获取Admin用户
-            MedicalUser admin = sampleStore.getMember(TEST_ADMIN_NAME, orgName);
+            MedicalUser admin = sampleStore.getUser(TEST_ADMIN_NAME, orgName);
             // Preregistered admin only needs to be enrolled with Fabric caClient.
             // 如果Admin没有登记就进行登记
             if (!admin.isEnrolled()) {
-                // Admin登记
-                Enrollment enrollment = ca.enroll(admin.getName(), "adminpw");
+                // Admin登记(使用CA启动时的用户名与密码)
+                Enrollment enrollment = ca.enroll("admin", "adminpw");
                 admin.setEnrollment(enrollment);
                 // 设置MSPID
                 // Org1MSP Org2MSP
                 admin.setMspId(mspid);
             }
             // 创建一个新的普通用户
-            MedicalUser user = sampleStore.getMember(testUser1, organization.getName());
+            MedicalUser user = sampleStore.getUser(testUser1, organization.getName());
             // 对普通User用户进行登记与注册
             if (!user.isRegistered()) {
                 // 设置用户的名称及其所属组织
@@ -374,7 +429,7 @@ public class End2endIT {
             final String organizationDomainName = organization.getDomainName();
 
             // 获取组织的Admin结点
-            MedicalUser peerOrgAdmin = sampleStore.getMember(organizationName + "Admin", organizationName, organization.getMSPID(),
+            MedicalUser peerOrgAdmin = sampleStore.getUser(organizationName + "Admin", organizationName, organization.getMSPID(),
                     // src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\peerOrganizations\org1.example.com\\users\Admin@org1.example.com\msp\keystore\581fa072e48dc2a516f664df94ea687447c071f89fc0b783b147956a08929dcc_sk
                     Util.findFileSk(Paths.get(testConfig.getTestChannelPath(), "crypto-config/peerOrganizations/",
                             organizationDomainName, format("/users/Admin@%s/msp/keystore", organizationDomainName)).toFile()),
@@ -414,7 +469,7 @@ public class End2endIT {
      * @param organization 组织
      * @param delta 初始化数据
      */
-    void runChannel(HFClient fabricClient, Channel channel, boolean installChaincode, SampleOrg organization, int delta) {
+    void runChannel(HFClient fabricClient, Channel channel, boolean installChaincode, Organization organization, int delta) {
 
         // A test class to capture chaincode events 用于捕获链码事件的测试类
         class ChaincodeEventCapture {
@@ -450,7 +505,7 @@ public class End2endIT {
             // 获取通道中的全部Order结点
             Collection<Orderer> orderers = channel.getOrderers();
             // 初始化chaincodeID
-            final ChaincodeID chaincodeID;
+
             // 初始化提案的响应集合
             Collection<ProposalResponse> responseList;
             Collection<ProposalResponse> successResponseList = new LinkedList<>();
@@ -458,7 +513,8 @@ public class End2endIT {
 
             // Register a chaincode event listener that will trigger for any chaincode id and only for EXPECTED_EVENT_NAME event.
             // 注册一个链码事件监听器
-            String chaincodeEventListenerHandler = channel.registerChaincodeEventListener(Pattern.compile(".*"),
+            String chaincodeEventListenerHandler = channel.registerChaincodeEventListener(
+                    Pattern.compile(".*"),
                     // 期待的事件: EXPECTED_EVENT_NAME = "event"
                     Pattern.compile(Pattern.quote(EXPECTED_EVENT_NAME)),
                     (handler, blockEvent, chaincodeEvent) -> {
@@ -491,13 +547,13 @@ public class End2endIT {
                     // 链码版本: 1
                     .setVersion(CHAIN_CODE_VERSION);
 
-            // 如果路径不为空则设置路径
+            // 如果路径不为空则设置路径(GO意外的语言为空)
             if (CHAIN_CODE_PATH != null) {
                 chaincodeIDBuilder.setPath(CHAIN_CODE_PATH);
             }
 
             // 使用生成器生成链码Id
-            chaincodeID = chaincodeIDBuilder.build();
+            chaincodeId = chaincodeIDBuilder.build();
 
             // 如果需要安装链码
             if (installChaincode) {
@@ -508,7 +564,7 @@ public class End2endIT {
                 // 构造链码安装请求
                 InstallProposalRequest installProposalRequest = fabricClient.newInstallProposalRequest();
                 // 传入上面生成的链码ID
-                installProposalRequest.setChaincodeID(chaincodeID);
+                installProposalRequest.setChaincodeID(chaincodeId);
                 // 如果是Foo通道
                 if (isFooChain) {
                     // 如果是foo通道则从目录安装
@@ -595,7 +651,7 @@ public class End2endIT {
             InstantiateProposalRequest instantiateProposalRequest = fabricClient.newInstantiationProposalRequest();
             // 设置链码实例化属性
             instantiateProposalRequest.setProposalWaitTime(DEPLOYWAITTIME);
-            instantiateProposalRequest.setChaincodeID(chaincodeID);
+            instantiateProposalRequest.setChaincodeID(chaincodeId);
             instantiateProposalRequest.setChaincodeLanguage(CHAIN_CODE_LANG);
             // 指定实例化的init方法
             instantiateProposalRequest.setFcn("init");
@@ -716,7 +772,7 @@ public class End2endIT {
                     // 构造交易提案请求
                     TransactionProposalRequest transactionProposalRequest = fabricClient.newTransactionProposalRequest();
                     // 设置需要执行的链码ID
-                    transactionProposalRequest.setChaincodeID(chaincodeID);
+                    transactionProposalRequest.setChaincodeID(chaincodeId);
                     // 链码语言
                     transactionProposalRequest.setChaincodeLanguage(CHAIN_CODE_LANG);
                     //transactionProposalRequest.setFcn("invoke");
@@ -860,7 +916,7 @@ public class End2endIT {
                     // 设置调用方法
                     queryByChaincodeRequest.setFcn("query");
                     // 设置链码Id
-                    queryByChaincodeRequest.setChaincodeID(chaincodeID);
+                    queryByChaincodeRequest.setChaincodeID(chaincodeId);
                     // 不知道在干啥
                     Map<String, byte[]> tm2 = new HashMap<>();
                     tm2.put("HyperLedgerFabric", "QueryByChaincodeRequest:JavaSDK".getBytes(UTF_8));
@@ -992,7 +1048,6 @@ public class End2endIT {
         }
     }
 
-
     /**
      * 构造通道对象
      *
@@ -1000,7 +1055,7 @@ public class End2endIT {
      * @param fabricClient Fabric客户端
      * @param organization 组织
      */
-    Channel constructChannel(String channelName, HFClient fabricClient, SampleOrg organization) throws Exception {
+    Channel constructChannel(String channelName, HFClient fabricClient, Organization organization) throws Exception {
         print("Going to constructing channel %s", channelName);
         // boolean doPeerEventing = false;
         // 这里为false
@@ -1303,11 +1358,6 @@ public class End2endIT {
             throw e.getCause();
         }
     }
-
-
-
-
-
 
     /**
      * 输出

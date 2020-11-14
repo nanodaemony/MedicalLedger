@@ -13,6 +13,10 @@
  */
 package com.nano.core;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hyperledger.fabric.sdk.helper.Utils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,10 +32,6 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hyperledger.fabric.sdk.helper.Utils;
 
 /**
  * Config allows for a global config of the toolkit. Central location for all
@@ -49,38 +49,46 @@ import org.hyperledger.fabric.sdk.helper.Utils;
  * 测试配置
  * @author nano
  */
-public class TestConfig {
+public class TestConfigNew {
 
     // Logger
-    private static final Log logger = LogFactory.getLog(TestConfig.class);
+    private static final Log logger = LogFactory.getLog(TestConfigNew.class);
+
     // 默认配置
     private static final String DEFAULT_CONFIG = "src/test/java/org/hyperledger/fabric/sdk/testutils.properties";
+
     // 配置类
     private static final String ORG_HYPERLEDGER_FABRIC_SDK_CONFIGURATION = "org.hyperledger.fabric.sdktest.configuration";
     private static final String ORG_HYPERLEDGER_FABRIC_SDK_TEST_FABRIC_HOST = "ORG_HYPERLEDGER_FABRIC_SDK_TEST_FABRIC_HOST";
 
-    // Server地址
+    // 服务器地址
     private static final String LOCALHOST = "172.20.29.67";
     // 基本路径
     private static final String PROPBASE = "org.hyperledger.fabric.sdktest.";
-    private static final String INVOKEWAITTIME = PROPBASE + "InvokeWaitTime";
-    private static final String DEPLOYWAITTIME = PROPBASE + "DeployWaitTime";
-    private static final String PROPOSALWAITTIME = PROPBASE + "ProposalWaitTime";
+
+    private static final String INVOKEWAITTIME = "org.hyperledger.fabric.sdktest.InvokeWaitTime";
+    private static final String DEPLOYWAITTIME = "org.hyperledger.fabric.sdktest.DeployWaitTime";
+    private static final String PROPOSALWAITTIME = "org.hyperledger.fabric.sdktest.ProposalWaitTime";
     // org.hyperledger.fabric.sdktest.RunIdemixMTTest ORG_HYPERLEDGER_FABRIC_SDKTEST_RUNIDEMIXMTTEST
-    private static final String RUNIDEMIXMTTEST = PROPBASE + "RunIdemixMTTest";
-    private static final String INTEGRATIONTESTS_ORG = PROPBASE + "integrationTests.org.";
-    private static final String INTEGRATIONTESTSTLS = PROPBASE + "integrationtests.tls";
+    private static final String RUNIDEMIXMTTEST = "org.hyperledger.fabric.sdktest.RunIdemixMTTest";
+    private static final String INTEGRATIONTESTS_ORG = "org.hyperledger.fabric.sdktest.integrationTests.org.";
+    private static final String INTEGRATIONTESTSTLS = "org.hyperledger.fabric.sdktest.integrationtests.tls";
 
     private static final Pattern orgPattern = Pattern.compile("^" + Pattern.quote(INTEGRATIONTESTS_ORG) + "([^\\.]+)\\.mspid$");
 
     // location switching between fabric cryptogen and configtxgen artifacts for v1.0 and v1.1 in src/test/fixture/sdkintegration/e2e-2Orgs
-    // Fabric配置版本
-    private String FAB_CONFIG_GEN_VERS = "v1.3";
+    // Fabric配置版本 = "V1.3"
+    // 也就是src/test/fixture/sdkintegration/e2e-2Orgs/V1.3目录下的
+    private static final String FAB_CONFIG_GEN_VERS = "v1.3";
 
     // 配置的静态对象
-    private static TestConfig config;
-    // SDK属性
+    private static TestConfigNew config;
+
+    /**
+     * 下面设置的系统环境变量均会存入这里
+     */
     private static final Properties systemProperties = new Properties();
+
     // 是否开启TLS
     private boolean runningTLS;
     private boolean runningFabricCATLS;
@@ -91,7 +99,7 @@ public class TestConfig {
     }
 
     /**
-     * 组织的Map
+     * 存储组织的Map
      */
     private final HashMap<String, Organization> organizationMap = new HashMap<>();
 
@@ -108,20 +116,16 @@ public class TestConfig {
     /**
      * 私有构造方法默认初始化执行
      */
-    private TestConfig() {
-
-        // 初始化版本
-        initConfigVersion();
-
+    private TestConfigNew() {
         // 加载文件
         File loadFile;
         FileInputStream configProps;
         try {
             // ORG_HYPERLEDGER_FABRIC_SDK_CONFIGURATION = "org.hyperledger.fabric.sdktest.configuration"
             // DEFAULT_CONFIG = "src/test/java/org/hyperledger/fabric/sdk/testutils.properties"
-            loadFile = new File(System.getProperty(ORG_HYPERLEDGER_FABRIC_SDK_CONFIGURATION, DEFAULT_CONFIG)).getAbsoluteFile();
-            logger.debug(String.format("Loading configuration from %s and it is present: %b", loadFile.toString(),
-                    loadFile.exists()));
+            loadFile = new File(System.getProperty("org.hyperledger.fabric.sdktest.configuration",
+                    "src/test/java/org/hyperledger/fabric/sdk/testutils.properties")).getAbsoluteFile();
+            logger.debug(String.format("Loading configuration from %s and it is present: %b", loadFile.toString(), loadFile.exists()));
             // 加载配置文件
             configProps = new FileInputStream(loadFile);
             systemProperties.load(configProps);
@@ -130,11 +134,8 @@ public class TestConfig {
             // 这里默认打印这一句
             logger.warn(String.format("Failed to load any test configuration from: %s. Using toolkit defaults", DEFAULT_CONFIG));
         } finally {
-
-            // 初始化系统环境变量(重点配置)
-            initSystemEnvironment();
-
-
+            // 初始化系统环境变量
+            initSystemEnviromentProperty();
 
             // 这里初始化组织org信息
             // 往Map里面放入组织名称与组织对象
@@ -156,7 +157,7 @@ public class TestConfig {
                 final String orgName = org.getKey();
                 // System.out.println(orgName);
                 // 获取对应的组织对象
-                final Organization sampleOrg = org.getValue();
+                final Organization organization = org.getValue();
                 // 构造Peer名称
                 // peer0.org1.example.com@grpc://localhost:7051, peer1.org1.example.com@grpc://localhost:7056
                 // peer0.org2.example.com@grpc://localhost:8051,peer1.org2.example.com@grpc://localhost:8056
@@ -165,13 +166,13 @@ public class TestConfig {
                 for (String peer : ps) {
                     String[] nl = peer.split("[ \t]*@[ \t]*");
                     // 添加Peer结点的路径到组织对象中
-                    sampleOrg.addPeerLocation(nl[0], grpcTLSify(nl[1]));
+                    organization.addPeerLocation(nl[0], grpcTLSify(nl[1]));
                 }
                 // 设置组织域名
                 // org1.example.com
                 // org2.example.com
                 final String domainName = systemProperties.getProperty(INTEGRATIONTESTS_ORG + orgName + ".domname");
-                sampleOrg.setDomainName(domainName);
+                organization.setDomainName(domainName);
 
                 // 设置Orderer名称
                 // orderer.example.com@grpc://localhost:7050
@@ -181,7 +182,7 @@ public class TestConfig {
                 for (String peer : ps) {
                     String[] nl = peer.split("[ \t]*@[ \t]*");
                     // 添加Orderer结点的路径到组织对象中
-                    sampleOrg.addOrdererLocation(nl[0], grpcTLSify(nl[1]));
+                    organization.addOrdererLocation(nl[0], grpcTLSify(nl[1]));
                 }
                 // 判断Fabric是否是1.3之前的版本(这里没有配置)
                 if (isFabricVersionBefore("1.3")) { // Eventhubs supported.
@@ -190,17 +191,17 @@ public class TestConfig {
                     ps = eventHubNames.split("[ \t]*,[ \t]*");
                     for (String peer : ps) {
                         String[] nl = peer.split("[ \t]*@[ \t]*");
-                        sampleOrg.addEventHubLocation(nl[0], grpcTLSify(nl[1]));
+                        organization.addEventHubLocation(nl[0], grpcTLSify(nl[1]));
                     }
                 }
                 // 配置CA地址
                 // http://localhost:7054
                 // http://localhost:8054
-                sampleOrg.setCALocation(httpTLSify(systemProperties.getProperty((INTEGRATIONTESTS_ORG + org.getKey() + ".ca_location"))));
+                organization.setCALocation(httpTLSify(systemProperties.getProperty((INTEGRATIONTESTS_ORG + org.getKey() + ".ca_location"))));
 
                 // 配置CA名称
                 // ca0与null
-                sampleOrg.setCAName(systemProperties.getProperty((INTEGRATIONTESTS_ORG + org.getKey() + ".caName")));
+                organization.setCAName(systemProperties.getProperty((INTEGRATIONTESTS_ORG + org.getKey() + ".caName")));
 
                 // 默认runningFabricCATLS为false
                 // 如果开启了TLS
@@ -225,7 +226,7 @@ public class TestConfig {
                     // D:\code\12_Paper\fabric-sdk-java\src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\peerOrganizations\org2.example.com\ca\ca.org2.example.com-cert.pem
                     properties.setProperty("allowAllHostNames", "true"); //testing environment only NOT FOR PRODUCTION!
                     // 将CA属性设置到组织属性里面
-                    sampleOrg.setCAProperties(properties);
+                    organization.setCAProperties(properties);
                 }
                 // 打印初始化配置好的组织信息
                 // SampleOrg{name='peerOrg1', mspid='Org1MSP', caClient=null, caName='ca0', caLocation='http://localhost:7054', caProperties={allowAllHostNames=true, pemFile=D:\code\12_Paper\fabric-sdk-java\src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\peerOrganizations\org1.example.com\ca\ca.org1.example.com-cert.pem}, userMap={}, peerLocations={peer0.org1.example.com=grpc://localhost:7051, peer1.org1.example.com=grpc://localhost:7056}, ordererLocations={orderer.example.com=grpc://localhost:7050}, eventHubLocations={}, adminUser=null, adminPeer=null, domainName='org1.example.com'}
@@ -235,29 +236,11 @@ public class TestConfig {
         }
     }
 
-    /**
-     * 初始化配置版本(不能少!)
-     */
-    private void initConfigVersion() {
-        final String[] fvs = ORG_HYPERLEDGER_FABRIC_SDKTEST_VERSION.split("\\.");
-        if (fvs.length != 3) {
-            throw new AssertionError("Expected environment variable 'ORG_HYPERLEDGER_FABRIC_SDKTEST_VERSION' to be three numbers sperated by dots (1.0.0)  but got: " + ORG_HYPERLEDGER_FABRIC_SDKTEST_VERSION);
-        }
-        // 解析Fabric版本
-        fabricVersion[0] = Integer.parseInt(fvs[0].trim());
-        fabricVersion[1] = Integer.parseInt(fvs[1].trim());
-        fabricVersion[2] = Integer.parseInt(fvs[2].trim());
-        // 解析Fabric配置版本
-        FAB_CONFIG_GEN_VERS = "v" + fabricVersion[0] + "." + fabricVersion[1];
-        if (FAB_CONFIG_GEN_VERS.equalsIgnoreCase("v1.4")) {
-            FAB_CONFIG_GEN_VERS = "v1.3";
-        }
-    }
 
     /**
      * 初始化系统环境变量
      */
-    private void initSystemEnvironment() {
+    private void initSystemEnviromentProperty() {
         // 设置系统环境变量
         // 调用等待时间
         defaultEnvironmentProperty(INVOKEWAITTIME, "32000");
@@ -319,7 +302,6 @@ public class TestConfig {
 
     // 判断版本是否是某版本之后的
     public boolean isFabricVersionAtOrAfter(String version) {
-
         final int[] vers = parseVersion(version);
         for (int i = 0; i < 3; ++i) {
             if (vers[i] > fabricVersion[i]) {
@@ -379,9 +361,9 @@ public class TestConfig {
      *
      * @return 全局配置对象
      */
-    public static TestConfig getConfig() {
+    public static TestConfigNew getConfig() {
         if (null == config) {
-            config = new TestConfig();
+            config = new TestConfigNew();
         }
         return config;
     }
@@ -409,20 +391,21 @@ public class TestConfig {
     }
 
     /**
-     * 设置系统环境变量
+     * 设置默认系统环境变量
      *
      * @param key 键
-     * @param value  值
+     * @param value 值
      */
     private static void defaultEnvironmentProperty(String key, String value) {
-        String ret = System.getProperty(key);
-        if (ret != null) {
-            systemProperties.put(key, ret);
+        // 获取系统变量
+        String property = System.getProperty(key);
+        if (property != null) {
+            systemProperties.put(key, property);
         } else {
             String envKey = key.toUpperCase().replaceAll("\\.", "_");
-            ret = System.getenv(envKey);
-            if (null != ret) {
-                systemProperties.put(key, ret);
+            property = System.getenv(envKey);
+            if (null != property) {
+                systemProperties.put(key, property);
             } else {
                 if (null == systemProperties.getProperty(key) && value != null) {
                     systemProperties.put(key, value);
@@ -625,7 +608,7 @@ public class TestConfig {
     }
 
     public static void main(String[] ars) {
-        final TestConfig config = getConfig();
+        final TestConfigNew config = getConfig();
         final boolean runningAgainstFabric10 = config.isRunningAgainstFabric10();
         // false
         System.out.println(runningAgainstFabric10);
@@ -636,6 +619,9 @@ public class TestConfig {
         // C:\Users\nano\AppData\Local\Temp\network-config.yaml3043783252187129749-FixedUp.yaml
         System.out.println(config.getTestNetworkConfigFileYAML());
         System.out.println(config.isRunningAgainstFabric10());
+
+        System.out.println(ORG_HYPERLEDGER_FABRIC_SDKTEST_VERSION);
+        System.out.println(FAB_CONFIG_GEN_VERS);
     }
 
 }

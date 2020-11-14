@@ -37,14 +37,14 @@ public class IntegrationSuite {
         fabricVersion[1] = Integer.parseInt(fvs[1].trim());
         fabricVersion[2] = Integer.parseInt(fvs[2].trim());
 
-        runmap.put("1.0", Arrays.asList(End2endIT.class, End2endAndBackAgainIT.class, HFCAClientIT.class));
+        runmap.put("1.0", Arrays.asList(FabricCore.class, End2endAndBackAgainIT.class, HFCAClientIT.class));
 
-        runmap.put("1.2", Arrays.asList(End2endIT.class, End2endAndBackAgainIT.class, UpdateChannelIT.class,
+        runmap.put("1.2", Arrays.asList(FabricCore.class, End2endAndBackAgainIT.class, UpdateChannelIT.class,
                 NetworkConfigIT.class, End2endNodeIT.class, End2endAndBackAgainNodeIT.class,
                 PrivateDataIT.class, ServiceDiscoveryIT.class,
                 HFCAClientIT.class
         ));
-        runmap.put("1.3", Arrays.asList(End2endIT.class, End2endAndBackAgainIT.class, UpdateChannelIT.class,
+        runmap.put("1.3", Arrays.asList(FabricCore.class, End2endAndBackAgainIT.class, UpdateChannelIT.class,
                 NetworkConfigIT.class, End2endNodeIT.class, End2endJavaIT.class, End2endAndBackAgainNodeIT.class,
                 End2endIdemixIT.class, PrivateDataIT.class, ServiceDiscoveryIT.class, HFCAClientIT.class));
         runmap.put("1.4", runmap.get("1.3"));

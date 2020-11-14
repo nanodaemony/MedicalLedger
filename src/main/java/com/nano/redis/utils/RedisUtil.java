@@ -100,7 +100,6 @@ public class RedisUtil {
      * @return 对象
      */
     public static Object get(final String key) {
-
         return redisTemplate.opsForValue().get(key);
     }
 

@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
     creation of the channels. None of that is specific to chaincode deployment language.
  */
 
-public class End2endIdemixIT extends End2endIT {
+public class End2endIdemixIT extends FabricCore {
 
     {
         CHAIN_CODE_FILEPATH = "sdkintegration/gocc/sampleIdemix";

@@ -192,6 +192,7 @@ public class MedicalUser implements User, Serializable {
             ObjectOutputStream oos = new ObjectOutputStream(bos);
             oos.writeObject(this);
             oos.flush();
+            // 存储到本地文件中
             keyValStore.setValue(keyValStoreName, Hex.toHexString(bos.toByteArray()));
             bos.close();
         } catch (IOException e) {
@@ -250,6 +251,13 @@ public class MedicalUser implements User, Serializable {
         this.enrollment = enrollment;
     }
 
+
+    /**
+     * 转化为独有的存储名称
+     *
+     * @param name 名称
+     * @param org 组织
+     */
     public static String toKeyValStoreName(String name, String org) {
         return "user." + name + org;
     }
@@ -264,6 +272,5 @@ public class MedicalUser implements User, Serializable {
     public void setMspId(String mspID) {
         this.mspId = mspID;
         saveState();
-
     }
 }

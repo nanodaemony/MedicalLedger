@@ -67,9 +67,10 @@ public class TestUtils {
     /**
      * 私有构造器
      */
-    private TestUtils() { }
+    private TestUtils() {}
 
     /**
+     * 给一个对象的属性赋值
      * Sets the value of a field on an object
      *
      * @param o         The object that contains the field
@@ -91,8 +92,8 @@ public class TestUtils {
     }
 
     /**
-     * Invokes method on object.
-     * Used to access private methods.
+     * 调用对象的方法
+     * Invokes method on object. Used to access private methods.
      *
      * @param o          The object that contains the field
      * @param methodName The name of the field
@@ -100,7 +101,6 @@ public class TestUtils {
      * @return Result of method.
      */
     public static Object invokeMethod(Object o, String methodName, Object... args) throws Throwable {
-
         Method[] methods = o.getClass().getDeclaredMethods();
         List<Method> reduce = new ArrayList<>(Arrays.asList(methods));
         for (Iterator<Method> i = reduce.iterator(); i.hasNext();
@@ -124,7 +124,6 @@ public class TestUtils {
             throw new RuntimeException(String.format("TEST ISSUE Could not find unique method %s on %s. Found with %d matches.",
                     methodName, o.getClass().getName(), reduce.size()));
         }
-
         Method method = reduce.iterator().next();
         method.setAccessible(true);
         try {
@@ -154,21 +153,20 @@ public class TestUtils {
     }
 
     private static Field getFieldInt(Class o, String name) throws NoSuchFieldException {
-        Field ret;
+        Field field;
         try {
-            ret = o.getDeclaredField(name);
+            field = o.getDeclaredField(name);
         } catch (NoSuchFieldException e) {
 
             Class superclass = o.getSuperclass();
             if (null != superclass) {
-                ret = getFieldInt(superclass, name);
-
+                field = getFieldInt(superclass, name);
             } else {
                 throw e;
             }
         }
-        ret.setAccessible(true);
-        return ret;
+        field.setAccessible(true);
+        return field;
     }
 
     /**
@@ -201,7 +199,6 @@ public class TestUtils {
     public static String setConfigProperty(String key, String value) throws Exception {
 
         String oldVal = null;
-
         try {
             Config config = Config.getConfig();
 
@@ -236,20 +233,13 @@ public class TestUtils {
     }
 
     public static ArrayList tarBytesToEntryArrayList(byte[] bytes) throws Exception {
-
         ArrayList<String> ret = new ArrayList<>();
-
         TarArchiveInputStream tarArchiveInputStream = new TarArchiveInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes)));
-
         for (TarArchiveEntry ta = tarArchiveInputStream.getNextTarEntry(); null != ta; ta = tarArchiveInputStream.getNextTarEntry()) {
-
             Assert.assertTrue(format("Tar entry %s is not a file.", ta.getName()), ta.isFile()); //we only expect files.
             ret.add(ta.getName());
-
         }
-
         return ret;
-
     }
 
     public static void assertArrayListEquals(String failmsg, ArrayList expect, ArrayList actual) {
@@ -339,6 +329,7 @@ public class TestUtils {
             }
         });
     }
+
 
     private static class MockPrivateKey implements PrivateKey {
         private static final long serialVersionUID = 1L;

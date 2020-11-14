@@ -37,7 +37,7 @@ import org.junit.Test;
  * @author nano
  *
  */
-public class End2endJavaIT extends End2endIT {
+public class End2endJavaIT extends FabricCore {
 
     // 初始化,覆盖父类的路径设置
     {

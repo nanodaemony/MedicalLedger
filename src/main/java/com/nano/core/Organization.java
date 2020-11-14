@@ -15,9 +15,9 @@ import java.util.Set;
  * 组织表示类
  *
  * Keeps track which resources are defined for the Organization it represents.
- *
+ * @author nano
  */
-public class SampleOrg {
+public class Organization {
 
     /**
      * 组织名称
@@ -108,7 +108,7 @@ public class SampleOrg {
         return caName;
     }
 
-    public SampleOrg(String name, String mspid) {
+    public Organization(String name, String mspid) {
         this.name = name;
         this.mspid = mspid;
     }

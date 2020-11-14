@@ -48,21 +48,21 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * 存储键值对的本地文件存储对象
- * A local file-based key value store.
+ * 存储键值对的本地文件存储对象 A local file-based key value store.
+ *
  * @author nano
  */
 public class SampleStore {
 
     /**
-     * 文件
+     * 属性文件路径
      */
-    private String file;
+    private final String propertyFilePath;
 
     /**
      * 日志
      */
-    private Log logger = LogFactory.getLog(SampleStore.class);
+    private final Log logger = LogFactory.getLog(SampleStore.class);
 
     /**
      * 加密套件
@@ -70,14 +70,16 @@ public class SampleStore {
     private CryptoSuite cryptoSuite;
 
     public SampleStore(File file) {
-        this.file = file.getAbsolutePath();
+        this.propertyFilePath = file.getAbsolutePath();
     }
 
     /**
      * Get the value associated with name.
      */
     public String getValue(String name) {
+        // 加载属性
         Properties properties = loadProperties();
+        // 从属性中获取值
         return properties.getProperty(name);
     }
 
@@ -85,6 +87,7 @@ public class SampleStore {
      * Has the value present.
      */
     public boolean hasValue(String name) {
+        // 加载属性
         Properties properties = loadProperties();
         return properties.containsKey(name);
     }
@@ -94,14 +97,15 @@ public class SampleStore {
      */
     private Properties loadProperties() {
         Properties properties = new Properties();
-        try (InputStream input = new FileInputStream(file)) {
+        // 读取传入的属性文件
+        try (InputStream input = new FileInputStream(propertyFilePath)) {
+            // 加载属性文件
             properties.load(input);
             input.close();
         } catch (FileNotFoundException e) {
-            logger.info(String.format("Could not find the file \"%s\"", file));
+            logger.info(String.format("Could not find the file \"%s\"", propertyFilePath));
         } catch (IOException e) {
-            logger.warn(String.format("Could not load keyvalue store from file \"%s\", reason:%s",
-                    file, e.getMessage()));
+            logger.warn(String.format("Could not load keyvalue store from file \"%s\", reason:%s", propertyFilePath, e.getMessage()));
         }
         return properties;
     }
@@ -114,11 +118,13 @@ public class SampleStore {
      * @param value Value for the parameter
      */
     public void setValue(String name, String value) {
+        // 加载属性文件
         Properties properties = loadProperties();
         try (
-                OutputStream output = new FileOutputStream(file)
+                OutputStream output = new FileOutputStream(propertyFilePath)
         ) {
             properties.setProperty(name, value);
+            // 属性存入文件中
             properties.store(output, "");
             output.close();
         } catch (IOException e) {
@@ -129,15 +135,15 @@ public class SampleStore {
     /**
      * 成员Map
      */
-    private final Map<String, MedicalUser> members = new HashMap<>();
+    private final Map<String, MedicalUser> userMap = new HashMap<>();
 
     /**
      * 通过给定用户名与组织获取用户
      * Get the user with a given name
      */
-    public MedicalUser getMember(String name, String org) {
+    public MedicalUser getUser(String name, String org) {
         // 如果已经有缓存的用户名,那么直接返回即可
-        MedicalUser medicalUser = members.get(MedicalUser.toKeyValStoreName(name, org));
+        MedicalUser medicalUser = userMap.get(MedicalUser.toKeyValStoreName(name, org));
         if (medicalUser != null) {
             return medicalUser;
         }
@@ -148,41 +154,38 @@ public class SampleStore {
         return medicalUser;
     }
 
+
     /**
      * Check if store has user.
      *
      * @param name 用户名
-     * @param org 组织
+     * @param org  组织
      * @return true if the user exists.
      */
-    public boolean hasMember(String name, String org) {
-
+    public boolean hasUser(String name, String org) {
         // Try to get the SampleUser state from the cache
-
-        if (members.containsKey(MedicalUser.toKeyValStoreName(name, org))) {
+        if (userMap.containsKey(MedicalUser.toKeyValStoreName(name, org))) {
             return true;
         }
         return MedicalUser.isStored(name, org, this);
-
     }
 
     /**
      * 通过用户的各种信息文件获取用户
      * Get the user with a given name
      *
-     * @param name 用户名
-     * @param org 组织
-     * @param mspId MSPID
-     * @param privateKeyFile 私钥文件
+     * @param name            用户名
+     * @param org             组织
+     * @param mspId           MSPID
+     * @param privateKeyFile  私钥文件
      * @param certificateFile 证书文件
      * @return user
      */
-    public MedicalUser getMember(String name, String org, String mspId, File privateKeyFile,
-                                 File certificateFile) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
-
+    public MedicalUser getUser(String name, String org, String mspId, File privateKeyFile,
+                               File certificateFile) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
         try {
             // Try to get the SampleUser state from the cache
-            MedicalUser medicalUser = members.get(MedicalUser.toKeyValStoreName(name, org));
+            MedicalUser medicalUser = userMap.get(MedicalUser.toKeyValStoreName(name, org));
             if (null != medicalUser) {
                 return medicalUser;
             }
@@ -204,6 +207,11 @@ public class SampleStore {
         Security.addProvider(new BouncyCastleProvider());
     }
 
+    /**
+     * 从Byte数组获取私钥
+     *
+     * @param data 数组
+     */
     static PrivateKey getPrivateKeyFromBytes(byte[] data) throws IOException, NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
         final Reader pemReader = new StringReader(new String(data));
 
@@ -211,9 +219,7 @@ public class SampleStore {
         try (PEMParser pemParser = new PEMParser(pemReader)) {
             pemPair = (PrivateKeyInfo) pemParser.readObject();
         }
-
         PrivateKey privateKey = new JcaPEMKeyConverter().setProvider(BouncyCastleProvider.PROVIDER_NAME).getPrivateKey(pemPair);
-
         return privateKey;
     }
 
@@ -244,42 +250,69 @@ public class SampleStore {
 
     }
 
+    /**
+     * 持久化Channel
+     *
+     * @param channel channel
+     */
     void saveChannel(Channel channel) throws IOException, InvalidArgumentException {
-
         setValue("channel." + channel.getName(), Hex.toHexString(channel.serializeChannel()));
-
     }
 
+    /**
+     * 获取Channel
+     *
+     * @param client 代理对象
+     * @param name channel名称
+     */
     Channel getChannel(HFClient client, String name) throws IOException, ClassNotFoundException, InvalidArgumentException {
-        Channel ret = null;
-
+        Channel channel = null;
         String channelHex = getValue("channel." + name);
         if (channelHex != null) {
-
-            ret = client.deSerializeChannel(Hex.decode(channelHex));
-
+            // 反序列化Channel
+            channel = client.deSerializeChannel(Hex.decode(channelHex));
         }
-        return ret;
+        return channel;
     }
 
-    public void storeClientPEMTLSKey(SampleOrg sampleOrg, String key) {
-
-        setValue("clientPEMTLSKey." + sampleOrg.getName(), key);
-
+    /**
+     * 存储客户端的PEM和TLS秘钥
+     *
+     * @param organization 组织
+     * @param key 秘钥
+     */
+    public void storeClientPEMTLSKey(Organization organization, String key) {
+        setValue("clientPEMTLSKey." + organization.getName(), key);
     }
 
-    public String getClientPEMTLSKey(SampleOrg sampleOrg) {
-
-        return getValue("clientPEMTLSKey." + sampleOrg.getName());
-
+    /**
+     * 获取客户端的PEM和TLS秘钥
+     *
+     * @param organization 组织
+     */
+    public String getClientPEMTLSKey(Organization organization) {
+        return getValue("clientPEMTLSKey." + organization.getName());
     }
 
-    public void storeClientPEMTLCertificate(SampleOrg sampleOrg, String certificate) {
-        setValue("clientPEMTLSCertificate." + sampleOrg.getName(), certificate);
+
+    /**
+     * 存储客户端的PEM和TLS证书
+     *
+     * @param organization 组织
+     * @param certificate 秘钥
+     */
+    public void storeClientPEMTLCertificate(Organization organization, String certificate) {
+        setValue("clientPEMTLSCertificate." + organization.getName(), certificate);
     }
 
-    public String getClientPEMTLSCertificate(SampleOrg sampleOrg) {
-        return getValue("clientPEMTLSCertificate." + sampleOrg.getName());
+
+    /**
+     * 存储客户端的PEM和TLS证书
+     *
+     * @param organization 组织
+     */
+    public String getClientPEMTLSCertificate(Organization organization) {
+        return getValue("clientPEMTLSCertificate." + organization.getName());
     }
 
 }
