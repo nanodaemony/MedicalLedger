@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @SpringBootApplication
 @CrossOrigin
-@ComponentScan("com.nano.msc")
+@ComponentScan("com.nano")
 @Slf4j
 @EnableAsync
 public class NanoEvaluationApplication {
@@ -23,6 +23,8 @@ public class NanoEvaluationApplication {
 		SpringApplication.run(NanoEvaluationApplication.class, args);
 		log.info("成功开启项目...");
 	}
+
+
 
 
 }

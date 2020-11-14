@@ -34,3 +34,36 @@ Using generated security password: dc31e187-68fa-49d4-b009-8112a6db3695
 2020-11-14 13:55:08,369 - Tomcat started on port(s): 10086 (http) with context path '/eval'
 2020-11-14 13:55:08,372 - Started NanoEvaluationApplication in 9.862 seconds (JVM running for 11.397)
 2020-11-14 13:55:08,404 - 成功开启项目...
+2020-11-14 14:04:48,138 - Starting NetworkTest on DESKTOP-660D7OS with PID 136008 (started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 14:04:48,139 - The following profiles are active: dev
+2020-11-14 14:04:48,925 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 14:04:49,164 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 14:04:49,166 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 14:04:49,185 - Finished Spring Data repository scanning in 9ms. Found 0 JPA repository interfaces.
+2020-11-14 14:04:49,198 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 14:04:49,199 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 14:04:49,219 - Finished Spring Data repository scanning in 2ms. Found 0 Redis repository interfaces.
+2020-11-14 14:04:49,959 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$3a824372] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 14:04:50,203 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 14:04:50,266 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 14:04:50,365 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 14:04:50,535 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 14:04:50,931 - HikariPool-1 - Starting...
+2020-11-14 14:04:51,070 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 14:04:54,071 - HHH000342: Could not obtain connection to query metadata : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-11-14 14:04:54,484 - 
+
+Using generated security password: 7ba84df7-5257-4644-81a0-514eb0553c67
+
+2020-11-14 14:04:54,733 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@21a6a494, org.springframework.security.web.context.SecurityContextPersistenceFilter@38bc5ac0, org.springframework.security.web.header.HeaderWriterFilter@351e89fc, org.springframework.security.web.csrf.CsrfFilter@72b40f87, org.springframework.security.web.authentication.logout.LogoutFilter@26d40c77, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2ae3235e, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@21527b8, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@794c5f5e, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@11abd6c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@79d63a4f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2084e65a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4ab66127, org.springframework.security.web.session.SessionManagementFilter@15586843, org.springframework.security.web.access.ExceptionTranslationFilter@2026fbff, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@738a815c]
+2020-11-14 14:04:55,271 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 14:04:55,334 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 14:04:55,335 - Spring Data repositories initialized!
+2020-11-14 14:04:55,351 - Started NetworkTest in 7.759 seconds (JVM running for 8.832)
+2020-11-14 14:04:55,631 - Starting without optional epoll library
+2020-11-14 14:04:55,634 - Starting without optional kqueue library
+2020-11-14 14:04:56,342 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 14:04:56,343 - Invocation of destroy method failed on bean with name 'entityManagerFactory': org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
+2020-11-14 14:04:56,343 - Shutting down ExecutorService 'applicationTaskExecutor'
