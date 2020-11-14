@@ -20,7 +20,6 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -31,7 +30,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
-import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -93,7 +91,7 @@ import static org.junit.Assert.fail;
 /**
  * Test end to end scenario
  */
-public class End2endIT {
+public class End2endITQuery {
 
     /**
      * 测试配置
@@ -177,6 +175,10 @@ public class End2endIT {
      */
     static String testUser1 = "user" + System.currentTimeMillis();
 
+
+    private HFClient client;
+
+
     /**
      * 测试之前执行的默认配置
      */
@@ -217,6 +219,8 @@ public class End2endIT {
     File sampleStoreFile = new File("G:\\HFCSampletest.properties");
 
 
+    HFClient fabricClient;
+
     /**
      * 测试初始化网络
      */
@@ -232,7 +236,8 @@ public class End2endIT {
         // This enrolls users with fabric ca and setups sample store to get users later.
         enrollUsersSetup(sampleStore);
         // Runs Fabric tests with constructing channels, joining peers, exercising chaincode
-        runFabricTest(sampleStore);
+        // runFabricTest(sampleStore);
+        testQuery();
     }
 
     /**
@@ -244,48 +249,93 @@ public class End2endIT {
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // 创建Fabric客户端
-        HFClient client = HFClient.createNewInstance();
+        fabricClient = HFClient.createNewInstance();
         // 设置加密套件
-        client.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
+        fabricClient.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // 构造并运行Channel
         // 获取组织peerOrg1
         SampleOrg organization = testConfig.getIntegrationTestsSampleOrg("peerOrg1");
         // 创建Foo通道(完成网络中通道的创建与结点的加入)
-        Channel fooChannel = constructChannel(FOO_CHANNEL_NAME, client, organization);
+        Channel fooChannel = constructChannel(FOO_CHANNEL_NAME, fabricClient, organization);
         // 将创建好的通道对象存入本地
         sampleStore.saveChannel(fooChannel);
 
         // 运行Channel(设置事件监听器,安装链码,转账,查询等操作)
-        runChannel(client, fooChannel, true, organization, 0);
+        runChannel(fabricClient, fooChannel, true, organization, 0);
         assertFalse(fooChannel.isShutdown());
         // Force foo channel to shutdown clean up resources.
         // 强制关掉Foo通道并清理资源
         fooChannel.shutdown(true);
         assertTrue(fooChannel.isShutdown());
         // 现在已经查询不到Foo通道了
-        assertNull(client.getChannel(FOO_CHANNEL_NAME));
+        assertNull(fabricClient.getChannel(FOO_CHANNEL_NAME));
         print("\n\n");
 
         // 获取组织peerOrg2的实体
         organization = testConfig.getIntegrationTestsSampleOrg("peerOrg2");
         // 通过组织2构建barChannel
-        Channel barChannel = constructChannel(BAR_CHANNEL_NAME, client, organization);
+        Channel barChannel = constructChannel(BAR_CHANNEL_NAME, fabricClient, organization);
         assertTrue(barChannel.isInitialized());
         // 持久化channel
         sampleStore.saveChannel(barChannel);
         assertFalse(barChannel.isShutdown());
         // 运行第二个Bar通道
-        runChannel(client, barChannel, true, organization, 100);
+        runChannel(fabricClient, barChannel, true, organization, 100);
         // let bar channel just shutdown so we have both scenarios.
         print("\nTraverse the blocks for chain %s ", barChannel.getName());
-        blockWalker(client, barChannel);
+        blockWalker(fabricClient, barChannel);
 
         assertFalse(barChannel.isShutdown());
         assertTrue(barChannel.isInitialized());
         print("That's all folks!");
     }
+
+
+    /**
+     * 测试查询区块链
+     */
+    public void testQuery() {
+
+        try {
+            // 创建Fabric客户端
+            fabricClient = HFClient.createNewInstance();
+            // 设置加密套件
+            fabricClient.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+            // 构造并运行Channel
+            // 获取组织peerOrg1
+            SampleOrg organization = testConfig.getIntegrationTestsSampleOrg("peerOrg1");
+
+            // 创建Foo通道(完成网络中通道的创建与结点的加入)
+            // Channel fooChannel = constructChannel(FOO_CHANNEL_NAME, fabricClient, organization);
+            // 将创建好的通道对象存入本地
+            // sampleStore.saveChannel(fooChannel);
+            Channel channel = sampleStore.getChannel(fabricClient, "foo");
+
+            // 获取通道名称
+            final String channelName = channel.getName();
+
+
+
+
+            print(channelName);
+
+
+
+
+
+        } catch (Exception e) {
+            print("Caught exception while running query");
+            e.printStackTrace();
+            fail("Failed during chaincode query with error : " + e.getMessage());
+        }
+
+    }
+
+
 
     /**
      * 注册与登记用户并持久化
@@ -991,6 +1041,9 @@ public class End2endIT {
             fail("Test failed with error : " + e.getMessage());
         }
     }
+
+
+
 
 
     /**

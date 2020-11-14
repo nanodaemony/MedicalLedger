@@ -1,8 +1,7 @@
 package com.nano.redis.utils;
 
 
-import com.nano.utils.SpringUtils;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Collection;
@@ -18,9 +17,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisUtil {
 
-    @SuppressWarnings("unchecked")
-    private static RedisTemplate<String, Object> redisTemplate
-            = (RedisTemplate<String, Object>) SpringUtils.getBean("redisTemplate");
+    @Autowired
+    private static RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 设置有效时间

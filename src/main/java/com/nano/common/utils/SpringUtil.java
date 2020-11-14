@@ -1,4 +1,4 @@
-package com.nano.utils;
+package com.nano.common.utils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * Created by macro on 2020/3/3.
  */
 @Component
-public class SpringUtils implements ApplicationContextAware {
+public class SpringUtil implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
@@ -21,8 +21,8 @@ public class SpringUtils implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        if (SpringUtils.applicationContext == null) {
-            SpringUtils.applicationContext = applicationContext;
+        if (SpringUtil.applicationContext == null) {
+            SpringUtil.applicationContext = applicationContext;
         }
     }
 

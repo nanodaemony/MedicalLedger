@@ -12,28 +12,7 @@
  *  limitations under the License.
  */
 
-package org.hyperledger.fabric.sdkintegration;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.nio.file.Paths;
-import java.security.PrivateKey;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
-import java.util.Set;
-import java.util.Vector;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
+package com.nano.core;
 
 import org.apache.commons.codec.binary.Hex;
 import org.bouncycastle.openssl.PEMWriter;
@@ -57,7 +36,6 @@ import org.hyperledger.fabric.sdk.Peer.PeerRole;
 import org.hyperledger.fabric.sdk.ProposalResponse;
 import org.hyperledger.fabric.sdk.QueryByChaincodeRequest;
 import org.hyperledger.fabric.sdk.SDKUtils;
-import org.hyperledger.fabric.sdk.TestConfigHelper;
 import org.hyperledger.fabric.sdk.TransactionInfo;
 import org.hyperledger.fabric.sdk.TransactionProposalRequest;
 import org.hyperledger.fabric.sdk.TransactionRequest.Type;
@@ -67,22 +45,40 @@ import org.hyperledger.fabric.sdk.exception.InvalidProtocolBufferRuntimeExceptio
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.hyperledger.fabric.sdk.exception.TransactionEventException;
 import org.hyperledger.fabric.sdk.security.CryptoSuite;
-import org.hyperledger.fabric.sdk.testutils.TestConfig;
 import org.hyperledger.fabric_ca.sdk.EnrollmentRequest;
 import org.hyperledger.fabric_ca.sdk.HFCAClient;
 import org.hyperledger.fabric_ca.sdk.HFCAInfo;
 import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.nio.file.Paths;
+import java.security.PrivateKey;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
+
+import static com.nano.core.TestUtils.resetConfig;
+import static com.nano.core.TestUtils.testRemovingAddingPeersOrderers;
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hyperledger.fabric.sdk.BlockInfo.EnvelopeType.TRANSACTION_ENVELOPE;
 import static org.hyperledger.fabric.sdk.Channel.NOfEvents.createNofEvents;
 import static org.hyperledger.fabric.sdk.Channel.PeerOptions.createPeerOptions;
 import static org.hyperledger.fabric.sdk.Channel.TransactionOptions.createTransactionOptions;
-import static org.hyperledger.fabric.sdk.testutils.TestUtils.resetConfig;
-import static org.hyperledger.fabric.sdk.testutils.TestUtils.testRemovingAddingPeersOrderers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -93,6 +89,7 @@ import static org.junit.Assert.fail;
 /**
  * Test end to end scenario
  */
+@Component
 public class End2endIT {
 
     /**
@@ -177,10 +174,23 @@ public class End2endIT {
      */
     static String testUser1 = "user" + System.currentTimeMillis();
 
+
+    public void init() {
+
+        try {
+            checkConfig();
+            setup();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
     /**
      * 测试之前执行的默认配置
      */
-    @Before
     public void checkConfig() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, MalformedURLException, org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException {
         print("\n\n\nRUNNING: %s.\n", testName);
         // configHelper.clearConfig();
@@ -216,11 +226,9 @@ public class End2endIT {
     // File sampleStoreFile = new File(System.getProperty("java.io.tmpdir") + "/HFCSampletest.properties");
     File sampleStoreFile = new File("G:\\HFCSampletest.properties");
 
-
     /**
      * 测试初始化网络
      */
-    @Test
     public void setup() throws Exception {
         // 持久化不是SDK的一部分,生产环境别用SampleFile这个类,需要自己做实现!!!!!!
         // 每次都删除掉之前的存储文件
@@ -458,7 +466,8 @@ public class End2endIT {
 
             // Register a chaincode event listener that will trigger for any chaincode id and only for EXPECTED_EVENT_NAME event.
             // 注册一个链码事件监听器
-            String chaincodeEventListenerHandler = channel.registerChaincodeEventListener(Pattern.compile(".*"),
+            String chaincodeEventListenerHandler = channel.registerChaincodeEventListener(
+                    Pattern.compile(".*"),
                     // 期待的事件: EXPECTED_EVENT_NAME = "event"
                     Pattern.compile(Pattern.quote(EXPECTED_EVENT_NAME)),
                     (handler, blockEvent, chaincodeEvent) -> {
@@ -992,7 +1001,6 @@ public class End2endIT {
         }
     }
 
-
     /**
      * 构造通道对象
      *
@@ -1303,11 +1311,6 @@ public class End2endIT {
             throw e.getCause();
         }
     }
-
-
-
-
-
 
     /**
      * 输出

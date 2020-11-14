@@ -725,3 +725,172 @@ Using generated security password: 2e99aa48-deab-4286-8267-0988b211c8e3
 2020-11-14 15:51:00,545 - Shutting down ExecutorService 'applicationTaskExecutor'
 2020-11-14 15:51:00,545 - HikariPool-1 - Shutdown initiated...
 2020-11-14 15:51:00,576 - HikariPool-1 - Shutdown completed.
+2020-11-14 17:17:31,106 - Starting NanoEvaluationApplication on DESKTOP-660D7OS with PID 22728 (D:\code\12_Paper\MedicalLedger\target\classes started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 17:17:31,137 - The following profiles are active: dev
+2020-11-14 17:17:31,575 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.nano.NanoEvaluationApplication]; nested exception is org.springframework.context.annotation.ConflictingBeanDefinitionException: Annotation-specified bean name 'springUtils' for bean class [com.nano.utils.SpringUtils] conflicts with existing, non-compatible bean definition of same name and class [com.nano.common.utils.SpringUtils]
+2020-11-14 17:18:21,457 - Starting NanoEvaluationApplication on DESKTOP-660D7OS with PID 114188 (D:\code\12_Paper\MedicalLedger\target\classes started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 17:18:21,472 - The following profiles are active: dev
+2020-11-14 17:18:21,738 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.nano.NanoEvaluationApplication]; nested exception is org.springframework.context.annotation.ConflictingBeanDefinitionException: Annotation-specified bean name 'springUtils' for bean class [com.nano.utils.SpringUtils] conflicts with existing, non-compatible bean definition of same name and class [com.nano.common.utils.SpringUtils]
+2020-11-14 17:19:28,829 - Starting NanoEvaluationApplication on DESKTOP-660D7OS with PID 150640 (D:\code\12_Paper\MedicalLedger\target\classes started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 17:19:28,829 - The following profiles are active: dev
+2020-11-14 17:19:29,079 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.nano.NanoEvaluationApplication]; nested exception is org.springframework.context.annotation.ConflictingBeanDefinitionException: Annotation-specified bean name 'springUtils' for bean class [com.nano.utils.SpringUtils] conflicts with existing, non-compatible bean definition of same name and class [com.nano.common.utils.SpringUtils]
+2020-11-14 17:19:53,752 - Starting NanoEvaluationApplication on DESKTOP-660D7OS with PID 123912 (D:\code\12_Paper\MedicalLedger\target\classes started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 17:19:53,752 - The following profiles are active: dev
+2020-11-14 17:19:54,736 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 17:19:54,955 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 17:19:54,955 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 17:19:54,971 - Finished Spring Data repository scanning in 12ms. Found 0 JPA repository interfaces.
+2020-11-14 17:19:54,986 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 17:19:54,986 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 17:19:55,002 - Finished Spring Data repository scanning in 6ms. Found 0 Redis repository interfaces.
+2020-11-14 17:19:55,767 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$1aa66049] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 17:19:56,299 - Tomcat initialized with port(s): 10086 (http)
+2020-11-14 17:19:56,314 - Initializing ProtocolHandler ["http-nio-10086"]
+2020-11-14 17:19:56,314 - Starting service [Tomcat]
+2020-11-14 17:19:56,314 - Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-11-14 17:19:56,471 - Initializing Spring embedded WebApplicationContext
+2020-11-14 17:19:56,471 - Root WebApplicationContext: initialization completed in 2657 ms
+2020-11-14 17:19:57,127 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 17:19:57,174 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 17:19:57,267 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 17:19:57,408 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 17:19:57,486 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 17:19:57,533 - HikariPool-1 - Starting...
+2020-11-14 17:19:57,658 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 17:19:57,705 - HikariPool-1 - Start completed.
+2020-11-14 17:19:57,736 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 17:19:57,861 - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-11-14 17:19:58,299 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 17:19:58,299 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 17:19:58,595 - 
+
+Using generated security password: 9c6e45bb-adff-40b9-a1da-cba0d616164c
+
+2020-11-14 17:19:58,736 - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@223cbf0d, org.springframework.security.web.context.SecurityContextPersistenceFilter@1308ef19, org.springframework.security.web.header.HeaderWriterFilter@4ca970d5, org.springframework.security.web.csrf.CsrfFilter@38667005, org.springframework.security.web.authentication.logout.LogoutFilter@29f95272, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5d5574c7, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@5fc1e4fb, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@4a4ff5ed, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@1aaf46e6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6cee903a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3a4f8e8a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5ddb302, org.springframework.security.web.session.SessionManagementFilter@6a2badb1, org.springframework.security.web.access.ExceptionTranslationFilter@7c9372ed, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@fe08eaf]
+2020-11-14 17:19:58,939 - Context refreshed
+2020-11-14 17:19:58,955 - Found 1 custom documentation plugin(s)
+2020-11-14 17:19:58,986 - Scanning for api listing references
+2020-11-14 17:19:59,127 - Generating unique operation named: handleUsingGET_1
+2020-11-14 17:19:59,127 - Generating unique operation named: handleUsingGET_2
+2020-11-14 17:19:59,142 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 17:19:59,142 - Spring Data repositories initialized!
+2020-11-14 17:19:59,173 - Starting ProtocolHandler ["http-nio-10086"]
+2020-11-14 17:19:59,189 - Tomcat started on port(s): 10086 (http) with context path '/eval'
+2020-11-14 17:19:59,189 - Started NanoEvaluationApplication in 6.128 seconds (JVM running for 6.71)
+2020-11-14 17:19:59,236 - 成功开启项目...
+2020-11-14 17:20:35,448 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-11-14 17:20:35,448 - Initializing Servlet 'dispatcherServlet'
+2020-11-14 17:20:35,458 - Completed initialization in 10 ms
+2020-11-14 17:21:47,905 - Starting NanoEvaluationApplication on DESKTOP-660D7OS with PID 111072 (D:\code\12_Paper\MedicalLedger\target\classes started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 17:21:47,905 - The following profiles are active: dev
+2020-11-14 17:21:48,983 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 17:21:49,186 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 17:21:49,186 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 17:21:49,218 - Finished Spring Data repository scanning in 15ms. Found 0 JPA repository interfaces.
+2020-11-14 17:21:49,233 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 17:21:49,233 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 17:21:49,249 - Finished Spring Data repository scanning in 4ms. Found 0 Redis repository interfaces.
+2020-11-14 17:21:49,858 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$41bfd721] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 17:21:50,386 - Tomcat initialized with port(s): 10086 (http)
+2020-11-14 17:21:50,401 - Initializing ProtocolHandler ["http-nio-10086"]
+2020-11-14 17:21:50,401 - Starting service [Tomcat]
+2020-11-14 17:21:50,401 - Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-11-14 17:21:50,542 - Initializing Spring embedded WebApplicationContext
+2020-11-14 17:21:50,542 - Root WebApplicationContext: initialization completed in 2574 ms
+2020-11-14 17:21:51,151 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 17:21:51,198 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 17:21:51,276 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 17:21:51,432 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 17:21:51,511 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 17:21:51,557 - HikariPool-1 - Starting...
+2020-11-14 17:21:51,667 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 17:21:51,745 - HikariPool-1 - Start completed.
+2020-11-14 17:21:51,776 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 17:21:51,854 - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-11-14 17:21:52,307 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 17:21:52,323 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 17:21:52,667 - Context refreshed
+2020-11-14 17:21:52,682 - Found 1 custom documentation plugin(s)
+2020-11-14 17:21:52,729 - Scanning for api listing references
+2020-11-14 17:21:52,854 - Generating unique operation named: handleUsingGET_1
+2020-11-14 17:21:52,870 - Generating unique operation named: handleUsingGET_2
+2020-11-14 17:21:52,885 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 17:21:52,885 - Spring Data repositories initialized!
+2020-11-14 17:21:52,901 - Starting ProtocolHandler ["http-nio-10086"]
+2020-11-14 17:21:52,932 - Tomcat started on port(s): 10086 (http) with context path '/eval'
+2020-11-14 17:21:52,932 - Started NanoEvaluationApplication in 5.728 seconds (JVM running for 6.329)
+2020-11-14 17:21:52,979 - 成功开启项目...
+2020-11-14 17:21:56,021 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-11-14 17:21:56,022 - Initializing Servlet 'dispatcherServlet'
+2020-11-14 17:21:56,029 - Completed initialization in 7 ms
+2020-11-14 18:33:22,016 - Starting NanoEvaluationApplication on DESKTOP-660D7OS with PID 6536 (D:\code\12_Paper\MedicalLedger\target\classes started by nano in D:\code\12_Paper\MedicalLedger)
+2020-11-14 18:33:22,021 - The following profiles are active: dev
+2020-11-14 18:33:23,405 - No MyBatis mapper was found in '[com.nano]' package. Please check your configuration.
+2020-11-14 18:33:23,606 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 18:33:23,608 - Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-11-14 18:33:23,629 - Finished Spring Data repository scanning in 17ms. Found 0 JPA repository interfaces.
+2020-11-14 18:33:23,647 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-11-14 18:33:23,649 - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-11-14 18:33:23,659 - Finished Spring Data repository scanning in 4ms. Found 0 Redis repository interfaces.
+2020-11-14 18:33:24,277 - Bean 'redisConfig' of type [com.nano.redis.config.RedisConfig$$EnhancerBySpringCGLIB$$fea224ac] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-11-14 18:33:24,894 - Tomcat initialized with port(s): 10086 (http)
+2020-11-14 18:33:24,900 - Initializing ProtocolHandler ["http-nio-10086"]
+2020-11-14 18:33:24,900 - Starting service [Tomcat]
+2020-11-14 18:33:24,900 - Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-11-14 18:33:25,032 - Initializing Spring embedded WebApplicationContext
+2020-11-14 18:33:25,032 - Root WebApplicationContext: initialization completed in 2941 ms
+2020-11-14 18:33:25,625 - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-14 18:33:25,676 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-11-14 18:33:25,686 - Failed to load any test configuration from: src/test/java/org/hyperledger/fabric/sdk/testutils.properties. Using toolkit defaults
+2020-11-14 18:33:25,847 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 18:33:25,907 - HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-11-14 18:33:26,068 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-11-14 18:33:26,189 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-11-14 18:33:26,197 - HikariPool-1 - Starting...
+2020-11-14 18:33:26,360 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2020-11-14 18:33:26,401 - HikariPool-1 - Start completed.
+2020-11-14 18:33:26,440 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-11-14 18:33:26,522 - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-11-14 18:33:26,965 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-11-14 18:33:26,973 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-11-14 18:33:27,298 - Context refreshed
+2020-11-14 18:33:27,328 - Found 1 custom documentation plugin(s)
+2020-11-14 18:33:27,356 - Scanning for api listing references
+2020-11-14 18:33:27,497 - Generating unique operation named: handleUsingGET_1
+2020-11-14 18:33:27,499 - Generating unique operation named: handleUsingGET_2
+2020-11-14 18:33:27,509 - Triggering deferred initialization of Spring Data repositories…
+2020-11-14 18:33:27,509 - Spring Data repositories initialized!
+2020-11-14 18:33:27,527 - Starting ProtocolHandler ["http-nio-10086"]
+2020-11-14 18:33:27,549 - Tomcat started on port(s): 10086 (http) with context path '/eval'
+2020-11-14 18:33:27,557 - Started NanoEvaluationApplication in 6.368 seconds (JVM running for 7.055)
+2020-11-14 18:33:27,590 - 成功开启项目...
+2020-11-14 18:34:04,959 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-11-14 18:34:04,959 - Initializing Servlet 'dispatcherServlet'
+2020-11-14 18:34:04,971 - Completed initialization in 12 ms
+2020-11-14 18:34:05,088 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 18:34:05,100 - Failed to load any configuration from: config.properties. Using toolkit defaults
+2020-11-14 18:34:05,802 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVJOEhkK1NSZEQ4YTJsT3k3MS9RL2JuZzNGeHV4VnRiMQoxRnhmQ2VqMTk2RHRQR1A1OG9YckVQTy90YTFPMThrRlZsc1dNSXNOKzA2Z3Y5M3lZT29QaDJNTmE4Rk5EZ1FWCllTM3o0RnIxSXlJaGFLTjJ0aitPWEN1MFJaNGhkbUdGCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 18:34:05,804 - Could not find the file "G:\HFCSampletest.properties"
+2020-11-14 18:34:05,809 - Could not find the file "G:\HFCSampletest.properties"
+2020-11-14 18:34:06,165 - CA Name: ca0, Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRekNDQWVxZ0F3SUJBZ0lSQU0vdmFEdlBzeUlpQzlodm41bm5SOEF3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpFdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekV1WlhoaGJYQnNaUzVqYjIwd0hoY05NVGd3TWpJMU1USTBNekk1V2hjTk1qZ3dNakl6TVRJME16STUKV2pCek1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFWk1CY0dBMVVFQ2hNUWIzSm5NUzVsZUdGdGNHeGxMbU52YlRFY01Cb0dBMVVFCkF4TVRZMkV1YjNKbk1TNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUEKQkxxSTlkWDdkOU5HbzNndUw1RlA4b3RHc2lCak43QnpkNmRHL0NheUpEZmpOUkczNFlPOHQyOTl1NkVvRlh2egpwY2pBTUd1MFVLVHJ6TWZjeU91emNNeWpYekJkTUE0R0ExVWREd0VCL3dRRUF3SUJwakFQQmdOVkhTVUVDREFHCkJnUlZIU1VBTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3S1FZRFZSME9CQ0lFSUxITU5NUHkwTStBZUdqNk9ob1IKaDAwZ1FUQ0VYOWp1czIwdVdVVFhkbmNjTUFvR0NDcUdTTTQ5QkFNQ0EwY0FNRVFDSUY3V2wzQTExekVOcjFDbwpxR3l1M2g0ZkN1a2t0RlZ5Ry9XUEpVeWxWWGpJQWlCOUxqcFhtOUVSZ0pNZlpzakRJekNqOU00YVF1Vk45WExrClhueDB1b0t6N2c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIDwI9XgGar29lWsgJQ5P++7nzIIlwWWGLEJ51ykde2A1EiCqCseWTnj4fux5l9ozepRqBhlZDfRZQFOKy755TIRikhpECiBvNt5Wcruon1yTI2OEtyActT1S0GLFcfCWXRMFykliiBIgL2P8/HJvbEI5pLb0LgoTUA1JDYYS+/MKC5irpY6t25wiRAogCAVRXVLX9SAwPD64Io0XEBFzpU0AOLnlUO84CJEN/XMSINGlHg7UFotyrB8gssFv3O56azHl+2X+k0nC2fS4IJY7IkQKILXIuSKsaLPOEnzyALvLpiW5rwRrAZZGHtkGx4CDUyY3EiDTMRCTEROrAXB/ZINA+RP3FzeUgnDLxLOes+OubkOQIyJECiA0wS8aoljJ6XkaAm6viC3+OY1WhN+zlEgfckCrIeFzixIgOKoxJtgZrFma+LPjLye6/RYlejeNegmSePueBMhOctYiRAogP3UpF6MJUiwgP1WAEdcEUmA1qBzM/pnh/P4DvTClVNsSII0ME/JUvx2G/KanqXhHSdiOPO8JMvl/oT9j86NE5acMKogBCiAkGHyPPIpfZ62j37rU+vuyhyVn3GTzHxzfENb4L81d9hIg4lovQafbr+EQ8oOgJNQYJTNoxrwt03gX0KoS351tA9AaIAprAFVW8Rj/oz5qv8EgezttuHVW6CeYxhClVaUXgkv8IiCB5IQt3kHBcfaLZ0G6T07NcgX0yEcLq/SCjjIzC+OMITJECiBjX+SptFK5yiKrp6p2unJEQzicZrOl7pcjQaYCRscHxBIgNa9BFzQiJmywsmJlMcjSexW66XrrJZzTGZIGjeuiobU6RAogiyMMfc2QIHR94xmd+qIfFFeu8C0G3x/as3asLSH63YcSIEPbCHzdb/sMxS5h42sPx+bhLbJ0UzYMapdOKilxyluFQiC+JXB0Nrg+JUDkXOO30VuNa1OWTaY+uui66lvI59+s/EogS5zQNR8QLbjptQUWittI672tran5xUvtidx7QeTSjQVSIHRZz7ANrFN/racCNVLnIrCqzxKU+QGje3+AuKvFasmy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUVJOEhkK1NSZEQ4YTJsT3k3MS9RL2JuZzNGeHV4VnRiMQoxRnhmQ2VqMTk2RHRQR1A1OG9YckVQTy90YTFPMThrRlZsc1dNSXNOKzA2Z3Y5M3lZT29QaDJNTmE4Rk5EZ1FWCllTM3o0RnIxSXlJaGFLTjJ0aitPWEN1MFJaNGhkbUdGCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 18:34:06,165 - CA Version: 1.4.9
+2020-11-14 18:34:06,484 - CA Name: , Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRakNDQWVtZ0F3SUJBZ0lRQTUxUzVhVjhPRktUREVrQURhL0I0VEFLQmdncWhrak9QUVFEQWpCek1Rc3cKQ1FZRFZRUUdFd0pWVXpFVE1CRUdBMVVFQ0JNS1EyRnNhV1p2Y201cFlURVdNQlFHQTFVRUJ4TU5VMkZ1SUVaeQpZVzVqYVhOamJ6RVpNQmNHQTFVRUNoTVFiM0puTWk1bGVHRnRjR3hsTG1OdmJURWNNQm9HQTFVRUF4TVRZMkV1CmIzSm5NaTVsZUdGdGNHeGxMbU52YlRBZUZ3MHhPREF5TWpVeE1qUXpNamxhRncweU9EQXlNak14TWpRek1qbGEKTUhNeEN6QUpCZ05WQkFZVEFsVlRNUk13RVFZRFZRUUlFd3BEWVd4cFptOXlibWxoTVJZd0ZBWURWUVFIRXcxVApZVzRnUm5KaGJtTnBjMk52TVJrd0Z3WURWUVFLRXhCdmNtY3lMbVY0WVcxd2JHVXVZMjl0TVJ3d0dnWURWUVFECkV4TmpZUzV2Y21jeUxtVjRZVzF3YkdVdVkyOXRNRmt3RXdZSEtvWkl6ajBDQVFZSUtvWkl6ajBEQVFjRFFnQUUKWDcxcjVqUE5WWUwrQ3FPSDFXWlhZNmJ2ZXBReUxGUkVIdFVzT3VYRmZqbGVycEd3a1BWSk5pcERaVWlmVFJTOAppbWZqK3M2dHg1cFJKZHk4YldESVZhTmZNRjB3RGdZRFZSMFBBUUgvQkFRREFnR21NQThHQTFVZEpRUUlNQVlHCkJGVWRKUUF3RHdZRFZSMFRBUUgvQkFVd0F3RUIvekFwQmdOVkhRNEVJZ1FnZXl0MlU4UlJMV3pwVTE0NEZBWTEKOVRtOWloTUw1VXJKVDM0VEczV2c4ajR3Q2dZSUtvWkl6ajBFQXdJRFJ3QXdSQUlnY20vOEFGdms3OXBaekhCdQo3dEV6WXhwTTk5QWpIbkk3bFF1Z2F5b0QrMkFDSUQ2c2dmTk56RWdSbS81aVpBRGVMQVBpb1VpQkpVcUFJV1lxCkhLYWxkWnBiCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIKUN1bxKXUsUNOy+bfScpF2LI3sPbJ6LX0LLIlXSuLgAEiB/qs9QkyV/5tIw2YPvFbUCsXLQk1NXOQZ+RxPM6YVtoBpECiBPeZPNPzi1vI7bw5YBvJeTOdOBO0gt/ZlIsn3uV/uPIRIgSXkrGdp/DOfpPDT2nRQh+leoXzxmB7BbO6iTZF1I6LgiRAogyvToDr9W4PgKW1cEO/LoPk9Hl0R9CgUlBTBimT3qqVISICC3xNHi9Q0P/H9DebPXiqQzKhq8uK20ZFlgLLzg1dUVIkQKIKSwLtmjfeVVsYgtGxIO+TEOwqxgc0fSKW06t2ix90C3EiABoRYyojpG96USz5VSgqhwiGUwGF1yasXK4rUFPqdHtCJECiDpPEL4uY5ua8X15HClIuj5XqmlhM27PbDiPMlU67ySQBIg2UUaB2RdOKSfzDPGPmJFzp6W1ITZhU/yHrqj1JeV5/MiRAogj0GBMlvZd7laaacSt1QPl2OLPCEele8RuW/0ZjOM0rMSIBYSJHFQzcKCtfTZSnqy8jTsUxdUaNZPOEaJwTQWwIEUKogBCiDIB3FLD2NlcDCHKUj9YiuKTzfvmKiXBaQI7nK/FQzyghIgoSQL4DaPx45ZmTSM25ZMZ0lUhLud2xFGN461WmjS9/0aINp2Tn0FVlkgq1ziFEkTjqNf0TtdpmeBdKz9NSPuiOEgIiD91wH9nsr1Luq9EppzmfeigiUYnkHqF98EjHWJuUjCGTJECiBDum1pl02apBwaDJIsIkfQ/0EcDGCmnjf5/s92xsDezxIg8c0IcNQjkf8H+OaEQ++R6Bs3XizBKzgdk1YOCGG3SvU6RAogmcVXh2wtQs6ex4T6D1GPFQeb3vX5p7LxXcoc8LNsDlcSIEPtAmlOwOU0BmodnqUvJR2kgAjymC7ciQ8z9E9Z+Up/QiB/RZnDddQpHKAFKJoNBaYqz/Jos24GNAKb+hJfrlF8N0ogkdLAh3B2lSWCpzDJliL7wATU9OIvjnZ4VmzQPX8xha1SIIQ6XWpZn5NGEMPdfoKXn262cOdbyiKjTLa+4nXEc0wy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUU3Y29QZ2FxQ3NtbThBTlFNQ1VRWGFiM0ZQbEpORzBCZQpBZDBOY2M3ZEVVbnNoTkxOaWplQ0xRdjEybnN3TDFYSkp3bytMeWVDaExiNFg0THBIUTVWbU5oNlhaQXRkUEoxCm9jUjJUbVRjSVd5djlaemxKVkhNNVl5ZFVBa09yenFhCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 18:34:06,638 - CA Name: , Version: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNRakNDQWVtZ0F3SUJBZ0lRQTUxUzVhVjhPRktUREVrQURhL0I0VEFLQmdncWhrak9QUVFEQWpCek1Rc3cKQ1FZRFZRUUdFd0pWVXpFVE1CRUdBMVVFQ0JNS1EyRnNhV1p2Y201cFlURVdNQlFHQTFVRUJ4TU5VMkZ1SUVaeQpZVzVqYVhOamJ6RVpNQmNHQTFVRUNoTVFiM0puTWk1bGVHRnRjR3hsTG1OdmJURWNNQm9HQTFVRUF4TVRZMkV1CmIzSm5NaTVsZUdGdGNHeGxMbU52YlRBZUZ3MHhPREF5TWpVeE1qUXpNamxhRncweU9EQXlNak14TWpRek1qbGEKTUhNeEN6QUpCZ05WQkFZVEFsVlRNUk13RVFZRFZRUUlFd3BEWVd4cFptOXlibWxoTVJZd0ZBWURWUVFIRXcxVApZVzRnUm5KaGJtTnBjMk52TVJrd0Z3WURWUVFLRXhCdmNtY3lMbVY0WVcxd2JHVXVZMjl0TVJ3d0dnWURWUVFECkV4TmpZUzV2Y21jeUxtVjRZVzF3YkdVdVkyOXRNRmt3RXdZSEtvWkl6ajBDQVFZSUtvWkl6ajBEQVFjRFFnQUUKWDcxcjVqUE5WWUwrQ3FPSDFXWlhZNmJ2ZXBReUxGUkVIdFVzT3VYRmZqbGVycEd3a1BWSk5pcERaVWlmVFJTOAppbWZqK3M2dHg1cFJKZHk4YldESVZhTmZNRjB3RGdZRFZSMFBBUUgvQkFRREFnR21NQThHQTFVZEpRUUlNQVlHCkJGVWRKUUF3RHdZRFZSMFRBUUgvQkFVd0F3RUIvekFwQmdOVkhRNEVJZ1FnZXl0MlU4UlJMV3pwVTE0NEZBWTEKOVRtOWloTUw1VXJKVDM0VEczV2c4ajR3Q2dZSUtvWkl6ajBFQXdJRFJ3QXdSQUlnY20vOEFGdms3OXBaekhCdQo3dEV6WXhwTTk5QWpIbkk3bFF1Z2F5b0QrMkFDSUQ2c2dmTk56RWdSbS81aVpBRGVMQVBpb1VpQkpVcUFJV1lxCkhLYWxkWnBiCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K, issuerPublicKey: CgJPVQoEUm9sZQoMRW5yb2xsbWVudElEChBSZXZvY2F0aW9uSGFuZGxlEkQKIKUN1bxKXUsUNOy+bfScpF2LI3sPbJ6LX0LLIlXSuLgAEiB/qs9QkyV/5tIw2YPvFbUCsXLQk1NXOQZ+RxPM6YVtoBpECiBPeZPNPzi1vI7bw5YBvJeTOdOBO0gt/ZlIsn3uV/uPIRIgSXkrGdp/DOfpPDT2nRQh+leoXzxmB7BbO6iTZF1I6LgiRAogyvToDr9W4PgKW1cEO/LoPk9Hl0R9CgUlBTBimT3qqVISICC3xNHi9Q0P/H9DebPXiqQzKhq8uK20ZFlgLLzg1dUVIkQKIKSwLtmjfeVVsYgtGxIO+TEOwqxgc0fSKW06t2ix90C3EiABoRYyojpG96USz5VSgqhwiGUwGF1yasXK4rUFPqdHtCJECiDpPEL4uY5ua8X15HClIuj5XqmlhM27PbDiPMlU67ySQBIg2UUaB2RdOKSfzDPGPmJFzp6W1ITZhU/yHrqj1JeV5/MiRAogj0GBMlvZd7laaacSt1QPl2OLPCEele8RuW/0ZjOM0rMSIBYSJHFQzcKCtfTZSnqy8jTsUxdUaNZPOEaJwTQWwIEUKogBCiDIB3FLD2NlcDCHKUj9YiuKTzfvmKiXBaQI7nK/FQzyghIgoSQL4DaPx45ZmTSM25ZMZ0lUhLud2xFGN461WmjS9/0aINp2Tn0FVlkgq1ziFEkTjqNf0TtdpmeBdKz9NSPuiOEgIiD91wH9nsr1Luq9EppzmfeigiUYnkHqF98EjHWJuUjCGTJECiBDum1pl02apBwaDJIsIkfQ/0EcDGCmnjf5/s92xsDezxIg8c0IcNQjkf8H+OaEQ++R6Bs3XizBKzgdk1YOCGG3SvU6RAogmcVXh2wtQs6ex4T6D1GPFQeb3vX5p7LxXcoc8LNsDlcSIEPtAmlOwOU0BmodnqUvJR2kgAjymC7ciQ8z9E9Z+Up/QiB/RZnDddQpHKAFKJoNBaYqz/Jos24GNAKb+hJfrlF8N0ogkdLAh3B2lSWCpzDJliL7wATU9OIvjnZ4VmzQPX8xha1SIIQ6XWpZn5NGEMPdfoKXn262cOdbyiKjTLa+4nXEc0wy, issuerRevocationPublicKey: LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUhZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUNJRFlnQUU3Y29QZ2FxQ3NtbThBTlFNQ1VRWGFiM0ZQbEpORzBCZQpBZDBOY2M3ZEVVbnNoTkxOaWplQ0xRdjEybnN3TDFYSkp3bytMeWVDaExiNFg0THBIUTVWbU5oNlhaQXRkUEoxCm9jUjJUbVRjSVd5djlaemxKVkhNNVl5ZFVBa09yenFhCi0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQo=
+2020-11-14 18:34:06,639 - CA Version: 1.4.9
+2020-11-14 18:34:07,942 - Channel{id: 3, name: foo} joining Peer{ id: 5, name: peer0.org1.example.com, channelName: null, url: grpc://172.20.29.67:7051}.
+2020-11-14 18:34:08,152 - Peer Peer{ id: 5, name: peer0.org1.example.com, channelName: foo, url: grpc://172.20.29.67:7051} joined into channel Channel{id: 3, name: foo}
+2020-11-14 18:34:08,153 - Channel{id: 3, name: foo} joining Peer{ id: 8, name: peer1.org1.example.com, channelName: null, url: grpc://172.20.29.67:7056}.
+2020-11-14 18:34:08,318 - Peer Peer{ id: 8, name: peer1.org1.example.com, channelName: foo, url: grpc://172.20.29.67:7056} joined into channel Channel{id: 3, name: foo}
+2020-11-14 18:34:08,426 - Channel Channel{id: 3, name: foo} eventThread started shutdown: false  thread: null 
+2020-11-14 18:34:08,482 - Channel foo eventThread shutting down. shutdown: true  thread: pool-1-thread-1 
+2020-11-14 18:34:08,551 - Channel Channel{id: 16, name: foo} eventThread started shutdown: false  thread: null 
+2020-11-14 18:34:10,137 - Installing 'example_cc_go::github.com/example_cc::1' language Go chaincode from directory: 'D:\code\12_Paper\MedicalLedger\src\test\fixture\sdkintegration\gocc\sample1\src\github.com\example_cc' with source location: 'src\github.com\example_cc'. chaincodePath:'github.com/example_cc'
+2020-11-14 18:34:16,653 - Channel foo eventThread shutting down. shutdown: true  thread: pool-1-thread-1 
+2020-11-14 18:34:16,902 - Channel{id: 31, name: bar} joining Peer{ id: 33, name: peer0.org2.example.com, channelName: null, url: grpc://172.20.29.67:8051}.
+2020-11-14 18:34:17,078 - Peer Peer{ id: 33, name: peer0.org2.example.com, channelName: bar, url: grpc://172.20.29.67:8051} joined into channel Channel{id: 31, name: bar}
+2020-11-14 18:34:17,078 - Channel{id: 31, name: bar} joining Peer{ id: 36, name: peer1.org2.example.com, channelName: null, url: grpc://172.20.29.67:8056}.
+2020-11-14 18:34:17,234 - Peer Peer{ id: 36, name: peer1.org2.example.com, channelName: bar, url: grpc://172.20.29.67:8056} joined into channel Channel{id: 31, name: bar}
+2020-11-14 18:34:17,276 - Channel Channel{id: 31, name: bar} eventThread started shutdown: false  thread: null 
+2020-11-14 18:34:17,279 - Channel bar eventThread shutting down. shutdown: true  thread: pool-1-thread-1 
+2020-11-14 18:34:17,331 - Channel Channel{id: 44, name: bar} eventThread started shutdown: false  thread: null 
+2020-11-14 18:34:18,936 - Installing 'example_cc_go::github.com/example_cc::1'  Go chaincode chaincodePath:'github.com/example_cc' from input stream
