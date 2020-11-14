@@ -82,11 +82,6 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
     // 获取方法与参数
 	function, args := stub.GetFunctionAndParameters()
 
-	if function == "save" {
-		// Deletes an entity from its state
-		return t.save(stub, args)
-	}
-
 	if function == "delete" {
 		// Deletes an entity from its state
 		return t.delete(stub, args)
@@ -105,91 +100,6 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Errorf("Unknown action, check the first argument, must be one of 'delete', 'query', or 'move'. But got: %v", args[0])
 	return shim.Error(fmt.Sprintf("Unknown action, check the first argument, must be one of 'delete', 'query', or 'move'. But got: %v", args[0]))
 }
-
-
-// 保存医疗数据
-func (t *SimpleChaincode) save(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	// must be an invoke
-	var name, data string    // Entities
-	var history string       // History Data
-	var err error
-
-	if len(args) != 2 {
-		return shim.Error("Incorrect number of arguments. Expecting 3, function followed by 2 names and 1 value")
-	}
-
-	name = args[0]
-	data = args[1]
-
-	Avalbytes, err := stub.GetState(A)
-	if err != nil {
-		return shim.Error("Failed to get state")
-	}
-	if Avalbytes == nil {
-		return shim.Error("Entity not found")
-	}
-	Aval, _ = strconv.Atoi(string(Avalbytes))
-
-	Bvalbytes, err := stub.GetState(B)
-	if err != nil {
-		return shim.Error("Failed to get state")
-	}
-	if Bvalbytes == nil {
-		return shim.Error("Entity not found")
-	}
-	Bval, _ = strconv.Atoi(string(Bvalbytes))
-
-	// Perform the execution
-	X, err = strconv.Atoi(args[2])
-	if err != nil {
-		return shim.Error("Invalid transaction amount, expecting a integer value")
-	}
-	Aval = Aval - X
-	Bval = Bval + X
-	logger.Infof("Aval = %d, Bval = %d\n", Aval, Bval)
-
-	// Write the state back to the ledger
-	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-
-	err = stub.PutState(B, []byte(strconv.Itoa(Bval)))
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-
-	if transientMap, err := stub.GetTransient(); err == nil {
-		if transientData, ok := transientMap["event"]; ok {
-			stub.SetEvent("event", transientData)
-		}
-
-		rc := transientMap["rc"]
-
-		transientData := transientMap["result"]
-
-		if rc == nil {
-			return shim.Success(transientData)
-		}
-
-		vrc, err := strconv.Atoi(string(rc[:]))
-
-		if err != nil {
-			return shim.Error(err.Error())
-		}
-
-
-		logger.Infof("Status = %d \n", vrc)
-
-		return pb.Response{
-			Status:  int32(vrc),
-			Payload: transientData,
-		}
-	}
-
-	return shim.Success(nil)
-}
-
 
 func (t *SimpleChaincode) move(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	// must be an invoke
@@ -214,6 +124,7 @@ func (t *SimpleChaincode) move(stub shim.ChaincodeStubInterface, args []string) 
 	if Avalbytes == nil {
 		return shim.Error("Entity not found")
 	}
+
 	Aval, _ = strconv.Atoi(string(Avalbytes))
 
 	Bvalbytes, err := stub.GetState(B)
