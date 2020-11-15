@@ -23,10 +23,11 @@ import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.regex.Matcher;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
@@ -75,7 +76,7 @@ public class TestConfig {
 
     // location switching between fabric cryptogen and configtxgen artifacts for v1.0 and v1.1 in src/test/fixture/sdkintegration/e2e-2Orgs
     // Fabric配置版本
-    private String FAB_CONFIG_GEN_VERS = "v1.3";
+    private String fabConfigGenVers = "v1.3";
 
     // 配置的静态对象
     private static TestConfig config;
@@ -130,73 +131,81 @@ public class TestConfig {
             // 这里默认打印这一句
             logger.warn(String.format("Failed to load any test configuration from: %s. Using toolkit defaults", DEFAULT_CONFIG));
         } finally {
-
             // 初始化系统环境变量(重点配置)
             initSystemEnvironment();
 
-            // 初始化两个组织
-            Organization peerOrganization1 = new Organization("peerOrg1", "Org1MSP");
-            Organization peerOrganization2 = new Organization("peerOrg2", "Org2MSP");
-
-            peerOrganization1.addPeerLocation("peer0.org1.example.com", "grpc://172.20.29.67:7051");
-            peerOrganization1.addPeerLocation("peer1.org1.example.com", "grpc://172.20.29.67:7056");
-            peerOrganization2.addPeerLocation("peer0.org2.example.com", "grpc://172.20.29.67:8051");
-            peerOrganization2.addPeerLocation("peer1.org2.example.com", "grpc://172.20.29.67:8056");
-
-            // 设置组织域名
-            peerOrganization1.setDomainName("org1.example.com");
-            peerOrganization2.setDomainName("org2.example.com");
-
-            // 设置Orderer结点地址(注意这里只有一个地址,如果有多个地址可以像上面这样重复添加)
-            peerOrganization1.addOrdererLocation("orderer.example.com", "grpc://172.20.29.67:7050");
-            peerOrganization2.addOrdererLocation("orderer.example.com", "grpc://172.20.29.67:7050");
-
-            // 设置CA地址
-            peerOrganization1.setCALocation("http://172.20.29.67:7054");
-            peerOrganization2.setCALocation("http://172.20.29.67:8054");
-
-            // 设置CA名称
-            peerOrganization1.setCAName("ca0");
-            peerOrganization2.setCAName(null);
-
-            // 如果开启了TLS
-            if (true) {
-                // 证书路径
-                String cert1 = "src/test/fixture/sdkintegration/e2e-2Orgs/v1.3/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem";
-                String cert2 = "src/test/fixture/sdkintegration/e2e-2Orgs/v1.3/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem";
-
-                // 证书文件
-                File certFile1 = new File(cert1);
-                File certFile2 = new File(cert2);
-                // 判断证书是否存在
-                if (!certFile1.exists() || !certFile1.isFile() || !certFile2.exists() || !certFile2.isFile()) {
-                    throw new RuntimeException("TEST is missing cert file." + certFile1.getAbsolutePath() + certFile2.getAbsolutePath());
-                }
-                // 设置CA的属性
-                Properties properties1 = new Properties();
-                // 设置证书文件的绝对路径
-                properties1.setProperty("pemFile", certFile1.getAbsolutePath());
-                // testing environment only NOT FOR PRODUCTION!
-                // 仅仅是用于测试环境,不能用于生产环境!!!
-                properties1.setProperty("allowAllHostNames", "true");
-                // 将CA属性设置到组织属性里面
-                peerOrganization1.setCAProperties(properties1);
-
-                // 设置CA的属性
-                Properties properties2 = new Properties();
-                // 设置证书文件的绝对路径
-                properties2.setProperty("pemFile", certFile2.getAbsolutePath());
-                // testing environment only NOT FOR PRODUCTION!
-                // 仅仅是用于测试环境,不能用于生产环境!!!
-                properties2.setProperty("allowAllHostNames", "true");
-                // 将CA属性设置到组织属性里面
-                peerOrganization2.setCAProperties(properties2);
-            }
-            // 组织信息加入Map
-            organizationMap.put("peerOrg1", peerOrganization1);
-            organizationMap.put("peerOrg2", peerOrganization2);
+            // 初始化组织信息!!!!!!!!!!
+            initOrganizations();
         }
     }
+
+    /**
+     * 初始化组织!!!!!
+     */
+    private void initOrganizations() {
+        // 初始化两个组织
+        Organization peerOrganization1 = new Organization("peerOrg1", "Org1MSP");
+        Organization peerOrganization2 = new Organization("peerOrg2", "Org2MSP");
+
+        peerOrganization1.addPeerLocation("peer0.org1.example.com", "grpc://172.20.29.67:7051");
+        peerOrganization1.addPeerLocation("peer1.org1.example.com", "grpc://172.20.29.67:7056");
+        peerOrganization2.addPeerLocation("peer0.org2.example.com", "grpc://172.20.29.67:8051");
+        peerOrganization2.addPeerLocation("peer1.org2.example.com", "grpc://172.20.29.67:8056");
+
+        // 设置组织域名
+        peerOrganization1.setDomainName("org1.example.com");
+        peerOrganization2.setDomainName("org2.example.com");
+
+        // 设置Orderer结点地址(注意这里只有一个地址,如果有多个地址可以像上面这样重复添加)
+        peerOrganization1.addOrdererLocation("orderer.example.com", "grpc://172.20.29.67:7050");
+        peerOrganization2.addOrdererLocation("orderer.example.com", "grpc://172.20.29.67:7050");
+
+        // 设置CA地址
+        peerOrganization1.setCALocation("http://172.20.29.67:7054");
+        peerOrganization2.setCALocation("http://172.20.29.67:8054");
+
+        // 设置CA名称
+        peerOrganization1.setCAName("ca0");
+        peerOrganization2.setCAName(null);
+
+        // 如果开启了TLS
+        if (true) {
+            // 证书路径
+            String cert1 = "src/test/fixture/sdkintegration/e2e-2Orgs/v1.3/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem";
+            String cert2 = "src/test/fixture/sdkintegration/e2e-2Orgs/v1.3/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem";
+
+            // 证书文件
+            File certFile1 = new File(cert1);
+            File certFile2 = new File(cert2);
+            // 判断证书是否存在
+            if (!certFile1.exists() || !certFile1.isFile() || !certFile2.exists() || !certFile2.isFile()) {
+                throw new RuntimeException("TEST is missing cert file." + certFile1.getAbsolutePath() + certFile2.getAbsolutePath());
+            }
+            // 设置CA的属性
+            Properties properties1 = new Properties();
+            // 设置证书文件的绝对路径
+            properties1.setProperty("pemFile", certFile1.getAbsolutePath());
+            // testing environment only NOT FOR PRODUCTION!
+            // 仅仅是用于测试环境,不能用于生产环境!!!
+            properties1.setProperty("allowAllHostNames", "true");
+            // 将CA属性设置到组织属性里面
+            peerOrganization1.setCAProperties(properties1);
+
+            // 设置CA的属性
+            Properties properties2 = new Properties();
+            // 设置证书文件的绝对路径
+            properties2.setProperty("pemFile", certFile2.getAbsolutePath());
+            // testing environment only NOT FOR PRODUCTION!
+            // 仅仅是用于测试环境,不能用于生产环境!!!
+            properties2.setProperty("allowAllHostNames", "true");
+            // 将CA属性设置到组织属性里面
+            peerOrganization2.setCAProperties(properties2);
+        }
+        // 组织信息加入Map
+        organizationMap.put("peerOrg1", peerOrganization1);
+        organizationMap.put("peerOrg2", peerOrganization2);
+    }
+
 
     /**
      * 初始化配置版本(不能少!)
@@ -211,9 +220,9 @@ public class TestConfig {
         fabricVersion[1] = Integer.parseInt(fvs[1].trim());
         fabricVersion[2] = Integer.parseInt(fvs[2].trim());
         // 解析Fabric配置版本
-        FAB_CONFIG_GEN_VERS = "v" + fabricVersion[0] + "." + fabricVersion[1];
-        if (FAB_CONFIG_GEN_VERS.equalsIgnoreCase("v1.4")) {
-            FAB_CONFIG_GEN_VERS = "v1.3";
+        fabConfigGenVers = "v" + fabricVersion[0] + "." + fabricVersion[1];
+        if (fabConfigGenVers.equalsIgnoreCase("v1.4")) {
+            fabConfigGenVers = "v1.3";
         }
     }
 
@@ -225,9 +234,9 @@ public class TestConfig {
         // 调用等待时间
         defaultEnvironmentProperty(INVOKEWAITTIME, "32000");
         // 部署等待时间
-        defaultEnvironmentProperty(DEPLOYWAITTIME, "120000");
+        defaultEnvironmentProperty(DEPLOYWAITTIME, "1200000");
         // 提案等待时间
-        defaultEnvironmentProperty(PROPOSALWAITTIME, "120000");
+        defaultEnvironmentProperty(PROPOSALWAITTIME, "1200000");
         // 是否开启IDEMIXM测试
         defaultEnvironmentProperty(RUNIDEMIXMTTEST, "false");
 
@@ -275,12 +284,11 @@ public class TestConfig {
     // 获取Fabric配置版本
     // 打印出V1.3
     public String getFabricConfigGenVers() {
-        return FAB_CONFIG_GEN_VERS;
+        return fabConfigGenVers;
     }
 
     // 判断版本是否是某版本之后的
     public boolean isFabricVersionAtOrAfter(String version) {
-
         final int[] vers = parseVersion(version);
         for (int i = 0; i < 3; ++i) {
             if (vers[i] > fabricVersion[i]) {
@@ -294,7 +302,9 @@ public class TestConfig {
         return !isFabricVersionAtOrAfter(version);
     }
 
-
+    /**
+     * 解析版本
+     */
     private static int[] parseVersion(String version) {
         if (null == version || version.isEmpty()) {
             throw new AssertionError("Version is bad :" + version);
@@ -495,7 +505,7 @@ public class TestConfig {
     }
 
     public String getTestChannelPath() {
-        return "src/test/fixture/sdkintegration/e2e-2Orgs/" + FAB_CONFIG_GEN_VERS;
+        return "src/test/fixture/sdkintegration/e2e-2Orgs/" + fabConfigGenVers;
     }
 
     public boolean isRunningAgainstFabric10() {
@@ -580,8 +590,16 @@ public class TestConfig {
      * 获取组织的Map
      * @return Map
      */
-    public Map<String, Organization> getOrganization() {
+    public Map<String, Organization> getOrganizationMap() {
         return organizationMap;
+    }
+
+
+    /**
+     * 获取全部的组织信息
+     */
+    public Set<Organization> getOrganizationSet() {
+        return new HashSet<>(organizationMap.values());
     }
 
     public static void main(String[] ars) {

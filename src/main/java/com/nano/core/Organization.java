@@ -182,7 +182,6 @@ public class Organization {
     }
 
     public void setCAClient(HFCAClient caClient) {
-
         this.caClient = caClient;
     }
 

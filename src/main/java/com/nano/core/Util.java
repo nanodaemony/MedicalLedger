@@ -32,16 +32,32 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.Properties;
 
 import static java.lang.String.format;
 
-class Util {
+/**
+ * 工具类
+ * @author nano
+ */
+public class Util {
 
     /**
      * Private constructor to prevent instantiation.
      */
     private Util() {
     }
+
+
+    /**
+     * 打印出属性文件的全部属性
+     */
+    public static void listOutProperties(Properties properties) {
+        for (String pro : properties.stringPropertyNames()) {
+            System.out.println(pro + " : " + properties.getProperty(pro));
+        }
+    }
+
 
     /**
      * Generate a targz inputstream from source folder.

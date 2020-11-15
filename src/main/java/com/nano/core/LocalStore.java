@@ -52,7 +52,7 @@ import java.util.Properties;
  *
  * @author nano
  */
-public class SampleStore {
+public class LocalStore {
 
     /**
      * 属性文件路径
@@ -62,14 +62,14 @@ public class SampleStore {
     /**
      * 日志
      */
-    private final Log logger = LogFactory.getLog(SampleStore.class);
+    private final Log logger = LogFactory.getLog(LocalStore.class);
 
     /**
      * 加密套件
      */
     private CryptoSuite cryptoSuite;
 
-    public SampleStore(File file) {
+    public LocalStore(File file) {
         this.propertyFilePath = file.getAbsolutePath();
     }
 
@@ -184,7 +184,7 @@ public class SampleStore {
     public MedicalUser getUser(String name, String org, String mspId, File privateKeyFile,
                                File certificateFile) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
         try {
-            // Try to get the SampleUser state from the cache
+            // 从用户池获取缓存
             MedicalUser medicalUser = userMap.get(MedicalUser.toKeyValStoreName(name, org));
             if (null != medicalUser) {
                 return medicalUser;
@@ -192,9 +192,13 @@ public class SampleStore {
             // Create the SampleUser and try to restore it's state from the key value store (if found).
             medicalUser = new MedicalUser(name, org, this, cryptoSuite);
             medicalUser.setMspId(mspId);
+            // 设置证书
             String certificate = new String(IOUtils.toByteArray(new FileInputStream(certificateFile)), "UTF-8");
+            // 设置私钥
             PrivateKey privateKey = getPrivateKeyFromBytes(IOUtils.toByteArray(new FileInputStream(privateKeyFile)));
+            // 设置Enrollment
             medicalUser.setEnrollment(new SampleStoreEnrollement(privateKey, certificate));
+            // 持久化到存储
             medicalUser.saveState();
             return medicalUser;
         } catch (IOException | NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException | ClassCastException e) {
@@ -231,15 +235,12 @@ public class SampleStore {
         private final String certificate;
 
         SampleStoreEnrollement(PrivateKey privateKey, String certificate) {
-
             this.certificate = certificate;
-
             this.privateKey = privateKey;
         }
 
         @Override
         public PrivateKey getKey() {
-
             return privateKey;
         }
 
@@ -247,7 +248,6 @@ public class SampleStore {
         public String getCert() {
             return certificate;
         }
-
     }
 
     /**
@@ -281,7 +281,7 @@ public class SampleStore {
      * @param organization 组织
      * @param key 秘钥
      */
-    public void storeClientPEMTLSKey(Organization organization, String key) {
+    public void storeClientPemTlsKey(Organization organization, String key) {
         setValue("clientPEMTLSKey." + organization.getName(), key);
     }
 
@@ -290,7 +290,7 @@ public class SampleStore {
      *
      * @param organization 组织
      */
-    public String getClientPEMTLSKey(Organization organization) {
+    public String getClientPemTlsKey(Organization organization) {
         return getValue("clientPEMTLSKey." + organization.getName());
     }
 
@@ -301,7 +301,7 @@ public class SampleStore {
      * @param organization 组织
      * @param certificate 秘钥
      */
-    public void storeClientPEMTLCertificate(Organization organization, String certificate) {
+    public void storeClientPemTlsCertificate(Organization organization, String certificate) {
         setValue("clientPEMTLSCertificate." + organization.getName(), certificate);
     }
 
@@ -311,7 +311,7 @@ public class SampleStore {
      *
      * @param organization 组织
      */
-    public String getClientPEMTLSCertificate(Organization organization) {
+    public String getClientPemTlsCertificate(Organization organization) {
         return getValue("clientPEMTLSCertificate." + organization.getName());
     }
 

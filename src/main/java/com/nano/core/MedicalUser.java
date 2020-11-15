@@ -74,7 +74,7 @@ public class MedicalUser implements User, Serializable {
     /**
      * 存储的东西
      */
-    private transient SampleStore keyValStore;
+    private transient LocalStore keyValStore;
 
     /**
      * 秘钥保存的名称
@@ -86,7 +86,7 @@ public class MedicalUser implements User, Serializable {
      */
     private transient CryptoSuite cryptoSuite;
 
-    public MedicalUser(String name, String organization, SampleStore fs, CryptoSuite cryptoSuite) {
+    public MedicalUser(String name, String organization, LocalStore fs, CryptoSuite cryptoSuite) {
         this.name = name;
         this.cryptoSuite = cryptoSuite;
         this.keyValStore = fs;
@@ -114,7 +114,7 @@ public class MedicalUser implements User, Serializable {
     }
 
 
-    static boolean isStored(String name, String org, SampleStore fs) {
+    static boolean isStored(String name, String org, LocalStore fs) {
         return fs.hasValue(toKeyValStoreName(name, org));
     }
 

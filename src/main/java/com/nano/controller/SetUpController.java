@@ -45,8 +45,9 @@ public class SetUpController {
 
     @GetMapping("/query")
     @ApiOperation(value = "查询")
-    public CommonResult<String> qury() {
-        fabricCore.query();
+    public CommonResult<String> qury() throws Exception{
+
+        fabricCore.queryUser();
         // 进行数据处理并返回结果
         return CommonResult.success();
     }
