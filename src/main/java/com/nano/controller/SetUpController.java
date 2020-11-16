@@ -2,6 +2,7 @@ package com.nano.controller;
 
 import com.nano.common.vo.CommonResult;
 import com.nano.core.FabricCore;
+import com.nano.core.FabricCoreTestJavaChainCode;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,0 +1,13 @@
+
+1. 获取cryptogen与configtxgen等工具
+
+2. 配置crypto-config.yaml生成证书配置文件(生成公私钥与证书)
+
+3. 配置configtx.yaml文件生区块及通道配置文件(生成创世区块与通道配置区块)
+
+4.
+
+
+
+
+1. 本地的foo.tx文件必须得有!!

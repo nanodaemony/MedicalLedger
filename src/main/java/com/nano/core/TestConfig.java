@@ -612,7 +612,7 @@ public class TestConfig {
         // src/test/fixture/sdkintegration/e2e-2Orgs/v2.1
         System.out.println(config.getTestChannelPath());
         // C:\Users\nano\AppData\Local\Temp\network-config.yaml3043783252187129749-FixedUp.yaml
-        System.out.println(config.getTestNetworkConfigFileYAML());
+        //System.out.println(config.getTestNetworkConfigFileYAML());
         System.out.println(config.isRunningAgainstFabric10());
 
     }

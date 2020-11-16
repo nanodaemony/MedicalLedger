@@ -1,0 +1,213 @@
+################################################################################
+#   组织配置文件
+################################################################################
+Organizations:
+    # SampleOrg defines an MSP using the sampleconfig.  It should never be used
+    # in production but may be used as a template for other definitions
+    # 指定排序组织
+    - &OrdererOrg
+        # Order组织
+        Name: OrdererOrg
+        # MSP ID
+        ID: OrdererMSP
+
+        # 包含MSP配置的文件系统路径
+        # MSPDir is the filesystem path which contains the MSP configuration
+        MSPDir: crypto-config/ordererOrganizations/example.com/msp
+
+#        # AdminPrincipal dictates the type of principal used for an
+#                # organization's Admins policy. Today, only the values of Role.ADMIN and
+#                # Role.MEMBER are accepted, which indicates a principal of role type
+#                # ADMIN and role type MEMBER respectively.
+#        AdminPrincipal: Role.ADMIN
+
+    # 组织1
+    - &Org1
+        # 组织1名称
+        Name: Org1MSP
+
+        # MSP ID
+        ID: Org1MSP
+
+        MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+
+        # 指定锚节点
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            # 这里指定组织1Peer0为锚节点
+            - Host: peer0.org1.example.com
+              Port: 7051
+
+    # 组织2
+    - &Org2
+        # 组织2名称
+        Name: Org2MSP
+
+        # MSP ID
+        ID: Org2MSP
+
+        MSPDir: crypto-config/peerOrganizations/org2.example.com/msp
+
+        AnchorPeers:
+            # 指定锚节点为组织2Peer0
+            - Host: peer0.org2.example.com
+              Port: 8051
+
+################################################################################
+#  配置ORDERER服务
+################################################################################
+Orderer: &OrdererDefaults
+
+    # 排序类型
+    # Available types are "solo" and "kafka".
+    OrdererType: kafka
+
+    # 排序服务地址
+    Addresses:
+        - orderer0.example.com:7050
+        - orderer1.example.com:7050
+        - orderer2.example.com:7050
+
+    # 产生一个Batch的时间间隔
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 10 MB
+        PreferredMaxBytes: 512 KB
+    MaxChannels: 0
+    Kafka:
+       Brokers:
+           - kafka0:9092
+           - kafka1:9092
+           - kafka2:9092
+           - kafka3:9092
+
+    # Organizations lists the orgs participating on the orderer side of the network.
+    Organizations:
+
+################################################################################
+#
+#   APPLICATION
+#
+#   This section defines the values to encode into a config transaction or
+#   genesis block for application-related parameters.
+#
+################################################################################
+Application: &ApplicationDefaults
+
+    # Organizations lists the orgs participating on the application side of the
+    # network.
+    Organizations:
+
+
+Capabilities:
+    Channel: &ChannelCapabilities
+        V1_1: true
+
+    Orderer: &OrdererCapabilities
+        V1_1: true
+
+    Application: &ApplicationCapabilities
+        V1_1: true
+
+    application1_2: &applicationcapabilities1_2
+        v1_2: true
+
+
+Profiles:
+
+    TwoOrgsOrdererGenesis:
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+                    - *Org2
+
+    TwoOrgsChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+
+################################################################################
+#
+#   Profile for v1.1 capabilities
+#
+#   - Different configuration profiles may be encoded here to be specified
+#   as parameters to the configtxgen tool
+#  下面是以往的版本Profile
+################################################################################
+
+
+    TwoOrgsOrdererGenesis_v11:
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+                    - *Org2
+
+    TwoOrgsChannel_v11:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+            Capabilities:
+                <<: *ApplicationCapabilities
+
+################################################################################
+#
+#   Profile for v1.2 capabilities
+#
+#   - Different configuration profiles may be encoded here to be specified
+#   as parameters to the configtxgen tool
+#
+################################################################################
+
+    TwoOrgsOrdererGenesis_v12:
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+                    - *Org2
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *ApplicationCapabilities1_2
+
+    TwoOrgsChannel_v12:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+            Capabilities:
+                <<: *ApplicationCapabilities1_2

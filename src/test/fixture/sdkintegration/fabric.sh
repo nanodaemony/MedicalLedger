@@ -2,7 +2,7 @@
 #
 # simple batch script making it easier to cleanup and start a relatively fresh fabric env.
 
-# docker-compose.yaml文件不存在
+# docker-compose.yaml文件不存在(将docker-compose.yaml放到当前文件夹下)
 if [ ! -e "docker-compose.yaml" ];then
   echo "docker-compose.yaml not found."
   exit 8
@@ -19,8 +19,6 @@ function clean(){
   if [ -e "/tmp/HFCSampletest.properties" ];then
     rm -f "/tmp/HFCSampletest.properties"
   fi
-
-
   lines=`docker ps -a | grep 'dev-peer' | wc -l`
 
   if [ "$lines" -gt 0 ]; then

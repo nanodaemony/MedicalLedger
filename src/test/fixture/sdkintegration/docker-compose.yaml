@@ -69,7 +69,7 @@ services:
 #     - ORDERER_GENERAL_LOGLEVEL=error
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0   # 监听地址
       - ORDERER_GENERAL_GENESISMETHOD=file      # 创世区块文件类型
-      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/orderer.block # 创世区块位置
+      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/orderer.block # 创世区块位置(文件系统竟然没有?)
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP   # 本地MSP ID
       - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/msp/orderer/msp  # 本地MSP目录
       - ORDERER_GENERAL_TLS_ENABLED=${ORG_HYPERLEDGER_FABRIC_SDKTEST_INTEGRATIONTESTS_TLS}    # 是否开启TLS

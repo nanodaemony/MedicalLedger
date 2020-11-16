@@ -1,16 +1,8 @@
 ---
-#
-# Copyright Fujitsu Australia Software Technology, IBM Corp. All Rights Reserved.
-#
-# SPDX-License-Identifier: Apache-2.0
-#
-#
 # The network connection profile provides client applications the information about the target
 # blockchain network that are necessary for the applications to interact with it. These are all
 # knowledge that must be acquired from out-of-band sources. This file provides such a source.
-#
 name: "Network-Config-Test"
-
 #
 # Any properties with an "x-" prefix will be treated as application-specific, exactly like how naming
 # in HTTP headers or swagger properties work. The SDK will simply ignore these fields and leave
@@ -21,86 +13,84 @@ name: "Network-Config-Test"
 #
 x-type: "hlfv1"
 
-#
-# Describe what the target network is/does.
-#
+# Note
 description: "The network used in the integration tests"
 
-#
 # Schema version of the content. Used by the SDK to apply the corresponding parsing rules.
-#
+# 内容的架构版本。SDK用于应用相应的解析规则
 version: 1.0.0
 
 #
 # The client section is SDK-specific. The sample below is for the node.js SDK
+# 客户端部分是特定于SDK的,下面的示例用于节点Node.js SDK开发包
 #
 client:
   # Which organization does this application instance belong to? The value must be the name of an org
   # defined under "organizations"
+  # 此应用程序实例属于哪个组织?值必须是组织的名称
   organization: Org1
 
-  # Some SDKs support pluggable KV stores, the properties under "credentialStore"
-  # are implementation specific
+  # Some SDKs support pluggable KV stores, the properties under "credentialStore" are implementation specific
+  # 一些sdk支持可插拔的KV存储,“credentialStore”下的属性是特定于实现的
   credentialStore:
-    # [Optional]. Specific to FileKeyValueStore.js or similar implementations in other SDKs. Can be others
+    # [可选]. Specific to FileKeyValueStore.js or similar implementations in other SDKs. Can be others
     # if using an alternative impl. For instance, CouchDBKeyValueStore.js would require an object
     # here for properties like url, db name, etc.
     path: "/tmp/hfc-kvs"
-
-    # [Optional]. Specific to the CryptoSuite implementation. Software-based implementations like
-    # CryptoSuite_ECDSA_AES.js in node SDK requires a key store. PKCS#11 based implementations does
-    # not.
+    # [可选]. Specific to the CryptoSuite implementation. Software-based implementations like
+    # CryptoSuite_ECDSA_AES.js in node SDK requires a key store. PKCS#11 based implementations does not.
     cryptoStore:
       # Specific to the underlying KeyValueStore that backs the crypto key store.
       path: "/tmp/hfc-cvs"
-
-    # [Optional]. Specific to Composer environment
+    # [可选]. Specific to Composer environment
     wallet: wallet-name
 
-#
-# [Optional]. But most apps would have this section so that channel objects can be constructed
-# based on the content below. If an app is creating channels, then it likely will not need this
-# section.
-#
+# [可选]. But most apps would have this section so that channel objects can be constructed based on the content below. If an app is creating channels, then it likely will not need this section.
+# [可选]. 但大多数应用程序都会有这个部分,这样就可以根据下面的内容构建通道对象.如果不需要的话,它很可能不需要创建一个频道.
 channels:
-  # name of the channel
+  # Channel名称
   foo:
-    # Required. list of orderers designated by the application to use for transactions on this
+    # [必须]. list of orderers designated by the application to use for transactions on this
     # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
     # operational decisions to share loads from applications among the orderers.  The values must
     # be "names" of orgs defined under "organizations/peers"
+    # 排序结点域名
     orderers:
       - orderer.example.com
 
-    # Required. list of peers from participating orgs
+    # [必须]. list of peers from participating orgs
+    # 参与组织的Peers列表
     peers:
+      # peer0org1
       peer0.org1.example.com:
-        # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
+        # [可选]. will this peer be sent transaction proposals for endorsement? The peer must
         # have the chaincode installed. The app can also use this property to decide which peers
         # to send the chaincode install request. Default: true
+        # 是否是背书结点,默认为true
         endorsingPeer: true
 
-        # [Optional]. will this peer be sent query proposals? The peer must have the chaincode
+        # [可选]. will this peer be sent query proposals? The peer must have the chaincode
         # installed. The app can also use this property to decide which peers to send the
         # chaincode install request. Default: true
         chaincodeQuery: true
 
-        # [Optional]. will this peer be sent query proposals that do not require chaincodes, like
+        # [可选]. will this peer be sent query proposals that do not require chaincodes, like
         # queryBlock(), queryTransaction(), etc. Default: true
         ledgerQuery: true
 
-        # [Optional]. will this peer be the target of the SDK's listener registration? All peers can
+        # [可选]. will this peer be the target of the SDK's listener registration? All peers can
         # produce events but the app typically only needs to connect to one to listen to events.
         # Default: true
         eventSource: true
 
+      # peer0org1
       peer1.org1.example.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
-    # [Optional]. what chaincodes are expected to exist on this channel? The application can use
+    # [可选]. what Chaincodes are expected to exist on this channel? The application can use
     # this information to validate that the target peers are in the expected state by comparing
     # this list with the query results of getInstalledChaincodes() and getInstantiatedChaincodes()
     chaincodes:
