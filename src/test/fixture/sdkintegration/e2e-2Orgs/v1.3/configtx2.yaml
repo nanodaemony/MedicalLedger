@@ -1,0 +1,194 @@
+################################################################################
+# Organizations
+################################################################################
+Organizations:
+    - &OrdererOrg
+        Name: OrdererOrg
+        ID: OrdererMSP
+        MSPDir: crypto-config/ordererOrganizations/example.com/msp
+    - &Org1
+        Name: Org1MSP
+        ID: Org1MSP
+        MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+        AnchorPeers:
+            - Host: peer0.org1.example.com
+              Port: 7051
+    - &Org2
+        Name: Org2MSP
+        ID: Org2MSP
+        MSPDir: crypto-config/peerOrganizations/org2.example.com/msp
+        Anchorpeers:
+            - host: peer0.org2.example.com
+              port: 8051
+    - &Org1Idemix
+        name: idemixMSP1
+        id: idemixMSPID1
+        msptype: idemix
+        mspdir: crypto-config/peerOrganizations/org3.example.com
+
+    - &Org2Idemix
+        name: idemixMSP2
+        id: idemixMSPID2
+        msptype: idemix
+        mspdir: crypto-config/peerOrganizations/org4.example.com
+
+################################################################################
+# ORDERER
+################################################################################
+# 对应下面的Profile
+Orderer: &OrdererDefaults
+    OrdererType: solo
+    Addresses:
+        - orderer.example.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 10 MB
+        PreferredMaxBytes: 512 KB
+    MaxChannels: 0
+    Organizations:
+################################################################################
+# APPLICATION
+################################################################################
+Application: &ApplicationDefaults
+    Organizations:
+
+Capabilities:
+    Channel: &ChannelCapabilities
+        V1_1: true
+
+    Orderer: &OrdererCapabilities
+        V1_1: true
+
+    Application: &ApplicationCapabilities
+        V1_1: true
+
+    Application1_2: &ApplicationCapabilities1_2
+        V1_2: true
+
+    Application1_3: &ApplicationCapabilities1_3
+        V1_3: true
+
+################################################################################
+#   Profile
+################################################################################
+Profiles:
+
+    TwoOrgsOrdererGenesis:
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+                    - *Org2
+    TwoOrgsChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+
+################################################################################
+#   Profile for v1.1 capabilities
+################################################################################
+    TwoOrgsOrdererGenesis_v11:
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+                    - *Org2
+
+    TwoOrgsChannel_v11:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+            Capabilities:
+                <<: *ApplicationCapabilities
+
+###############################################################################
+#   Profile for v1.2 capabilities
+################################################################################
+    TwoOrgsOrdererGenesis_v12:
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+                    - *Org2
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *ApplicationCapabilities1_2
+
+    TwoOrgsChannel_v12:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+            Capabilities:
+                <<: *ApplicationCapabilities1_2
+
+################################################################################
+#   Profile for v1.3 capabilities
+################################################################################
+    TwoOrgsOrdererGenesis_v13:
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+                    - *Org2
+                    - *Org1Idemix
+                    - *Org2Idemix
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *ApplicationCapabilities1_3
+
+    TwoOrgsChannel_v13:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+                - *Org1Idemix
+                - *Org2Idemix
+            Capabilities:
+                <<: *ApplicationCapabilities1_3
+

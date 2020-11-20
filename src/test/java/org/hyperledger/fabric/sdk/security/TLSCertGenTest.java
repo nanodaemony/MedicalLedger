@@ -56,7 +56,10 @@ import org.junit.Test;
  */
 public class TLSCertGenTest {
 
-    private static List<File> files2Cleanup = new LinkedList<>();
+    /**
+     * 需要清理的文件列表
+     */
+    private static List<File> cleanUpFileList = new LinkedList<>();
 
     private static String vendor = System.getProperty("java.vendor");
 
@@ -65,9 +68,12 @@ public class TLSCertGenTest {
      */
     private static final String TLS_PROTOCOL = "TLSv1.2";
 
+    /**
+     * 清除所有的文件
+     */
     @AfterClass
     public static void cleanup() {
-        files2Cleanup.forEach(File::delete);
+        cleanUpFileList.forEach(File::delete);
     }
 
 
@@ -150,15 +156,22 @@ public class TLSCertGenTest {
         };
     }
 
+    /**
+     * 创建文件
+     *
+     * @param path 路径
+     * @param data 数据
+     */
     private static File createFile(String path, byte[] data) throws IOException {
         FileOutputStream key = new FileOutputStream(path);
         key.write(data);
         key.flush();
         key.close();
         File f = new File(path);
-        files2Cleanup.add(f);
+        cleanUpFileList.add(f);
         return f;
     }
+
 
     private static class MockEndorser extends EndorserGrpc.EndorserImplBase {
         public void processProposal(org.hyperledger.fabric.protos.peer.FabricProposal.SignedProposal request,

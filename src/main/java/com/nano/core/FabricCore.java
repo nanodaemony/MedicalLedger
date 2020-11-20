@@ -43,8 +43,6 @@ import org.hyperledger.fabric.sdk.TxReadWriteSetInfo;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.InvalidProtocolBufferRuntimeException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
-import org.hyperledger.fabric.sdk.exception.TransactionEventException;
-import org.hyperledger.fabric.sdk.security.CryptoPrimitives;
 import org.hyperledger.fabric.sdk.security.CryptoSuite;
 import org.hyperledger.fabric_ca.sdk.EnrollmentRequest;
 import org.hyperledger.fabric_ca.sdk.HFCAClient;
@@ -83,7 +81,6 @@ import static org.hyperledger.fabric.sdk.Channel.NOfEvents.createNofEvents;
 import static org.hyperledger.fabric.sdk.Channel.PeerOptions.createPeerOptions;
 import static org.hyperledger.fabric.sdk.Channel.TransactionOptions.createTransactionOptions;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -157,12 +154,12 @@ public class FabricCore {
     /**
      * 测试的TransactionId
      */
-    String testTxID = null;  // save the CC invoke TxID and use in queries
+    private String testTxID = null;  // save the CC invoke TxID and use in queries
 
     /**
      * 文件本地键值对存储
      */
-    LocalStore localStore = null;
+    private LocalStore localStore = null;
 
     /**
      * 测试组织集合
@@ -208,7 +205,7 @@ public class FabricCore {
      * 本地文件存储
      */
     // File sampleStoreFile = new File(System.getProperty("java.io.tmpdir") + "/HFCSampletest.properties");
-    File sampleStoreFile = new File("G:\\HFCSampletest.properties");
+    File localStoreFilePath = new File("G:\\HFCSampletest.properties");
 
     // 链码事件列表
     // Test list to capture chaincode events.
@@ -218,7 +215,9 @@ public class FabricCore {
     Collection<ProposalResponse> successResponseList = new LinkedList<>();
     Collection<ProposalResponse> failedResponseList = new LinkedList<>();
 
-
+    /**
+     * 链码事件监听器处理器
+     */
     String chaincodeEventListenerHandler;
 
     /**
@@ -230,11 +229,11 @@ public class FabricCore {
             initConfig();
             // 持久化不是SDK的一部分,生产环境别用SampleFile这个类,需要自己做实现!!!!!!
             // 每次都删除掉之前的存储文件
-            if (sampleStoreFile.exists()) {
-                sampleStoreFile.delete();
+            if (localStoreFilePath.exists()) {
+                localStoreFilePath.delete();
             }
             // 重新创建文件
-            localStore = new LocalStore(sampleStoreFile);
+            localStore = new LocalStore(localStoreFilePath);
             // This enrolls users with fabric ca and setups sample store to get users later.
             // enrollAndRegisterUsers(sampleStore);
             // 分别为两个组织注册用户信息(AdminUser, NormalUser, AdminPeer)
@@ -830,9 +829,11 @@ public class FabricCore {
         // 这里为false
         boolean doPeerEventing = !testConfig.isRunningAgainstFabric10() && BAR_CHANNEL_NAME.equals(channelName);
 
+
         // 只有PeerAdmin能创建通道
         MedicalUser peerAdmin = peerOrganization1.getAdminPeer();
 
+        System.out.println("======" + peerAdmin.toString());
         // 设置Fabric Client用户环境,也就是设置谁进行操作
         fabricClient.setUserContext(peerAdmin);
 

@@ -2,32 +2,19 @@
 # "OrdererOrgs" - 管理排序结点
 # ---------------------------------------------------------------------------
 OrdererOrgs:
-  # ---------------------------------------------------------------------------
-  # Orderer
-  # ---------------------------------------------------------------------------
   - Name: Orderer
     Domain: example.com
     CA:
       Country: US
       Province: California
       Locality: San Francisco
-    # ---------------------------------------------------------------------------
-    # "Specs" - See PeerOrgs below for complete description
-    # ---------------------------------------------------------------------------
     Specs:
       - Hostname: orderer0
       - Hostname: orderer1
       - Hostname: orderer2
-# ---------------------------------------------------------------------------
-# "PeerOrgs" - Definition of organizations managing peer nodes
-# ---------------------------------------------------------------------------
 PeerOrgs:
-  # ---------------------------------------------------------------------------
-  # Org1
-  # ---------------------------------------------------------------------------
   - Name: Org1
     Domain: org1.example.com
-    # EnableNodeOUs: true
     CA:
       Country: US
       Province: California
@@ -35,7 +22,6 @@ PeerOrgs:
     Template:
       Count: 5
       Specs:
-        # Start: 5
         - Hostname: peer0 # default (PeerXinQiao)
           SANS:
             - localhost
@@ -56,18 +42,10 @@ PeerOrgs:
           SANS:
             - localhost
             - 127.0.0.1
-    # ---------------------------------------------------------------------------
-    # "Users"
-    # Count: 除Admin之外的其他用户数量
-    # ---------------------------------------------------------------------------
     Users:
       Count: 1
-  # ---------------------------------------------------------------------------
-  # Org2: See "Org1" for full specification
-  # ---------------------------------------------------------------------------
   - Name: Org2
     Domain: org2.example.com
-    # EnableNodeOUs: true
     CA:
       Country: US
       Province: California

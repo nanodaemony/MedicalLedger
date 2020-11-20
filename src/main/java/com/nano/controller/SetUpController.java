@@ -2,6 +2,7 @@ package com.nano.controller;
 
 import com.nano.common.vo.CommonResult;
 import com.nano.core.FabricCore;
+import com.nano.core.FabricCoreTest4Nodes;
 import com.nano.core.FabricCoreTestJavaChainCode;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 public class SetUpController {
 
 
+//    @Autowired
+//    private FabricCore fabricCore;
+
+
     @Autowired
-    private FabricCore fabricCore;
+    private FabricCoreTest4Nodes fabricCore;
 
     /**
      * 接收平板上传的各种仪器数据并解析并存储

@@ -81,6 +81,23 @@ public class MedicalUser implements User, Serializable {
      */
     private String keyValStoreName;
 
+    @Override
+    public String toString() {
+        return "MedicalUser{" +
+                "name='" + name + '\'' +
+                ", roles=" + roles +
+                ", account='" + account + '\'' +
+                ", affiliation='" + affiliation + '\'' +
+                ", organization='" + organization + '\'' +
+                ", enrollmentSecret='" + enrollmentSecret + '\'' +
+                ", enrollment=" + enrollment +
+                ", keyValStore=" + keyValStore +
+                ", keyValStoreName='" + keyValStoreName + '\'' +
+                ", cryptoSuite=" + cryptoSuite +
+                ", mspId='" + mspId + '\'' +
+                '}';
+    }
+
     /**
      * 加密套件
      */
