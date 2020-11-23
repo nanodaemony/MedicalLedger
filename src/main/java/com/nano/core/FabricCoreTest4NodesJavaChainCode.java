@@ -15,7 +15,6 @@
 package com.nano.core;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.compress.utils.IOUtils;
 import org.bouncycastle.openssl.PEMWriter;
 import org.hyperledger.fabric.protos.ledger.rwset.kvrwset.KvRwset;
 import org.hyperledger.fabric.sdk.BlockEvent;
@@ -54,10 +53,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
@@ -76,7 +73,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import static com.nano.core.TestUtils.resetConfig;
-import static com.nano.core.TestUtils.testRemovingAddingPeersOrderers;
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hyperledger.fabric.sdk.BlockInfo.EnvelopeType.TRANSACTION_ENVELOPE;
@@ -94,7 +90,7 @@ import static org.junit.Assert.fail;
  * @author nano
  */
 @Component
-public class FabricCoreTest4Nodes {
+public class FabricCoreTest4NodesJavaChainCode {
 
     private static Logger logger = LoggerFactory.getLogger("FabricCore");
 
@@ -136,11 +132,11 @@ public class FabricCoreTest4Nodes {
     /**
      * 链码相关配置
      */
-    private static final String CHAIN_CODE_FILEPATH = "sdkintegration/gocc/sample1";
-    private static final String CHAIN_CODE_NAME = "example_cc_go";
-    private static final String CHAIN_CODE_PATH = "github.com/example_cc";
+    private static final String CHAIN_CODE_FILEPATH = "sdkintegration/javacc/sample1";
+    private static final String CHAIN_CODE_NAME = "example_cc_java";
+    private static final String CHAIN_CODE_PATH = null;
     private static final String CHAIN_CODE_VERSION = "1";
-    private static final Type CHAIN_CODE_LANG = Type.GO_LANG;
+    private static final Type CHAIN_CODE_LANG = Type.JAVA;
 
     // 静态初始化
     static {
@@ -224,9 +220,8 @@ public class FabricCoreTest4Nodes {
 
 
     public static void main(String[] args) {
-        new FabricCoreTest4Nodes().init();
+        new FabricCoreTest4NodesJavaChainCode().init();
     }
-
 
     /**
      * 初始化方法
@@ -578,7 +573,7 @@ public class FabricCoreTest4Nodes {
             // 传入上面生成的链码ID
             installProposalRequest.setChaincodeID(chaincodeId);
             // 默认从这里安装
-            if (true) {
+            if (false) {
                 // 如果是foo通道则从目录安装
                 // For GO language and serving just a single user, chaincodeSource is mostly likely the users GOPATH
                 // 对于Go语言的链码安装 TEST_FIXTURES_PATH即为文件固定目录

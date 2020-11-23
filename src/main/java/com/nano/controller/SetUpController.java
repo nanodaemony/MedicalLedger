@@ -4,6 +4,7 @@ import com.nano.common.vo.CommonResult;
 import com.nano.core.FabricCore;
 import com.nano.core.FabricCoreTest4Nodes;
 import com.nano.core.FabricCoreTestJavaChainCode;
+import com.nano.core.FabricCoreTestMedical;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ public class SetUpController {
 
 
     @Autowired
-    private FabricCoreTest4Nodes fabricCore;
+    private FabricCoreTestMedical fabricCore;
 
     /**
      * 接收平板上传的各种仪器数据并解析并存储

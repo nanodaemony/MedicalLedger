@@ -1,0 +1,51 @@
+OrdererOrgs:
+  # ---------------------------------------------------------------------------
+  # Orderer
+  # ---------------------------------------------------------------------------
+  - Name: Orderer
+    Domain: medical.com
+    CA:
+        Country: US
+        Province: California
+        Locality: San Francisco
+    Specs:
+      - Hostname: orderer0
+      - Hostname: orderer1
+      - Hostname: orderer2
+# ---------------------------------------------------------------------------
+# "Peer组织"
+# ---------------------------------------------------------------------------
+PeerOrgs:
+  # ---------------------------------------------------------------------------
+  # Org1
+  # ---------------------------------------------------------------------------
+  - Name: OrgPatient
+    Domain: orgpatient.medical.com
+    EnableNodeOUs: true
+    CA:
+        Country: US
+        Province: California
+        Locality: San Francisco
+    Specs:
+      - Hostname: peerxinqiao
+      - Hostname: peerkunyi
+      - Hostname: peerhuaxi
+    Users:
+      Count: 10
+  # ---------------------------------------------------------------------------
+  # Org2
+  # ---------------------------------------------------------------------------
+  - Name: OrgThirdParty
+    Domain: orgthirdparty.medical.com
+    EnableNodeOUs: true
+    CA:
+        Country: US
+        Province: California
+        Locality: San Francisco
+    Specs:
+      - Hostname: peerhealthcare
+      - Hostname: peermindray
+      - Hostname: peercqu
+      - Hostname: peergovernment
+    Users:
+      Count: 10

@@ -1,0 +1,36 @@
+
+#################################################################################################################
+# 初始化操作
+#################################################################################################################
+# 在Medical目录下操作
+# 生成证书与私钥
+cryptogen generate --config=./crypto-config-medical.yaml
+mv configtx-medical.yaml configtx.yaml
+mkdir channel-artifacts
+
+# 生成创世区块
+configtxgen -channelID kafka-channel -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
+
+# 生成通道mychannel.tx文件
+configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/mychannel.tx -channelID mychannel
+
+# 复制Medical文件夹下的全部内容到其他服务器的Medical文件夹
+scp -r crypto-config chaincode channel-artifacts root@172.20.29.31:/root/go/src/github.com/hyperledger/fabric-samples/medical/
+scp -r crypto-config chaincode channel-artifacts root@172.20.29.32:/root/go/src/github.com/hyperledger/fabric-samples/medical/
+scp -r crypto-config chaincode channel-artifacts root@172.20.29.33:/root/go/src/github.com/hyperledger/fabric-samples/medical/
+scp -r crypto-config chaincode channel-artifacts root@172.20.29.34:/root/go/src/github.com/hyperledger/fabric-samples/medical/
+scp -r crypto-config chaincode channel-artifacts root@172.20.29.36:/root/go/src/github.com/hyperledger/fabric-samples/medical/
+scp -r crypto-config chaincode channel-artifacts root@172.20.29.37:/root/go/src/github.com/hyperledger/fabric-samples/medical/
+
+# 注意需要修改CA的私钥(Docker-Compose文件) 下面查看私钥的文件
+ll ./crypto-config/peerOrganizations/orgpatient.medical.com/ca/
+ll ./crypto-config/peerOrganizations/orgthirdparty.medical.com/ca/
+
+# 拷贝docker-compose文件到各个服务器
+
+# 拷贝通道tx文件及证书到本地工程(直接复制到项目文件夹,不要在IDEA下复制)
+
+
+
+
+

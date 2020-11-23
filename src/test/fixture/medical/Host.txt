@@ -1,0 +1,43 @@
+
+# This is the host for the blockchain network.
+
+127.0.0.1 	localhost localhost.localmain localhost4 localhost4.localmain4
+::1 		localhost localhost.localmain localhost6 localhost6.localmain6
+
+172.20.29.30 orderer0.example.com
+172.20.29.30 peer1.org2.example.com
+172.20.29.31 orderer1.example.com
+172.20.29.31 peer0.org1.example.com
+172.20.29.31 ca0.example.com
+172.20.29.32 orderer2.example.com
+172.20.29.32 peer1.org1.example.com
+172.20.29.33 peer0.org2.example.com
+172.20.29.33 ca1.example.com
+
+172.20.29.30 peerxinqiao.orgpatient.medical.com
+172.20.29.30 orderer0.medical.com
+172.20.29.30 zookeeper0
+172.20.29.30 kafka0
+
+172.20.29.31 peerkunyi.orgpatient.medical.com
+172.20.29.31 orderer1.medical.com
+172.20.29.31 zookeeper1
+172.20.29.31 kafka1
+172.20.29.31 ca0.medical.com
+
+172.20.29.32 peerhuaxi.orgpatient.medical.com
+172.20.29.32 orderer2.medical.com
+172.20.29.32 zookeeper2
+172.20.29.32 kafka2
+
+172.20.29.33 peergovernment.orgthirdparty.medical.com
+172.20.29.33 kafka3
+172.20.29.33 ca1.medical.com
+
+172.20.29.34 peermindray.orgthirdparty.medical.com
+
+172.20.29.35 peercqu.orgthirdparty.medical.com
+
+172.20.29.36 peerhealthcare.orgthirdparty.medical.com
+
+

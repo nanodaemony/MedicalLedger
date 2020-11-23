@@ -1,0 +1,142 @@
+# Configuration of node 33.
+
+version: '2'
+
+services:
+
+  # CouchDB-government
+  couchdb-government:
+    container_name: couchdb-government
+    image: hyperledger/fabric-couchdb
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    volumes:
+      - ./data/couchdb-government_data:/opt/couchdb/data
+    ports:
+      - 5984:5984
+
+  # CA1
+  ca1.medical.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca1.medical.com
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.orgthirdparty.medical.com-cert.pem
+      # 私钥名称(需要修改!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ccc7d2e875876db89e1c447131057912d2c162242f7f27ce7f5b666b3b934bb9_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw'  # 启动命令
+    volumes:
+      - ./crypto-config/peerOrganizations/orgthirdparty.medical.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca1.medical.com
+
+
+  # Peer-Government(第三方组织)
+  peergovernment.orgthirdparty.medical.com:
+    container_name: peergovernment.orgthirdparty.medical.com
+    hostname: peergovernment.orgthirdparty.medical.com
+    image: hyperledger/fabric-peer
+    environment:
+      - CORE_PEER_ID=peergovernment.orgthirdparty.medical.com
+      - CORE_PEER_ADDRESS=peergovernment.orgthirdparty.medical.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peergovernment.orgthirdparty.medical.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peergovernment.orgthirdparty.medical.com:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peergovernment.orgthirdparty.medical.com:7052
+      - CORE_PEER_LOCALMSPID=OrgThirdPartyMSP
+
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+
+      # couchdb config
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb-government:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/orgthirdparty.medical.com/peers/peergovernment.orgthirdparty.medical.com/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/orgthirdparty.medical.com/peers/peergovernment.orgthirdparty.medical.com/tls:/etc/hyperledger/fabric/tls
+      - ./data/peergovernment_orgthirdparty_data:/var/hyperledger/production #备份peer节点数据
+    ports:
+      - 7051:7051
+      - 7052:7052
+      - 7053:7053
+    extra_hosts:
+      - "couchdb-government:172.20.29.33"
+      - "orderer0.medical.com:172.20.29.30"
+      - "orderer1.medical.com:172.20.29.31"
+      - "orderer2.medical.com:172.20.29.32"
+
+
+  cli-government:
+    container_name: cli-government
+    image: hyperledger/fabric-tools
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli-government
+      - CORE_PEER_ADDRESS=peergovernment.orgthirdparty.medical.com:8056
+      - CORE_PEER_LOCALMSPID=OrgThirdPartyMSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orgthirdparty.medical.com/peers/peergovernment.orgthirdparty.medical.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orgthirdparty.medical.com/peers/peergovernment.orgthirdparty.medical.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orgthirdparty.medical.com/peers/peergovernment.orgthirdparty.medical.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orgthirdparty.medical.com/users/Admin@orgthirdparty.medical.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./chaincode/go/:/opt/gopath/src/github.com/hyperledger/fabric/kafka/chaincode/go
+      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    extra_hosts:
+      - "orderer0.medical.com:172.20.29.30"
+      - "orderer1.medical.com:172.20.29.31"
+      - "orderer2.medical.com:172.20.29.32"
+      - "peerxinqiao.orgpatient.medical.com:172.20.29.30"
+      - "peerkunyi.orgpatient.medical.com:172.20.29.31"
+      - "peerhuaxi.orgpatient.medical.com:172.20.29.32"
+      - "peergovernment.orgthirdparty.medical.com:172.20.29.33"
+      - "peermindray.orgthirdparty.medical.com:172.20.29.34"
+      - "peercqu.orgthirdparty.medical.com:172.20.29.36"
+      - "peerhealthcare.orgthirdparty.medical.com:172.20.29.37"
+
+
+  kafka3:
+    container_name: kafka3
+    hostname: kafka3
+    image: hyperledger/fabric-kafka
+    restart: always
+    environment:
+      - KAFKA_MESSAGE_MAX_BYTES=103809024 # 99 * 1024 * 1024 B
+      - KAFKA_REPLICA_FETCH_MAX_BYTES=103809024 # 99 * 1024 * 1024 B
+      - KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE=false
+      - KAFKA_BROKER_ID=4
+      - KAFKA_MIN_INSYNC_REPLICAS=2
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=3
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
+      - KAFKA_LOG.DIRS=/opt/kafka/kafka-logs
+    volumes:
+      - ./data/kafka3/kafka-logs:/opt/kafka/kafka-logs #备份kafka、channel等信息
+    ports:
+      - 9092:9092
+    extra_hosts:
+      - "zookeeper0:172.20.29.30"
+      - "zookeeper1:172.20.29.31"
+      - "zookeeper2:172.20.29.32"
+      - "kafka0:172.20.29.30"
+      - "kafka1:172.20.29.31"
+      - "kafka2:172.20.29.32"
+      - "kafka3:172.20.29.33"

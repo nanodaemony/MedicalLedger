@@ -1,0 +1,98 @@
+# Configuration of node 36.
+
+version: '2'
+
+services:
+
+  # CouchDB-cqu
+  couchdb-cqu:
+    container_name: couchdb-cqu
+    image: hyperledger/fabric-couchdb
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    volumes:
+      - ./data/couchdb-cqu_data:/opt/couchdb/data
+    ports:
+      - 5984:5984
+
+
+  # Peer-CQU(第三方组织)
+  peercqu.orgthirdparty.medical.com:
+    container_name: peercqu.orgthirdparty.medical.com
+    hostname: peercqu.orgthirdparty.medical.com
+    image: hyperledger/fabric-peer
+    environment:
+      - CORE_PEER_ID=peercqu.orgthirdparty.medical.com
+      - CORE_PEER_ADDRESS=peercqu.orgthirdparty.medical.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peercqu.orgthirdparty.medical.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peercqu.orgthirdparty.medical.com:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peercqu.orgthirdparty.medical.com:7052
+      - CORE_PEER_LOCALMSPID=OrgThirdPartyMSP
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+
+      # couchdb config
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb-cqu:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/orgthirdparty.medical.com/peers/peercqu.orgthirdparty.medical.com/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/orgthirdparty.medical.com/peers/peercqu.orgthirdparty.medical.com/tls:/etc/hyperledger/fabric/tls
+      - ./data/peercqu_orgthirdparty_data:/var/hyperledger/production # 备份peer节点数据
+    ports:
+      - 7051:7051
+      - 7052:7052
+      - 7053:7053
+    extra_hosts:
+      - "couchdb-cqu:172.20.29.36"
+      - "orderer0.medical.com:172.20.29.30"
+      - "orderer1.medical.com:172.20.29.31"
+      - "orderer2.medical.com:172.20.29.32"
+
+  cli-cqu:
+    container_name: cli-cqu
+    image: hyperledger/fabric-tools
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli-cqu
+      - CORE_PEER_ADDRESS=peercqu.orgthirdparty.medical.com:8051
+      - CORE_PEER_LOCALMSPID=OrgThirdPartyMSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orgthirdparty.medical.com/peers/peercqu.orgthirdparty.medical.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orgthirdparty.medical.com/peers/peercqu.orgthirdparty.medical.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orgthirdparty.medical.com/peers/peercqu.orgthirdparty.medical.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orgthirdparty.medical.com/users/Admin@orgthirdparty.medical.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./chaincode/go/:/opt/gopath/src/github.com/hyperledger/fabric/kafka/chaincode/go
+      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    extra_hosts:
+      - "orderer0.medical.com:172.20.29.30"
+      - "orderer1.medical.com:172.20.29.31"
+      - "orderer2.medical.com:172.20.29.32"
+      - "peerxinqiao.orgpatient.medical.com:172.20.29.30"
+      - "peerkunyi.orgpatient.medical.com:172.20.29.31"
+      - "peerhuaxi.orgpatient.medical.com:172.20.29.32"
+      - "peergovernment.orgthirdparty.medical.com:172.20.29.33"
+      - "peermindray.orgthirdparty.medical.com:172.20.29.34"
+      - "peercqu.orgthirdparty.medical.com:172.20.29.36"
+      - "peerhealthcare.orgthirdparty.medical.com:172.20.29.37"
+
+

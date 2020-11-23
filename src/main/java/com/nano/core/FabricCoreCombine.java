@@ -15,7 +15,6 @@
 package com.nano.core;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.compress.utils.IOUtils;
 import org.bouncycastle.openssl.PEMWriter;
 import org.hyperledger.fabric.protos.ledger.rwset.kvrwset.KvRwset;
 import org.hyperledger.fabric.sdk.BlockEvent;
@@ -54,10 +53,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
@@ -76,7 +73,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import static com.nano.core.TestUtils.resetConfig;
-import static com.nano.core.TestUtils.testRemovingAddingPeersOrderers;
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hyperledger.fabric.sdk.BlockInfo.EnvelopeType.TRANSACTION_ENVELOPE;
@@ -94,14 +90,14 @@ import static org.junit.Assert.fail;
  * @author nano
  */
 @Component
-public class FabricCoreTest4Nodes {
+public class FabricCoreCombine {
 
     private static Logger logger = LoggerFactory.getLogger("FabricCore");
 
     /**
      * 测试配置
      */
-    private static final TestConfig4Nodes testConfig = TestConfig4Nodes.getConfig();
+    private static final TestConfigCombine testConfig = TestConfigCombine.getConfig();
 
     /**
      * 测试Admin名称
@@ -126,7 +122,7 @@ public class FabricCoreTest4Nodes {
     /**
      * 部署延迟时间
      */
-    private static final int DEPLOYWAITTIME = testConfig.getDeployWaitTime();
+    private static final int DEPLOYWAITTIME = CoreConfig.DEPLOY_WAIT_TIME;
 
     private static final byte[] EXPECTED_EVENT_DATA = "!".getBytes(UTF_8);
     private static final String EXPECTED_EVENT_NAME = "event";
@@ -224,7 +220,7 @@ public class FabricCoreTest4Nodes {
 
 
     public static void main(String[] args) {
-        new FabricCoreTest4Nodes().init();
+        new FabricCoreCombine().init();
     }
 
 
@@ -255,7 +251,6 @@ public class FabricCoreTest4Nodes {
             logger.info("创建Fabric代理对象");
             fabricClient = HFClient.createNewInstance();
             logger.info("创建Fabric代理对象完成");
-
             // 设置加密套件
             fabricClient.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
 
@@ -430,7 +425,7 @@ public class FabricCoreTest4Nodes {
         transactionProposalRequest.setChaincodeLanguage(CHAIN_CODE_LANG);
         //transactionProposalRequest.setFcn("invoke");
         transactionProposalRequest.setFcn("move");
-        transactionProposalRequest.setProposalWaitTime(testConfig.getProposalWaitTime());
+        transactionProposalRequest.setProposalWaitTime(CoreConfig.PROPOSAL_WAIT_TIME);
         // 设置参数
         transactionProposalRequest.setArgs("a", "b", "100");
         // 母鸡在干啥
@@ -541,7 +536,7 @@ public class FabricCoreTest4Nodes {
         logger.info("Sending chaincode transaction(move a,b,100) to orderer.");
 
         // 将交易发送出去
-        BlockEvent.TransactionEvent transactionEvent = myChannel.sendTransaction(successResponseList).get(testConfig.getTransactionWaitTime(), TimeUnit.SECONDS);
+        BlockEvent.TransactionEvent transactionEvent = myChannel.sendTransaction(successResponseList).get(CoreConfig.PROPOSAL_WAIT_TIME, TimeUnit.SECONDS);
 
         // 记录一下ID,方便后面的查询
         testTxID = transactionEvent.getTransactionID();
@@ -659,8 +654,6 @@ public class FabricCoreTest4Nodes {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
 
@@ -857,7 +850,6 @@ public class FabricCoreTest4Nodes {
         try {
             // 创建Foo通道(完成网络中通道的创建与结点的加入)(仅使用了组织1创建?)
             logger.info("准备创建MyChannel");
-
             // 只有PeerAdmin能创建通道
             MedicalUser peerAdmin = peerOrganization1.getAdminPeer();
 
@@ -1106,10 +1098,10 @@ public class FabricCoreTest4Nodes {
             // 获取组织的Admin结点
             MedicalUser peerOrgAdmin = localStore.getUser(organizationName + "Admin", organizationName, organization.getMSPID(),
                     // src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\peerOrganizations\org1.example.com\\users\Admin@org1.example.com\msp\keystore\581fa072e48dc2a516f664df94ea687447c071f89fc0b783b147956a08929dcc_sk
-                    Util.findFileSk(Paths.get(testConfig.getTestChannelPath(), "crypto-config/peerOrganizations/",
+                    Util.findFileSk(Paths.get(CoreConfig.CHANNEL_PATH, "crypto-config/peerOrganizations/",
                             organizationDomainName, format("/users/Admin@%s/msp/keystore", organizationDomainName)).toFile()),
                     // src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\peerOrganizations\org1.example.com\\users\Admin@org1.example.com\msp\signcerts\Admin@org1.example.com-cert.pem
-                    Paths.get(testConfig.getTestChannelPath(), "crypto-config/peerOrganizations/", organizationDomainName,
+                    Paths.get(CoreConfig.CHANNEL_PATH, "crypto-config/peerOrganizations/", organizationDomainName,
                             format("/users/Admin@%s/msp/signcerts/Admin@%s-cert.pem", organizationDomainName, organizationDomainName)).toFile());
             // A special user that can create channels, join peers and install chaincode
             // 创建当前组织的Admin结点

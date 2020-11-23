@@ -23,7 +23,4 @@ public class NanoEvaluationApplication {
 		log.info("成功开启项目...");
 	}
 
-
-
-
 }
