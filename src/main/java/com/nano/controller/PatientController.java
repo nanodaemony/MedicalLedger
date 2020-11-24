@@ -1,12 +1,7 @@
 package com.nano.controller;
 
 import com.nano.common.vo.CommonResult;
-import com.nano.core.FabricCore;
-import com.nano.core.FabricCoreTest4Nodes;
-import com.nano.core.FabricCoreTestJavaChainCode;
-import com.nano.core.FabricCoreTestMedical;
 import com.nano.core.FabricCoreTestMedicalThirdParty;
-import com.nano.core.FabricCoreTestMedicalTwoChannels;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +21,13 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @Slf4j
-@Api(tags = "SetUpController", description = "网络搭建控制器")
-@RequestMapping("/setup")
-public class SetUpController {
+@Api(tags = "PatientController", description = "网络搭建控制器")
+@RequestMapping("/PatientController")
+public class PatientController {
+
+
+//    @Autowired
+//    private FabricCore fabricCore;
 
 
     @Autowired

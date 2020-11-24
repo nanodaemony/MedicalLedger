@@ -90,7 +90,7 @@ import static org.junit.Assert.fail;
  * @author nano
  */
 @Component
-public class FabricCoreTestMedicalTwoChannels {
+public class FabricCoreTestMedicalThirdParty {
 
     private static Logger logger = LoggerFactory.getLogger("FabricCore");
 
@@ -117,7 +117,7 @@ public class FabricCoreTestMedicalTwoChannels {
     /**
      * 两个通道名称
      */
-    private static final String MY_CHANNEL_NAME = "mychannel";
+    private static final String MY_CHANNEL_NAME = "channelthirdparty";
 
     /**
      * 部署延迟时间
@@ -177,13 +177,7 @@ public class FabricCoreTestMedicalTwoChannels {
     /**
      * Foo通道对象
      */
-    public Channel myChannel;
-
-
-    /**
-     * Foo通道对象
-     */
-    public Channel patientChannel;
+    public Channel channelThirdParty;
 
     /**
      * 链码ID对象
@@ -208,7 +202,6 @@ public class FabricCoreTestMedicalTwoChannels {
     /**
      * 本地文件存储
      */
-    // File sampleStoreFile = new File(System.getProperty("java.io.tmpdir") + "/HFCSampletest.properties");
     File localStoreFilePath = new File("G:\\HFCSampletest.properties");
 
     // 链码事件列表
@@ -226,7 +219,7 @@ public class FabricCoreTestMedicalTwoChannels {
 
 
     public static void main(String[] args) {
-        new FabricCoreTestMedicalTwoChannels().init();
+        new FabricCoreTestMedicalThirdParty().init();
     }
 
     /**
@@ -261,12 +254,10 @@ public class FabricCoreTestMedicalTwoChannels {
             fabricClient.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
 
             // 构造FooChannel
-            myChannel = buildChannel("mychannel");
-
-            patientChannel = buildPatientChannel("patientchannel");
+            channelThirdParty = buildChannel("channelthirdparty");
 
             // 将创建好的通道对象存入本地
-            localStore.saveChannel(myChannel);
+            localStore.saveChannel(channelThirdParty);
 
             // 下面的代码只是测试一下Peer结点与Orderer结点能否被添加与移除
             // The following is just a test to see if peers and orderers can be added and removed.
@@ -275,7 +266,7 @@ public class FabricCoreTestMedicalTwoChannels {
 
             // Register a chaincode event listener that will trigger for any chaincode id and only for EXPECTED_EVENT_NAME event.
             // 注册一个链码事件监听器
-            String chaincodeEventListenerHandler = myChannel.registerChaincodeEventListener(
+            String chaincodeEventListenerHandler = channelThirdParty.registerChaincodeEventListener(
                     Pattern.compile(".*"),
                     // 期待的事件: EXPECTED_EVENT_NAME = "event"
                     Pattern.compile(Pattern.quote(EXPECTED_EVENT_NAME)),
@@ -295,14 +286,12 @@ public class FabricCoreTestMedicalTwoChannels {
             initChainCodeId();
 
             // 安装链码
-            installChaincodeMychannel();
-            installChaincodePatientChannel();
+            installChaincodePatient();
 
             Thread.sleep(3000);
 
             // 实例化链码
-            instantiateChaincodeMyChannel();
-            instantiateChaincodePatientChannel();
+            instantiateChaincode();
 
             Thread.sleep(3000);
 
@@ -310,8 +299,7 @@ public class FabricCoreTestMedicalTwoChannels {
             transferMoney();
 
             // 进行查询
-            queryUserMyChannel();
-            queryUserPatientChannel();
+            queryUser();
 
             // 查询账本信息
             queryLedgerInfo();
@@ -321,7 +309,7 @@ public class FabricCoreTestMedicalTwoChannels {
             logger.info("You finished the init method.");
 
         } catch (Exception e) {
-            print("Caught an exception running channel %s", myChannel.getName());
+            print("Caught an exception running channel %s", channelThirdParty.getName());
             e.printStackTrace();
             fail("Test failed with error : " + e.getMessage());
         }
@@ -331,9 +319,9 @@ public class FabricCoreTestMedicalTwoChannels {
     /**
      * 查询区块信息
      */
-    private void queryLedgerInfo() throws Exception {
+    private void queryLedgerInfo() throws Exception{
         // 获取通道名称
-        final String channelName = myChannel.getName();
+        final String channelName = channelThirdParty.getName();
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         // 通道信息查询
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -345,7 +333,7 @@ public class FabricCoreTestMedicalTwoChannels {
         // out("Using peer %s for channel queries", queryPeer.getName());
 
         // 查询区块链信息
-        BlockchainInfo channelInfo = myChannel.queryBlockchainInfo();
+        BlockchainInfo channelInfo = channelThirdParty.queryBlockchainInfo();
         // 通道(账本)名称
         print("Channel info for : " + channelName);
         // 区块链高度
@@ -359,7 +347,7 @@ public class FabricCoreTestMedicalTwoChannels {
 
         // 通过区块编号查询
         // Query by block number. Should return latest block, i.e. block number 2
-        BlockInfo returnedBlock = myChannel.queryBlockByNumber(channelInfo.getHeight() - 1);
+        BlockInfo returnedBlock = channelThirdParty.queryBlockByNumber(channelInfo.getHeight() - 1);
         String previousHash = Hex.encodeHexString(returnedBlock.getPreviousHash());
         print("queryBlockByNumber returned correct block with blockNumber " + returnedBlock.getBlockNumber()
                 + " \n previous_hash " + previousHash);
@@ -369,27 +357,27 @@ public class FabricCoreTestMedicalTwoChannels {
         // Query by block hash. Using latest block's previous hash so should return block number 1
         // 通过区块Hash查询
         byte[] hashQuery = returnedBlock.getPreviousHash();
-        returnedBlock = myChannel.queryBlockByHash(hashQuery);
+        returnedBlock = channelThirdParty.queryBlockByHash(hashQuery);
         print("queryBlockByHash returned block with blockNumber " + returnedBlock.getBlockNumber());
         assertEquals(channelInfo.getHeight() - 2, returnedBlock.getBlockNumber());
 
         // Query block by TxID. Since it's the last TxID, should be block 2
         // 通过交易Id查询区块
-        returnedBlock = myChannel.queryBlockByTransactionID(testTxID);
+        returnedBlock = channelThirdParty.queryBlockByTransactionID(testTxID);
         print("queryBlockByTxID returned block with blockNumber " + returnedBlock.getBlockNumber());
         assertEquals(channelInfo.getHeight() - 1, returnedBlock.getBlockNumber());
 
         // query transaction by ID
         // 通过交易ID查询交易
-        TransactionInfo txInfo = myChannel.queryTransactionByID(testTxID);
+        TransactionInfo txInfo = channelThirdParty.queryTransactionByID(testTxID);
         print("QueryTransactionByID returned TransactionInfo: txID " + txInfo.getTransactionID()
                 + "\n validation code " + txInfo.getValidationCode().getNumber());
 
         if (chaincodeEventListenerHandler != null) {
             // 取消注册链码事件监听器
-            myChannel.unregisterChaincodeEventListener(chaincodeEventListenerHandler);
+            channelThirdParty.unregisterChaincodeEventListener(chaincodeEventListenerHandler);
             // Should be two. One event in chaincode and two notification for each of the two event hubs
-            final int numberEventsExpected = myChannel.getEventHubs().size() + myChannel.getPeers(EnumSet.of(PeerRole.EVENT_SOURCE)).size();
+            final int numberEventsExpected = channelThirdParty.getEventHubs().size() + channelThirdParty.getPeers(EnumSet.of(PeerRole.EVENT_SOURCE)).size();
             // just make sure we get the notifications.
             for (int i = 15; i > 0; --i) {
                 if (chaincodeEventList.size() == numberEventsExpected) {
@@ -411,10 +399,7 @@ public class FabricCoreTestMedicalTwoChannels {
                 // 获取区块事件
                 BlockEvent blockEvent = chaincodeEventCapture.blockEvent;
                 assertEquals(channelName, blockEvent.getChannelId());
-                // assertTrue(channel.getEventHubs().contains(blockEvent.getEventHub()));
             }
-        } else {
-            //assertTrue(chaincodeEventList.isEmpty());
         }
 
     }
@@ -470,7 +455,7 @@ public class FabricCoreTestMedicalTwoChannels {
 
         // Collection<ProposalResponse> transactionPropResp = channel.sendTransactionProposalToEndorsers(transactionProposalRequest);
         // 往所有的Peer结点发送交易并得到响应
-        Collection<ProposalResponse> transactionResponse = myChannel.sendTransactionProposal(transactionProposalRequest, myChannel.getPeers());
+        Collection<ProposalResponse> transactionResponse = channelThirdParty.sendTransactionProposal(transactionProposalRequest, channelThirdParty.getPeers());
         // 康康结果是否OK
         for (ProposalResponse response : transactionResponse) {
             if (response.getStatus() == ProposalResponse.Status.SUCCESS) {
@@ -549,7 +534,7 @@ public class FabricCoreTestMedicalTwoChannels {
         logger.info("Sending chaincode transaction(move a,b,100) to orderer.");
 
         // 将交易发送出去
-        BlockEvent.TransactionEvent transactionEvent = myChannel.sendTransaction(successResponseList).get(32000, TimeUnit.SECONDS);
+        BlockEvent.TransactionEvent transactionEvent = channelThirdParty.sendTransaction(successResponseList).get(32000, TimeUnit.SECONDS);
 
         // 记录一下ID,方便后面的查询
         testTxID = transactionEvent.getTransactionID();
@@ -560,144 +545,16 @@ public class FabricCoreTestMedicalTwoChannels {
     /**
      * 安装链码
      */
-    private void installChaincodeMychannel() {
+    private void installChaincodePatient() {
 
         logger.info("开始安装链码.");
 
         try {
             // 判断当前链码是否已经被安装了
-            for (String chainCodeName : myChannel.getDiscoveredChaincodeNames()) {
+            for (String chainCodeName : channelThirdParty.getDiscoveredChaincodeNames()) {
                 // 如果已经安装了链码
                 if (CHAIN_CODE_NAME.equals(chainCodeName)) {
-                    logger.info("The chaincode " + CHAIN_CODE_NAME + " is already installed.");
-                    return;
-                }
-            }
-            // 到这里说明需要安装链码,下面构造链码安装的提案请求
-            // 设置当前客户端的操作人为Admin Peer结点
-            logger.info("当前组织1安装链码");
-            logger.info("当前操作的用户:" + peerOrganizationPatient.getAdminPeer().toString());
-            logger.info("创建安装链码的Proposal1.");
-            fabricClient = getFabricClient(peerOrganizationPatient.getAdminPeer());
-            // 构造链码安装请求
-            InstallProposalRequest installProposalRequestPatient = fabricClient.newInstallProposalRequest();
-            // 传入上面生成的链码ID
-            installProposalRequestPatient.setChaincodeID(chaincodeId);
-            installProposalRequestPatient.setChaincodeSourceLocation(Paths.get(TEST_FIXTURES_PATH, CHAIN_CODE_FILEPATH).toFile());
-            // 这里设置索引配置文件的路径
-            installProposalRequestPatient.setChaincodeMetaInfLocation(new File("src/test/fixture/meta-infs/end2endit"));
-            // 设置链码版本
-            installProposalRequestPatient.setChaincodeVersion(CHAIN_CODE_VERSION);
-            // 设置链码语言
-            installProposalRequestPatient.setChaincodeLanguage(CHAIN_CODE_LANG);
-
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // 提交链码安装请求并分析结果
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // only a client from the same org as the peer can issue an install request
-            int numInstallProposal = 0;
-            // Set<String> orgs = orgPeers.keySet();
-            // for (SampleOrg org : testSampleOrgs) {
-            // 获取通道中的全部Peer结点
-            Collection<Peer> peers = myChannel.getPeers();
-            Collection<Peer> orgPatientPeers = new HashSet<>();
-            Collection<Peer> orgThirdPartyPeers = new HashSet<>();
-            for (Peer peer : peers) {
-                logger.info("当前通道的Peer:" + peer.getName());
-                // 将Peer归类
-                if (peer.getName().contains("orgthirdparty")) {
-                    orgThirdPartyPeers.add(peer);
-                } else {
-                    orgPatientPeers.add(peer);
-                }
-            }
-            logger.info("Patient发送链码安装Proposal.");
-            // 发送链码安装请求并得到响应(先发送Patient组织的)
-            Collection<ProposalResponse> patientResponse = fabricClient.sendInstallProposal(installProposalRequestPatient, orgPatientPeers);
-            for (ProposalResponse response : patientResponse) {
-                // 安装成功
-                if (response.getStatus() == ProposalResponse.Status.SUCCESS) {
-                    logger.info("成功收到链码安装提案: " + response.getTransactionID() + " " + response.getPeer().getName());
-                    successResponseList.add(response);
-                } else {
-                    logger.info("失败收到链码安装提案: " + response.getTransactionID() + " " + response.getPeer().getName());
-                    failedResponseList.add(response);
-                }
-            }
-
-            // 切换为组织2的Admin
-            logger.info("当前操作的用户:" + peerOrganizationThirdParty.getAdminPeer().toString());
-            fabricClient = getFabricClient(peerOrganizationThirdParty.getAdminPeer());
-            // 构造链码安装请求
-            InstallProposalRequest installProposalRequestThirdParty = fabricClient.newInstallProposalRequest();
-            // 传入上面生成的链码ID
-            installProposalRequestThirdParty.setChaincodeID(chaincodeId);
-            // 默认从这里安装
-            // 如果是foo通道则从目录安装
-            // For GO language and serving just a single user, chaincodeSource is mostly likely the users GOPATH
-            // 对于Go语言的链码安装 TEST_FIXTURES_PATH即为文件固定目录
-            installProposalRequestThirdParty.setChaincodeSourceLocation(Paths.get(TEST_FIXTURES_PATH, CHAIN_CODE_FILEPATH).toFile());
-            // 这里设置索引配置文件的路径
-            installProposalRequestThirdParty.setChaincodeMetaInfLocation(new File("src/test/fixture/meta-infs/end2endit"));
-            // 设置链码版本
-            installProposalRequestThirdParty.setChaincodeVersion(CHAIN_CODE_VERSION);
-            // 设置链码语言
-            installProposalRequestThirdParty.setChaincodeLanguage(CHAIN_CODE_LANG);
-
-            logger.info("ThirdParty发送链码安装Proposal.");
-            Collection<ProposalResponse> thirdPartyResponse = fabricClient.sendInstallProposal(installProposalRequestThirdParty, orgThirdPartyPeers);
-
-            for (ProposalResponse response : thirdPartyResponse) {
-                // 安装成功
-                if (response.getStatus() == ProposalResponse.Status.SUCCESS) {
-                    // print("Successful install proposal response Txid: %s from peer %s", response.getTransactionID(), response.getPeer().getName());
-                    logger.info("成功收到链码安装提案: " + response.getTransactionID() + " " + response.getPeer().getName());
-                    successResponseList.add(response);
-                } else {
-                    failedResponseList.add(response);
-                }
-            }
-
-            logger.info("收集两个组织的响应Response.");
-            responseList.addAll(patientResponse);
-            responseList.addAll(thirdPartyResponse);
-
-            logger.info("发送链码安装Proposal完成并分析响应.");
-            // 看看响应
-            for (ProposalResponse response : responseList) {
-                // 安装成功
-                if (response.getStatus() == ProposalResponse.Status.SUCCESS) {
-                    print("Successful install proposal response Txid: %s from peer %s", response.getTransactionID(), response.getPeer().getName());
-                    successResponseList.add(response);
-                } else {
-                    failedResponseList.add(response);
-                }
-            }
-            // }
-            print("Received %d install proposal responses. 成功 + 验证个数: %d . 失败个数: %d", numInstallProposal, successResponseList.size(), failedResponseList.size());
-            // 如果有失败的情况
-            if (failedResponseList.size() > 0) {
-                ProposalResponse first = failedResponseList.iterator().next();
-                fail("Not enough endorsers for install :" + successResponseList.size() + ".  " + first.getMessage());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    private void installChaincodePatientChannel() {
-        logger.info("开始安装PatientChannel的链码.");
-        successResponseList.clear();
-        failedResponseList.clear();
-        responseList.clear();
-        try {
-            // 判断当前链码是否已经被安装了
-            for (String chainCodeName : patientChannel.getDiscoveredChaincodeNames()) {
-                // 如果已经安装了链码
-                if (CHAIN_CODE_NAME.equals(chainCodeName)) {
-                    logger.info("The chaincode " + CHAIN_CODE_NAME + " is already installed.");
+                    logger.info("The chaincode " + CHAIN_CODE_NAME +" is already installed.");
                     return;
                 }
             }
@@ -755,7 +612,7 @@ public class FabricCoreTestMedicalTwoChannels {
             // Set<String> orgs = orgPeers.keySet();
             // for (SampleOrg org : testSampleOrgs) {
             // 获取通道中的全部Peer结点
-            Collection<Peer> peers = patientChannel.getPeers();
+            Collection<Peer> peers = channelThirdParty.getPeers();
             Collection<Peer> orgPatientPeers = new HashSet<>();
             Collection<Peer> orgThirdPartyPeers = new HashSet<>();
             for (Peer peer : peers) {
@@ -875,13 +732,15 @@ public class FabricCoreTestMedicalTwoChannels {
 
     }
 
+
     /**
      * 实例化链码
      */
-    private void instantiateChaincodeMyChannel() throws Exception {
+    private void instantiateChaincode() throws Exception{
         logger.info("\n\n\n");
         logger.info("**************************************************************************");
         logger.info("准备实例化链码");
+
         logger.info("Sending 链码实例化请求 to all peers with arguments: a and b set to 100 and %s respectively");
         // 清除响应结果记录
         successResponseList.clear();
@@ -889,7 +748,7 @@ public class FabricCoreTestMedicalTwoChannels {
 
         Collection<Peer> patientPeers = new HashSet<>();
         Collection<Peer> thirdPartyPeers = new HashSet<>();
-        for (Peer peer : myChannel.getPeers()) {
+        for (Peer peer : channelThirdParty.getPeers()) {
             if (peer.getName().contains("orgthirdparty")) {
                 thirdPartyPeers.add(peer);
             } else {
@@ -898,7 +757,7 @@ public class FabricCoreTestMedicalTwoChannels {
         }
 
         logger.info("使用发送实例化请求: " + peerOrganizationPatient.getAdminPeer().getName());
-        fabricClient = getFabricClient(peerOrganizationPatient.getAdminPeer());
+        fabricClient.setUserContext(peerOrganizationPatient.getAdminPeer());
         // 构造实例化链码请求
         InstantiateProposalRequest instantiateProposalRequestPatient = fabricClient.newInstantiationProposalRequest();
         // 设置链码实例化属性
@@ -908,7 +767,7 @@ public class FabricCoreTestMedicalTwoChannels {
         // 指定实例化的init方法
         instantiateProposalRequestPatient.setFcn("init");
         // 设置实例化的参数(这里设置每个用户初始有多少钱)
-        instantiateProposalRequestPatient.setArgs("a", "500", "b", "200");
+        instantiateProposalRequestPatient.setArgs("a", "500", "b", "" + (200 + delta));
         // 母鸡在干啥
         Map<String, byte[]> tm = new HashMap<>();
         tm.put("HyperLedgerFabric", "InstantiateProposalRequest:JavaSDK".getBytes(UTF_8));
@@ -921,8 +780,7 @@ public class FabricCoreTestMedicalTwoChannels {
         instantiateProposalRequestPatient.setChaincodeEndorsementPolicy(endorsementPolicy);
 
         logger.info("使用Patient发送实例化请求.");
-        Collection<ProposalResponse> patientResponse = myChannel.sendInstantiationProposal(instantiateProposalRequestPatient, patientPeers);
-        int failCounter = 0;
+        Collection<ProposalResponse> patientResponse = channelThirdParty.sendInstantiationProposal(instantiateProposalRequestPatient, patientPeers);
         // 分析实例化提案的响应结果
         for (ProposalResponse response : patientResponse) {
             if (response.isVerified() && response.getStatus() == ProposalResponse.Status.SUCCESS) {
@@ -930,13 +788,13 @@ public class FabricCoreTestMedicalTwoChannels {
                 logger.info("成功实例化链码, response TxId: %s from peer %s" + response.getTransactionID() + "  " + response.getPeer().getName());
             } else {
                 logger.info("失败实例化链码, response TxId: %s from peer %s" + response.getTransactionID() + "  " + response.getPeer().getName());
-                failCounter++;
+                failedResponseList.add(response);
             }
         }
 
 
         logger.info("使用ThirdParty发送实例化请求: " + peerOrganizationThirdParty.getAdminPeer().getName());
-        fabricClient = getFabricClient(peerOrganizationThirdParty.getAdminPeer());
+        fabricClient.setUserContext(peerOrganizationThirdParty.getAdminPeer());
         // 构造实例化链码请求
         InstantiateProposalRequest instantiateProposalRequestThirdParty = fabricClient.newInstantiationProposalRequest();
         // 设置链码实例化属性
@@ -946,7 +804,7 @@ public class FabricCoreTestMedicalTwoChannels {
         // 指定实例化的init方法
         instantiateProposalRequestThirdParty.setFcn("init");
         // 设置实例化的参数(这里设置每个用户初始有多少钱)
-        instantiateProposalRequestThirdParty.setArgs("a", "500", "b", "200");
+        instantiateProposalRequestThirdParty.setArgs("a", "500", "b", "" + (200 + delta));
         // 母鸡在干啥
         Map<String, byte[]> tm2 = new HashMap<>();
         tm2.put("HyperLedgerFabric", "InstantiateProposalRequest:JavaSDK".getBytes(UTF_8));
@@ -959,7 +817,7 @@ public class FabricCoreTestMedicalTwoChannels {
         endorsementPolicyThirdParty.fromYamlFile(new File("src/test/fixture/sdkintegration/chaincodeendorsementpolicy-medical.yaml"));
         instantiateProposalRequestThirdParty.setChaincodeEndorsementPolicy(endorsementPolicyThirdParty);
 
-        Collection<ProposalResponse> thirdPartyResponse = myChannel.sendInstantiationProposal(instantiateProposalRequestThirdParty, thirdPartyPeers);
+        Collection<ProposalResponse> thirdPartyResponse = channelThirdParty.sendInstantiationProposal(instantiateProposalRequestThirdParty, thirdPartyPeers);
 
         // 分析实例化提案的响应结果
         for (ProposalResponse response : thirdPartyResponse) {
@@ -969,7 +827,7 @@ public class FabricCoreTestMedicalTwoChannels {
                 //print("成功实例化链码, response TxId: %s from peer %s", response.getTransactionID(), response.getPeer().getName());
             } else {
                 logger.info("失败实例化链码, response TxId: %s from peer %s" + response.getTransactionID() + "  " + response.getPeer().getName());
-                failCounter++;
+                failedResponseList.add(response);
             }
         }
 
@@ -980,21 +838,34 @@ public class FabricCoreTestMedicalTwoChannels {
         logger.info("实例化Successful + verified: " + successResponseList.size());
         logger.info("实例化Failed: " + failedResponseList.size());
         // 实例化失败
-        if (failCounter > 0) {
-            throw new RuntimeException("实例化链码失败.");
+        if (failedResponseList.size() > 0) {
+            for (ProposalResponse fail : failedResponseList) {
+                print("Not enough endorsers for instantiate: " + successResponseList.size() + " endorser failed with " + fail.getMessage() + ", on peer " + fail.getPeer());
+            }
+            ProposalResponse first = failedResponseList.iterator().next();
+            // 这里抛出异常
+            fail("Not enough endorsers for instantiate :" + successResponseList.size() + "endorser failed with " + first.getMessage() + ". Was verified:" + first.isVerified());
         }
+
+        // 下面将实例化成功的交易发送给Orderer
+        print("Sending 实例化交易 to orderer with a and b set to 100 and %s respectively", "" + (200 + delta));
+
+        // Specify what events should complete the interest in this transaction. This is the default
+        // for all to complete. It's possible to specify many different combinations like
+        // any from a group, all from one group and just one from another or even None(NOfEvents.createNoEvents).
+        // See. Channel.NOfEvents
         // 这里设置提交交易时感兴趣的事件
         Channel.NOfEvents nOfEvents = createNofEvents();
-        if (!myChannel.getPeers(EnumSet.of(PeerRole.EVENT_SOURCE)).isEmpty()) {
-            nOfEvents.addPeers(myChannel.getPeers(EnumSet.of(PeerRole.EVENT_SOURCE)));
+        if (!channelThirdParty.getPeers(EnumSet.of(PeerRole.EVENT_SOURCE)).isEmpty()) {
+            nOfEvents.addPeers(channelThirdParty.getPeers(EnumSet.of(PeerRole.EVENT_SOURCE)));
         }
-        if (!myChannel.getEventHubs().isEmpty()) {
-            nOfEvents.addEventHubs(myChannel.getEventHubs());
+        if (!channelThirdParty.getEventHubs().isEmpty()) {
+            nOfEvents.addEventHubs(channelThirdParty.getEventHubs());
         }
         logger.info("准备发送实例化成功的交易提案.");
-        CompletableFuture<BlockEvent.TransactionEvent> futurePatient = myChannel.sendTransaction(
+        CompletableFuture<BlockEvent.TransactionEvent> futurePatient = channelThirdParty.sendTransaction(
                 // 包含上面的成功响应结果集
-                patientResponse, myChannel.getOrderers());
+                patientResponse, channelThirdParty.getOrderers());
         // 从发送交易中获取交易事件
         BlockEvent.TransactionEvent transactionEventPatient = futurePatient.get();
         // 交易事件必须是合法的
@@ -1009,137 +880,9 @@ public class FabricCoreTestMedicalTwoChannels {
 
 
     /**
-     * 实例化链码
-     */
-    private void instantiateChaincodePatientChannel() throws Exception {
-        logger.info("\n\n\n");
-        logger.info("**************************************************************************");
-        logger.info("准备实例化链码At Patient Channel.");
-
-        logger.info("Sending 链码实例化请求 to all peers with arguments: a and b set to 100 and %s respectively");
-        // 清除响应结果记录
-        successResponseList.clear();
-        failedResponseList.clear();
-
-        Collection<Peer> patientPeers = new HashSet<>();
-        Collection<Peer> thirdPartyPeers = new HashSet<>();
-        for (Peer peer : patientChannel.getPeers()) {
-            if (peer.getName().contains("orgthirdparty")) {
-                thirdPartyPeers.add(peer);
-            } else {
-                patientPeers.add(peer);
-            }
-        }
-        logger.info("使用发送实例化请求: " + peerOrganizationPatient.getAdminPeer().getName());
-        fabricClient = getFabricClient(peerOrganizationPatient.getAdminPeer());
-        // 构造实例化链码请求
-        InstantiateProposalRequest instantiateProposalRequestPatient = fabricClient.newInstantiationProposalRequest();
-        // 设置链码实例化属性
-        instantiateProposalRequestPatient.setProposalWaitTime(DEPLOYWAITTIME);
-        instantiateProposalRequestPatient.setChaincodeID(chaincodeId);
-        instantiateProposalRequestPatient.setChaincodeLanguage(CHAIN_CODE_LANG);
-        // 指定实例化的init方法
-        instantiateProposalRequestPatient.setFcn("init");
-        // 设置实例化的参数(这里设置每个用户初始有多少钱)
-        instantiateProposalRequestPatient.setArgs("a", "500", "b", "200");
-        // 母鸡在干啥
-        Map<String, byte[]> tm = new HashMap<>();
-        tm.put("HyperLedgerFabric", "InstantiateProposalRequest:JavaSDK".getBytes(UTF_8));
-        tm.put("method", "InstantiateProposalRequest".getBytes(UTF_8));
-        instantiateProposalRequestPatient.setTransientMap(tm);
-        // 这里指定背书策略！！！！构造链码背书对象
-        ChaincodeEndorsementPolicy endorsementPolicy = new ChaincodeEndorsementPolicy();
-        // 从YAML文件读取背书策略(!!!!!!!!!!!!)
-        endorsementPolicy.fromYamlFile(new File("src/test/fixture/sdkintegration/chaincodeendorsementpolicy-medical.yaml"));
-        instantiateProposalRequestPatient.setChaincodeEndorsementPolicy(endorsementPolicy);
-
-        logger.info("使用Patient发送实例化请求.");
-        Collection<ProposalResponse> patientResponse = patientChannel.sendInstantiationProposal(instantiateProposalRequestPatient, patientPeers);
-        int failCounter = 0;
-        // 分析实例化提案的响应结果
-        for (ProposalResponse response : patientResponse) {
-            if (response.isVerified() && response.getStatus() == ProposalResponse.Status.SUCCESS) {
-                logger.info("成功实例化链码, response TxId: %s from peer %s" + response.getTransactionID() + "  " + response.getPeer().getName());
-            } else {
-                logger.info("失败实例化链码, response TxId: %s from peer %s" + response.getTransactionID() + "  " + response.getPeer().getName());
-                failCounter++;
-            }
-        }
-
-
-        logger.info("使用ThirdParty发送实例化请求: " + peerOrganizationThirdParty.getAdminPeer().getName());
-        fabricClient = getFabricClient(peerOrganizationThirdParty.getAdminPeer());
-        // 构造实例化链码请求
-        InstantiateProposalRequest instantiateProposalRequestThirdParty = fabricClient.newInstantiationProposalRequest();
-        // 设置链码实例化属性
-        instantiateProposalRequestThirdParty.setProposalWaitTime(DEPLOYWAITTIME);
-        instantiateProposalRequestThirdParty.setChaincodeID(chaincodeId);
-        instantiateProposalRequestThirdParty.setChaincodeLanguage(CHAIN_CODE_LANG);
-        // 指定实例化的init方法
-        instantiateProposalRequestThirdParty.setFcn("init");
-        // 设置实例化的参数(这里设置每个用户初始有多少钱)
-        instantiateProposalRequestThirdParty.setArgs("a", "500", "b", "200");
-        // 母鸡在干啥
-        Map<String, byte[]> tm2 = new HashMap<>();
-        tm2.put("HyperLedgerFabric", "InstantiateProposalRequest:JavaSDK".getBytes(UTF_8));
-        tm2.put("method", "InstantiateProposalRequest".getBytes(UTF_8));
-        instantiateProposalRequestThirdParty.setTransientMap(tm2);
-
-        // 这里指定背书策略！！！！构造链码背书对象
-        ChaincodeEndorsementPolicy endorsementPolicyThirdParty = new ChaincodeEndorsementPolicy();
-        // 从YAML文件读取背书策略(!!!!!!!!!!!!)
-        endorsementPolicyThirdParty.fromYamlFile(new File("src/test/fixture/sdkintegration/chaincodeendorsementpolicy-medical.yaml"));
-        instantiateProposalRequestThirdParty.setChaincodeEndorsementPolicy(endorsementPolicyThirdParty);
-
-        Collection<ProposalResponse> thirdPartyResponse = patientChannel.sendInstantiationProposal(instantiateProposalRequestThirdParty, thirdPartyPeers);
-
-        // 分析实例化提案的响应结果
-        for (ProposalResponse response : thirdPartyResponse) {
-            if (response.isVerified() && response.getStatus() == ProposalResponse.Status.SUCCESS) {
-                logger.info("成功实例化链码, response TxId: %s from peer %s" + response.getTransactionID() + "  " + response.getPeer().getName());
-                //print("成功实例化链码, response TxId: %s from peer %s", response.getTransactionID(), response.getPeer().getName());
-            } else {
-                logger.info("失败实例化链码, response TxId: %s from peer %s" + response.getTransactionID() + "  " + response.getPeer().getName());
-                failCounter++;
-            }
-        }
-
-        responseList.addAll(patientResponse);
-        responseList.addAll(thirdPartyResponse);
-
-        // 实例化失败
-        if (failCounter > 0) {
-            throw new RuntimeException("实例化链码失败.");
-        }
-
-        // 这里设置提交交易时感兴趣的事件
-        Channel.NOfEvents nOfEvents = createNofEvents();
-        if (!patientChannel.getPeers(EnumSet.of(PeerRole.EVENT_SOURCE)).isEmpty()) {
-            nOfEvents.addPeers(patientChannel.getPeers(EnumSet.of(PeerRole.EVENT_SOURCE)));
-        }
-        if (!patientChannel.getEventHubs().isEmpty()) {
-            nOfEvents.addEventHubs(myChannel.getEventHubs());
-        }
-        logger.info("准备发送实例化成功的交易提案.");
-        CompletableFuture<BlockEvent.TransactionEvent> futurePatient = patientChannel.sendTransaction(
-                // 包含上面的成功响应结果集
-                patientResponse, patientChannel.getOrderers());
-        // 从发送交易中获取交易事件
-        BlockEvent.TransactionEvent transactionEventPatient = futurePatient.get();
-        // 交易事件必须是合法的
-        assertTrue(transactionEventPatient.isValid());
-        // 交易事件必须有签名
-        assertNotNull(transactionEventPatient.getSignature());
-        // 从交易事件获取区块事件
-        BlockEvent blockEventPatient = transactionEventPatient.getBlockEvent();
-        // 保证能够获取区块
-        assertNotNull(blockEventPatient.getBlock());
-    }
-
-    /**
      * 查询方法
      */
-    public void queryUserMyChannel() throws Exception {
+    public void queryUser() throws Exception{
         //////////////////////////////////////////////////////////////////////////////////////////////
         // 发送查询提案给所有Peer结点
         //////////////////////////////////////////////////////////////////////////////////////////////
@@ -1160,48 +903,7 @@ public class FabricCoreTestMedicalTwoChannels {
         queryByChaincodeRequest.setTransientMap(tm2);
 
         // 发送查询请求并获取响应结果
-        Collection<ProposalResponse> queryResponses = myChannel.queryByChaincode(queryByChaincodeRequest, myChannel.getPeers());
-        // 分析响应结果
-        for (ProposalResponse proposalResponse : queryResponses) {
-            if (!proposalResponse.isVerified() || proposalResponse.getStatus() != ProposalResponse.Status.SUCCESS) {
-                fail("Failed query proposal from peer " + proposalResponse.getPeer().getName() + " status: " + proposalResponse.getStatus() +
-                        ". Messages: " + proposalResponse.getMessage() + ". Was verified : " + proposalResponse.isVerified());
-            } else {
-                // 查询成功,获取返回的数据
-                String payload = proposalResponse.getProposalResponse().getResponse().getPayload().toStringUtf8();
-                logger.info(proposalResponse.getTransactionID());
-                logger.info(proposalResponse.getMessage());
-                logger.info("Payload is :" + payload);
-            }
-        }
-    }
-
-
-    /**
-     * 查询方法
-     */
-    public void queryUserPatientChannel() throws Exception {
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        // 发送查询提案给所有Peer结点
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        String expect = "" + (300 + delta);
-        logger.info("Now query chaincode for the value of b.");
-        // 构造查询请求
-        QueryByChaincodeRequest queryByChaincodeRequest = fabricClient.newQueryProposalRequest();
-        // 设置参数
-        queryByChaincodeRequest.setArgs("b");
-        // 设置调用方法
-        queryByChaincodeRequest.setFcn("query");
-        // 设置链码Id
-        queryByChaincodeRequest.setChaincodeID(chaincodeId);
-        // 不知道在干啥
-        Map<String, byte[]> tm2 = new HashMap<>();
-        tm2.put("HyperLedgerFabric", "QueryByChaincodeRequest:JavaSDK".getBytes(UTF_8));
-        tm2.put("method", "QueryByChaincodeRequest".getBytes(UTF_8));
-        queryByChaincodeRequest.setTransientMap(tm2);
-
-        // 发送查询请求并获取响应结果
-        Collection<ProposalResponse> queryResponses = patientChannel.queryByChaincode(queryByChaincodeRequest, patientChannel.getPeers());
+        Collection<ProposalResponse> queryResponses = channelThirdParty.queryByChaincode(queryByChaincodeRequest, channelThirdParty.getPeers());
         // 分析响应结果
         for (ProposalResponse proposalResponse : queryResponses) {
             if (!proposalResponse.isVerified() || proposalResponse.getStatus() != ProposalResponse.Status.SUCCESS) {
@@ -1223,6 +925,7 @@ public class FabricCoreTestMedicalTwoChannels {
      */
     public void initConfig() {
         try {
+
             // configHelper.clearConfig();
             // assertEquals(256, Config.getConfig().getSecurityLevel());
             resetConfig();
@@ -1268,32 +971,6 @@ public class FabricCoreTestMedicalTwoChannels {
         }
     }
 
-
-    public HFClient getFabricClient() {
-        try {
-            logger.info("创建Fabric代理对象");
-            HFClient fabricClient = HFClient.createNewInstance();
-            fabricClient.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
-            logger.info("创建Fabric代理对象完成");
-            return fabricClient;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    public HFClient getFabricClient(MedicalUser user) {
-        try {
-            fabricClient.setUserContext(user);
-            return fabricClient;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
     /**
      * 构造通道
      */
@@ -1302,14 +979,15 @@ public class FabricCoreTestMedicalTwoChannels {
             // 创建Foo通道(完成网络中通道的创建与结点的加入)(仅使用了组织1创建?)
             logger.info("准备创建MyChannel");
             // 只有PeerAdmin能创建通道
-            MedicalUser peerAdminPatient = peerOrganizationPatient.getAdminPeer();
+            MedicalUser peerAdmin = peerOrganizationPatient.getAdminPeer();
             MedicalUser peerAdminThird = peerOrganizationThirdParty.getAdminPeer();
-            logger.info("PeerAdmin用户信息:" + peerAdminPatient.toString());
+            logger.info("PeerAdmin用户信息:" + peerAdmin.toString());
             // 设置Fabric Client用户环境,也就是设置谁进行操作
-            fabricClient = getFabricClient(peerAdminPatient);
+            fabricClient.setUserContext(peerAdmin);
 
             // Orderer结点
             Collection<Orderer> ordererCollection = new LinkedList<>();
+
             // 获取这个组织全部Orderer结点名称
             for (String orderName : peerOrganizationPatient.getOrdererNames()) {
                 // 获取Orderer的属性
@@ -1333,184 +1011,30 @@ public class FabricCoreTestMedicalTwoChannels {
                 ordererCollection.add(orderer);
             }
 
+
+
             // 仅取集合中第一个Orderer创建通道
             Orderer anOrderer = ordererCollection.iterator().next();
             // 从集合中移除选中的这个Orderer
             ordererCollection.remove(anOrderer);
             // tx文件路径
-            String path = "src/test/fixture/sdkintegration/e2e-2Orgs/v1.333/mychannel.tx";
+            String path = "src/test/fixture/sdkintegration/e2e-2Orgs/v1.333/channelthirdparty.tx";
             // 通过tx文件对Channel进行配置
             ChannelConfiguration channelConfiguration = new ChannelConfiguration(new File(path));
 
             // 使用peerAdmin进行签名
             logger.info("使用peerAdmin进行签名");
-            byte[] signature = fabricClient.getChannelConfigurationSignature(channelConfiguration, peerAdminPatient);
+            byte[] signature = fabricClient.getChannelConfigurationSignature(channelConfiguration, peerAdmin);
             // Create channel that has only one signer that is this orgs peer admin. If channel creation policy needed more signature they would need to be added too.
             // 通过PeerAdmin创建channel
             logger.info("开始创建Channel: " + channelName);
             Channel newChannel = fabricClient.newChannel(channelName, anOrderer, channelConfiguration, signature);
             logger.info("完成创建Channel: " + channelName);
+
 
             // 这里决定哪些Peer加入通道?
             // 获取组织的全部Peer结点
             logger.info("组织1加入Channel");
-            for (String peerName : peerOrganizationPatient.getPeerNames()) {
-                // 获取Peer的地址
-                String peerLocation = peerOrganizationPatient.getPeerLocation(peerName);
-                // 获取Peer结点的配置属性
-                Properties peerProperties = testConfig.getPeerProperties(peerName);
-                if (peerProperties == null) {
-                    peerProperties = new Properties();
-                }
-                // 打印一下属性
-                for (String property : peerProperties.stringPropertyNames()) {
-                    logger.info(peerName + "属性: " + property, peerProperties.getProperty(property));
-                }
-
-                // Example of setting specific options on grpc's NettyChannelBuilder
-                // 添加额外的属性
-                peerProperties.put("grpc.NettyChannelBuilderOption.maxInboundMessageSize", 9000000);
-
-                logger.info("构造Peer对象:" + peerName);
-                // 逐一构造Peer结点对象
-                Peer peer = fabricClient.newPeer(peerName, peerLocation, peerProperties);
-                logger.info("完成构造Peer对象:" + peerName);
-                // 如果版本大于等于1.3
-                logger.info("当前Peer加入Channel:" + peerName);
-                // 将当前Peer结点加入Channel中
-                newChannel.joinPeer(peer, createPeerOptions()
-                        // 默认拥有全部角色(四种角色)
-                        .setPeerRoles(EnumSet.of(PeerRole.ENDORSING_PEER, PeerRole.LEDGER_QUERY, PeerRole.CHAINCODE_QUERY, PeerRole.EVENT_SOURCE)));
-                logger.info("Peer " + peerName + " joined channel " + channelName);
-            }
-
-            logger.info("组织2加入Channel");
-            fabricClient = getFabricClient(peerAdminThird);
-            for (String peerName : peerOrganizationThirdParty.getPeerNames()) {
-                // 获取Peer的地址
-                String peerLocation = peerOrganizationThirdParty.getPeerLocation(peerName);
-                // 获取Peer结点的配置属性
-                Properties peerProperties = testConfig.getPeerProperties(peerName);
-                if (peerProperties == null) {
-                    peerProperties = new Properties();
-                }
-                // 打印一下属性
-                for (String property : peerProperties.stringPropertyNames()) {
-                    logger.info(peerName + "属性: " + property, peerProperties.getProperty(property));
-                }
-
-                // Example of setting specific options on grpc's NettyChannelBuilder
-                // 添加额外的属性
-                peerProperties.put("grpc.NettyChannelBuilderOption.maxInboundMessageSize", 9000000);
-
-                logger.info("构造Peer对象:" + peerName);
-                // 逐一构造Peer结点对象
-                Peer peer = fabricClient.newPeer(peerName, peerLocation, peerProperties);
-                logger.info("完成构造Peer对象:" + peerName);
-                logger.info("当前Peer加入Channel:" + peerName);
-                // 将当前Peer结点加入Channel中
-                newChannel.joinPeer(peer, createPeerOptions()
-                        // 默认拥有全部角色(四种角色)
-                        .setPeerRoles(EnumSet.of(PeerRole.ENDORSING_PEER, PeerRole.LEDGER_QUERY, PeerRole.CHAINCODE_QUERY, PeerRole.EVENT_SOURCE)));
-                logger.info("Peer " + peerName + " joined channel " + channelName);
-            }
-
-            // 这里尝试加入Org2的结果失败了
-
-            logger.info("全部Peer结点加入通道.");
-
-            // add remaining orderers if any.
-            // 将剩下的Order结点加入通道
-            for (Orderer orderer : ordererCollection) {
-                newChannel.addOrderer(orderer);
-            }
-
-            // 获取事件Hub的名称
-            for (String eventHubName : peerOrganizationPatient.getEventHubNames()) {
-                // 获取Peer结点配置信息
-                final Properties eventHubProperties = testConfig.getEventHubProperties(eventHubName);
-                eventHubProperties.put("grpc.NettyChannelBuilderOption.keepAliveTime", new Object[]{5L, TimeUnit.MINUTES});
-                eventHubProperties.put("grpc.NettyChannelBuilderOption.keepAliveTimeout", new Object[]{8L, TimeUnit.SECONDS});
-                EventHub eventHub = fabricClient.newEventHub(eventHubName, peerOrganizationPatient.getEventHubLocation(eventHubName),
-                        eventHubProperties);
-                // 将EventHub加入通道中
-                newChannel.addEventHub(eventHub);
-            }
-            logger.info("初始化通道." + channelName);
-            // 初始化通道
-            newChannel.initialize();
-            logger.info("完成通道初始化." + channelName);
-            return newChannel;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    /**
-     * 构造通道
-     */
-    private Channel buildPatientChannel(String channelName) {
-        try {
-            // 创建Foo通道(完成网络中通道的创建与结点的加入)(仅使用了组织1创建?)
-            logger.info("准备创建:" + channelName);
-            // 只有PeerAdmin能创建通道
-            MedicalUser peerAdminPatient = peerOrganizationPatient.getAdminPeer();
-            MedicalUser peerAdminThirdParty = peerOrganizationThirdParty.getAdminPeer();
-            logger.info("PeerAdmin用户信息:" + peerAdminPatient.toString());
-            // 设置Fabric Client用户环境,也就是设置谁进行操作
-            fabricClient = getFabricClient(peerAdminPatient);
-
-            // Orderer结点
-            Collection<Orderer> ordererCollection = new LinkedList<>();
-
-            // 获取全部Orderer结点名称
-            for (String orderName : peerOrganizationPatient.getOrdererNames()) {
-                // 获取Orderer的属性
-                Properties ordererProperties = testConfig.getOrdererProperties(orderName);
-                for (String pro : ordererProperties.stringPropertyNames()) {
-                    logger.info(orderName + "属性: " + pro + ": " + ordererProperties.getProperty(pro));
-                }
-                ordererProperties.put("grpc.NettyChannelBuilderOption.keepAliveTime", new Object[]{5L, TimeUnit.MINUTES});
-                ordererProperties.put("grpc.NettyChannelBuilderOption.keepAliveTimeout", new Object[]{8L, TimeUnit.SECONDS});
-                // 没有调用也会KeepAlive
-                ordererProperties.put("grpc.NettyChannelBuilderOption.keepAliveWithoutCalls", new Object[]{true});
-
-                // 构造Orderer对象
-                // orderName = "orderer.example.com"
-                // Location = "grpc://172.20.29.67:7050"
-                // Property: {clientCertFile=D:\code\12_Paper\fabric-sdk-java\src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\ordererOrganizations\example.com\\users\Admin@example.com\tls\client.crt, sslProvider=openSSL, negotiationType=TLS, hostnameOverride=orderer.example.com, grpc.NettyChannelBuilderOption.keepAliveTime=[Ljava.lang.Object;@60f00693, grpc.NettyChannelBuilderOption.keepAliveTimeout=[Ljava.lang.Object;@79207381, grpc.NettyChannelBuilderOption.keepAliveWithoutCalls=[Ljava.lang.Object;@491b9b8, pemFile=D:\code\12_Paper\fabric-sdk-java\src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\ordererOrganizations\example.com\orderers\orderer.example.com\tls\server.crt, clientKeyFile=D:\code\12_Paper\fabric-sdk-java\src\test\fixture\sdkintegration\e2e-2Orgs\v1.3\crypto-config\ordererOrganizations\example.com\\users\Admin@example.com\tls\client.key}
-                logger.info("创建Orderer结点对象: " + orderName);
-                Orderer orderer = fabricClient.newOrderer(orderName, peerOrganizationPatient.getOrdererLocation(orderName), ordererProperties);
-                logger.info("创建Orderer结点对象完成: " + orderName);
-                // 将Orderer对象加入集合
-                ordererCollection.add(orderer);
-            }
-
-
-            // 仅取集合中第一个Orderer创建通道
-            Orderer anOrderer = ordererCollection.iterator().next();
-            // 从集合中移除选中的这个Orderer
-            ordererCollection.remove(anOrderer);
-            // tx文件路径
-            String path = "src/test/fixture/sdkintegration/e2e-2Orgs/v1.333/patientchannel.tx";
-            // 通过tx文件对Channel进行配置
-            ChannelConfiguration channelConfiguration = new ChannelConfiguration(new File(path));
-
-            // 使用peerAdmin进行签名
-            logger.info("使用peerAdmin进行签名");
-            byte[] signature = fabricClient.getChannelConfigurationSignature(channelConfiguration, peerAdminPatient);
-            // Create channel that has only one signer that is this orgs peer admin. If channel creation policy needed more signature they would need to be added too.
-            // 通过PeerAdmin创建channel
-            logger.info("开始创建Channel: " + channelName);
-            Channel newChannel = fabricClient.newChannel(channelName, anOrderer, channelConfiguration, signature);
-            logger.info("完成创建Channel: " + channelName);
-
-
-            // 这里决定哪些Peer加入通道?
-            // 获取组织的全部Peer结点
-            logger.info("组织Patient加入Channel");
             for (String peerName : peerOrganizationPatient.getPeerNames()) {
                 // 获取Peer的地址
                 String peerLocation = peerOrganizationPatient.getPeerLocation(peerName);
@@ -1544,42 +1068,40 @@ public class FabricCoreTestMedicalTwoChannels {
                 logger.info("Peer " + peerName + " joined channel " + channelName);
             }
 
-            logger.info("组织ThirdParty加入Channel");
-            fabricClient = getFabricClient(peerAdminThirdParty);
+            logger.info("组织2加入Channel");
+            fabricClient.setUserContext(peerAdminThird);
             for (String peerName : peerOrganizationThirdParty.getPeerNames()) {
-                // 这里仅将Government加入
-                if (peerName.contains("government")) {
-                    // 获取Peer的地址
-                    String peerLocation = peerOrganizationThirdParty.getPeerLocation(peerName);
-                    // 获取Peer结点的配置属性
-                    Properties peerProperties = testConfig.getPeerProperties(peerName);
-                    if (peerProperties == null) {
-                        peerProperties = new Properties();
-                    }
-                    // 打印一下属性
-                    for (String property : peerProperties.stringPropertyNames()) {
-                        logger.info(peerName + "属性: " + property, peerProperties.getProperty(property));
-                    }
-                    // Example of setting specific options on grpc's NettyChannelBuilder
-                    // 添加额外的属性
-                    peerProperties.put("grpc.NettyChannelBuilderOption.maxInboundMessageSize", 9000000);
-
-                    logger.info("构造Peer对象:" + peerName);
-                    // 逐一构造Peer结点对象
-                    Peer peer = fabricClient.newPeer(peerName, peerLocation, peerProperties);
-                    logger.info("完成构造Peer对象:" + peerName);
-                    // 如果版本大于等于1.3
-                    if (testConfig.isFabricVersionAtOrAfter("1.3")) {
-                        logger.info("当前Peer加入Channel:" + peerName);
-                        // 将当前Peer结点加入Channel中
-                        newChannel.joinPeer(peer, createPeerOptions()
-                                // 默认拥有全部角色(四种角色)
-                                .setPeerRoles(EnumSet.of(PeerRole.ENDORSING_PEER, PeerRole.LEDGER_QUERY, PeerRole.CHAINCODE_QUERY, PeerRole.EVENT_SOURCE)));
-                    } else {
-
-                    }
-                    logger.info("Peer " + peerName + " joined channel " + channelName);
+                // 获取Peer的地址
+                String peerLocation = peerOrganizationThirdParty.getPeerLocation(peerName);
+                // 获取Peer结点的配置属性
+                Properties peerProperties = testConfig.getPeerProperties(peerName);
+                if (peerProperties == null) {
+                    peerProperties = new Properties();
                 }
+                // 打印一下属性
+                for (String property : peerProperties.stringPropertyNames()) {
+                    logger.info(peerName + "属性: " + property, peerProperties.getProperty(property));
+                }
+
+                // Example of setting specific options on grpc's NettyChannelBuilder
+                // 添加额外的属性
+                peerProperties.put("grpc.NettyChannelBuilderOption.maxInboundMessageSize", 9000000);
+
+                logger.info("构造Peer对象:" + peerName);
+                // 逐一构造Peer结点对象
+                Peer peer = fabricClient.newPeer(peerName, peerLocation, peerProperties);
+                logger.info("完成构造Peer对象:" + peerName);
+                // 如果版本大于等于1.3
+                if (testConfig.isFabricVersionAtOrAfter("1.3")) {
+                    logger.info("当前Peer加入Channel:" + peerName);
+                    // 将当前Peer结点加入Channel中
+                    newChannel.joinPeer(peer, createPeerOptions()
+                            // 默认拥有全部角色(四种角色)
+                            .setPeerRoles(EnumSet.of(PeerRole.ENDORSING_PEER, PeerRole.LEDGER_QUERY, PeerRole.CHAINCODE_QUERY, PeerRole.EVENT_SOURCE)));
+                } else {
+
+                }
+                logger.info("Peer " + peerName + " joined channel " + channelName);
             }
 
             // 这里尝试加入Org2的结果失败了
@@ -1614,11 +1136,12 @@ public class FabricCoreTestMedicalTwoChannels {
         return null;
     }
 
+
     /**
      * 为Fabric网络中节点配置TLS根证书
      *
      * @param certPath 根证书路径
-     * @param hostName 节点域名
+     * @param hostName    节点域名
      */
     private static void loadTLSFile(String certPath, String hostName, Properties properties) throws IOException {
         // 其实只需要一个TLS根证书就可以了，比如TLS相关的秘钥等都是可选的
@@ -1628,6 +1151,7 @@ public class FabricCoreTestMedicalTwoChannels {
         properties.setProperty("trustServerCertificate", "true");
         properties.setProperty("hostnameOverride", hostName);
     }
+
 
 
     /**

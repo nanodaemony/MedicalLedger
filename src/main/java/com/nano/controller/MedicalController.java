@@ -1,12 +1,7 @@
 package com.nano.controller;
 
 import com.nano.common.vo.CommonResult;
-import com.nano.core.FabricCore;
-import com.nano.core.FabricCoreTest4Nodes;
-import com.nano.core.FabricCoreTestJavaChainCode;
-import com.nano.core.FabricCoreTestMedical;
-import com.nano.core.FabricCoreTestMedicalThirdParty;
-import com.nano.core.FabricCoreTestMedicalTwoChannels;
+import com.nano.core.MedicalCore;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +21,13 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @Slf4j
-@Api(tags = "SetUpController", description = "网络搭建控制器")
-@RequestMapping("/setup")
-public class SetUpController {
+@Api(tags = "MedicalController", description = "医疗控制器")
+@RequestMapping("/medical")
+public class MedicalController {
 
 
     @Autowired
-    private FabricCoreTestMedicalThirdParty fabricCore;
+    private MedicalCore medicalCore;
 
     /**
      * 接收平板上传的各种仪器数据并解析并存储
@@ -42,7 +37,25 @@ public class SetUpController {
     @GetMapping("/init")
     @ApiOperation(value = "初始化网络")
     public CommonResult<String> init() {
-        fabricCore.init();
+        medicalCore.initConfig();
+        medicalCore.initChainCodeForPatient();
+        medicalCore.initChainCodeForThirdParty();
+        // 进行数据处理并返回结果
+        return CommonResult.success();
+    }
+
+
+    @GetMapping("/initChainCodeForPatient")
+    @ApiOperation(value = "为Patient组织安装链码")
+    public CommonResult<String> initChainCodeForPatient() {
+        // 进行数据处理并返回结果
+        return CommonResult.success();
+    }
+
+
+    @GetMapping("/initChainCodeForThirdParty")
+    @ApiOperation(value = "为ThirdParty组织安装链码")
+    public CommonResult<String> initChainCodeForThirdParty() {
         // 进行数据处理并返回结果
         return CommonResult.success();
     }
@@ -52,9 +65,10 @@ public class SetUpController {
     @ApiOperation(value = "查询")
     public CommonResult<String> qury() throws Exception{
 
-        log.info("查询MyChannel");
-        fabricCore.queryUser();
-        log.info("查询PatientChannel");
+//        log.info("查询MyChannel");
+//        medicalCore.queryUserMyChannel();
+//        log.info("查询PatientChannel");
+//        medicalCore.queryUserPatientChannel();
         // 进行数据处理并返回结果
         return CommonResult.success();
     }
