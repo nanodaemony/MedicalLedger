@@ -36,8 +36,8 @@
 
 172.20.29.34 peermindray.orgthirdparty.medical.com
 
-172.20.29.35 peercqu.orgthirdparty.medical.com
+172.20.29.36 peercqu.orgthirdparty.medical.com
 
-172.20.29.36 peerhealthcare.orgthirdparty.medical.com
+172.20.29.37 peerhealthcare.orgthirdparty.medical.com
 
 

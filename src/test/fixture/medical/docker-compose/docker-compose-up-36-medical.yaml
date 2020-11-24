@@ -38,7 +38,6 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
-
       # couchdb config
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb-cqu:5984
@@ -70,7 +69,7 @@ services:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=cli-cqu
-      - CORE_PEER_ADDRESS=peercqu.orgthirdparty.medical.com:8051
+      - CORE_PEER_ADDRESS=peercqu.orgthirdparty.medical.com:7051
       - CORE_PEER_LOCALMSPID=OrgThirdPartyMSP
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orgthirdparty.medical.com/peers/peercqu.orgthirdparty.medical.com/tls/server.crt

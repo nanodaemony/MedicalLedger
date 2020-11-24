@@ -852,7 +852,6 @@ public class FabricCoreTestMedical {
             fail("Not enough endorsers for instantiate :" + successResponseList.size() + "endorser failed with " + first.getMessage() + ". Was verified:" + first.isVerified());
         }
 
-
         // 下面将实例化成功的交易发送给Orderer
         print("Sending 实例化交易 to orderer with a and b set to 100 and %s respectively", "" + (200 + delta));
 
@@ -868,34 +867,20 @@ public class FabricCoreTestMedical {
         if (!myChannel.getEventHubs().isEmpty()) {
             nOfEvents.addEventHubs(myChannel.getEventHubs());
         }
-
-        CompletableFuture<BlockEvent.TransactionEvent> future = myChannel.sendTransaction(
+        logger.info("准备发送实例化成功的交易提案.");
+        CompletableFuture<BlockEvent.TransactionEvent> futurePatient = myChannel.sendTransaction(
                 // 包含上面的成功响应结果集
-                successResponseList,
-                // 交易配置
-                createTransactionOptions()
-                        // !!!!设置用户环境
-                        .userContext(fabricClient.getUserContext())
-                        // don't shuffle any orderers the default is true.
-                        .shuffleOrders(false)
-                        // specify the orderers we want to try this transaction. Fails once all Orderers are tried.
-                        .orderers(myChannel.getOrderers())
-                        // The events to signal the completion of the interest in the transaction
-                        // 设置感兴趣的事件
-                        .nOfEvents(nOfEvents));
-
+                patientResponse, myChannel.getOrderers());
         // 从发送交易中获取交易事件
-        BlockEvent.TransactionEvent transactionEvent = future.get();
+        BlockEvent.TransactionEvent transactionEventPatient = futurePatient.get();
         // 交易事件必须是合法的
-        assertTrue(transactionEvent.isValid());
+        assertTrue(transactionEventPatient.isValid());
         // 交易事件必须有签名
-        assertNotNull(transactionEvent.getSignature()); // Must have a signature.
+        assertNotNull(transactionEventPatient.getSignature()); // Must have a signature.
         // 从交易事件获取区块事件
-        BlockEvent blockEvent = transactionEvent.getBlockEvent(); // This is the block event that has this transaction.
+        BlockEvent blockEventPatient = transactionEventPatient.getBlockEvent(); // This is the block event that has this transaction.
         // 保证能够获取区块
-        assertNotNull(blockEvent.getBlock()); // Make sure the RAW Fabric block is returned.
-        // 到这里完成了链码实例化过程
-        print("Finished instantiate transaction with transaction id %s", transactionEvent.getTransactionID());
+        assertNotNull(blockEventPatient.getBlock()); // Make sure the RAW Fabric block is returned.
     }
 
 

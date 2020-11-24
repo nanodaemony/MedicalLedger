@@ -70,7 +70,7 @@ services:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=cli-health-care
-      - CORE_PEER_ADDRESS=peerhealthcare.orgthirdparty.medical.com:8051
+      - CORE_PEER_ADDRESS=peerhealthcare.orgthirdparty.medical.com:7051
       - CORE_PEER_LOCALMSPID=OrgThirdPartyMSP
       - CORE_PEER_TLS_ENABLED=true  # Enable TLS
       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/orgthirdparty.medical.com/peers/peerhealthcare.orgthirdparty.medical.com/tls/server.crt
