@@ -34,3 +34,17 @@ ll ./crypto-config/peerOrganizations/orgthirdparty.medical.com/ca/
 
 
 
+
+
+
+
+
+#################################################################################################################
+# 测试生成DataUseChannel
+#################################################################################################################
+
+# 生成通道datausechannel.tx文件
+configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/datausechannel.tx -channelID datausechannel
+
+
+
