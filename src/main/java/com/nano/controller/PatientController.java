@@ -1,7 +1,7 @@
 package com.nano.controller;
 
 import com.nano.common.vo.CommonResult;
-import com.nano.core.FabricCoreTestMedicalThirdParty;
+import com.nano.core.MedicalChannelThirdParty;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +31,7 @@ public class PatientController {
 
 
     @Autowired
-    private FabricCoreTestMedicalThirdParty fabricCore;
+    private MedicalChannelThirdParty fabricCore;
 
     /**
      * 接收平板上传的各种仪器数据并解析并存储
@@ -52,7 +52,7 @@ public class PatientController {
     public CommonResult<String> qury() throws Exception{
 
         log.info("查询MyChannel");
-        fabricCore.queryUser();
+        fabricCore.queryLedger();
         log.info("查询PatientChannel");
         // 进行数据处理并返回结果
         return CommonResult.success();

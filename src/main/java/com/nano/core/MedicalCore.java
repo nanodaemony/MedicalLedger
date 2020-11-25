@@ -712,7 +712,7 @@ public class MedicalCore {
      * 构造通道
      */
     private Channel buildThirdPartyChannel() {
-        final String channelName = MedicalConfig.THIRD_PARTY_CHANNEL_NAME;
+        final String channelName = MedicalConfig.CHANNEL_NAME_THIRD_PARTY;
         try {
 
             logger.info("创建Fabric代理对象");
@@ -856,7 +856,7 @@ public class MedicalCore {
      */
     private Channel buildPatientChannel() {
         // 通道名称
-        final String channelName = MedicalConfig.PATIENT_CHANNEL_NAME;
+        final String channelName = MedicalConfig.CHANNEL_NAME_PATIENT;
         try {
             logger.info("创建Fabric代理对象");
             HFClient fabricClient = HFClient.createNewInstance();
@@ -1031,7 +1031,7 @@ public class MedicalCore {
                 // 获取TLS证书的Pem
                 final String tlsCertPem = enroll.getCert();
                 // 获取TLS秘钥的Pem
-                final String tlsKeyPem = MedicalUtil.getPEMStringFromPrivateKey(enroll.getKey());
+                final String tlsKeyPem = MedicalUtil.getPemStringFromPrivateKey(enroll.getKey());
                 // TLS属性设置
                 final Properties tlsProperties = new Properties();
                 // 将TLS秘钥与证书放入到属性中
@@ -1131,7 +1131,7 @@ public class MedicalCore {
             // 将组织对象映射到本类中
             organizationPatient = medicalConfig.getOrganizationMap().get("peerOrgPatient");
             organizationThirdParty = medicalConfig.getOrganizationMap().get("peerOrgThirdParty");
-            
+
             // 初始化CA0
             String caPatientName = organizationPatient.getCAName();
             logger.info("组织1CA名称: " + caPatientName);

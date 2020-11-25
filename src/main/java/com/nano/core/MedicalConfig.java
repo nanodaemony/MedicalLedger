@@ -70,8 +70,8 @@ public class MedicalConfig {
     /**
      * 两个通道名称
      */
-    public static final String PATIENT_CHANNEL_NAME = "channelpatient";
-    public static final String THIRD_PARTY_CHANNEL_NAME = "channelthirdparty";
+    public static final String CHANNEL_NAME_PATIENT = "channelpatient";
+    public static final String CHANNEL_NAME_THIRD_PARTY = "channelthirdparty";
 
     /**
      * 通道TX文件的路径

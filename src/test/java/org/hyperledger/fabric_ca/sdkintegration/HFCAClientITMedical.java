@@ -12,29 +12,6 @@
 
 package org.hyperledger.fabric_ca.sdkintegration;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.StringReader;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.CertificateParsingException;
-import java.security.cert.X509Certificate;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.xml.bind.DatatypeConverter;
-
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier;
 import org.bouncycastle.asn1.x509.Extension;
@@ -46,8 +23,8 @@ import org.hyperledger.fabric.sdk.Enrollment;
 import org.hyperledger.fabric.sdk.identity.IdemixEnrollment;
 import org.hyperledger.fabric.sdk.security.CryptoSuite;
 import org.hyperledger.fabric.sdk.testutils.TestConfig;
-import org.hyperledger.fabric.sdkintegration.SampleStore;
 import org.hyperledger.fabric.sdkintegration.MedicalUser;
+import org.hyperledger.fabric.sdkintegration.SampleStore;
 import org.hyperledger.fabric_ca.sdk.Attribute;
 import org.hyperledger.fabric_ca.sdk.EnrollmentRequest;
 import org.hyperledger.fabric_ca.sdk.HFCAAffiliation;
@@ -73,6 +50,29 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.StringReader;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.CertificateParsingException;
+import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.bind.DatatypeConverter;
+
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hyperledger.fabric.sdk.testutils.TestUtils.resetConfig;
@@ -91,7 +91,7 @@ import static org.junit.Assert.fail;
  *
  * @author nano
  */
-public class HFCAClientIT {
+public class HFCAClientITMedical {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -99,22 +99,22 @@ public class HFCAClientIT {
     /**
      * 测试AdminName
      */
-    private static final String TEST_ADMIN_NAME = "admin";
+    private static final String ADMIN_NAME = "admin";
 
     /**
      * 测试Admin密码
      */
-    private static final String TEST_ADMIN_PW = "adminpw";
+    private static final String ADMIN_PW = "adminpw";
 
     /**
      * 测试Admin的组织
      */
-    private static final String TEST_ADMIN_ORG = "org1";
+    private static final String ADMIN_ORG = "org1";
 
     /**
      * 测试User组织
      */
-    private static final String TEST_USER1_ORG = "Org2";
+    private static final String USER1_ORG = "Org2";
 
     /**
      * 用户1的属性
@@ -196,16 +196,6 @@ public class HFCAClientIT {
         }
         // 重新生成
         sampleStore = new SampleStore(sampleStoreFile);
-//        sampleStoreFile.deleteOnExit();
-
-        // System.out.println(testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG).getCALocation());
-        // System.out.println(testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG).getCAProperties());
-
-//        Properties properties = testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG).getCAProperties();
-//
-//        for (String name :properties.stringPropertyNames()) {
-//            System.out.println(name + ": " + properties.getProperty(name));
-//        }
         Properties properties = new Properties();
         properties.setProperty("pemFile", "D:\\code\\11_Hyperledger\\blockchain-application-using-fabric-java-sdk\\network_resources\\crypto-config\\peerOrganizations\\org1.example.com\\ca\\ca.org1.example.com-cert.pem");
         properties.setProperty("allowAllHostNames", "true");
@@ -226,7 +216,7 @@ public class HFCAClientIT {
         // 获取Admin用户
         // TEST_ADMIN_NAME = "admin"
         // TEST_ADMIN_ORG = "org1"
-        adminUser = sampleStore.getMember(TEST_ADMIN_NAME, TEST_ADMIN_ORG);
+        adminUser = sampleStore.getMember(ADMIN_NAME, ADMIN_ORG);
         // Admin用户如果没有Enroll
         if (!adminUser.isEnrolled()) { // Preregistered admin only needs to be enrolled with Fabric CA.
             // 进行Enroll并获取Enrollment
@@ -244,9 +234,6 @@ public class HFCAClientIT {
     public void testRegisterAttributes() throws Exception {
 
         // 不会进入
-        if (testConfig.isRunningAgainstFabric10()) {
-            return; // needs v1.1
-        }
         MedicalUser user = new MedicalUser("user8", "org1", sampleStore, crypto);
         // 构造注册请求
         // TEST_USER1_AFFILIATION = "org1.department1"
@@ -306,45 +293,6 @@ public class HFCAClientIT {
         assertFalse(format("Contains testattr1 in certificate decoded: %s", certDec), certDec.contains("\"testattr1\"") || certDec.contains("\"mrAttributesValue1\""));
     }
 
-    /**
-     * 下面的代码几乎一样 不过最后有一点点变化
-     * Test that we get default attributes.
-     */
-    @Test
-    public void testRegisterAttributesDefault() throws Exception {
-
-        // 不会进入
-        if (testConfig.isRunningAgainstFabric10()) {
-            return; // needs v1.1
-        }
-        // 需要注册的用户
-        MedicalUser user = new MedicalUser("user" + System.currentTimeMillis(), "org1", sampleStore, crypto);
-        // 构造注册请求(这里UserName就是上一步第一个参数)
-        RegistrationRequest registrationRequest = new RegistrationRequest(user.getName(), "org1.department1");
-        String password = "mrAttributespassword";
-        registrationRequest.setSecret(password);
-
-        // 设置属性
-        registrationRequest.addAttribute(new Attribute("testattr1", "mrAttributesValue1"));
-        registrationRequest.addAttribute(new Attribute("testattr2", "mrAttributesValue2"));
-        registrationRequest.addAttribute(new Attribute("testattrDEFAULTATTR", "mrAttributesValueDEFAULTATTR", true));
-
-        // 进行注册
-        user.setEnrollmentSecret(caClient.register(registrationRequest, adminUser));
-        // 进行登记
-        user.setEnrollment(caClient.enroll(user.getName(), user.getEnrollmentSecret()));
-
-        Enrollment enrollment = user.getEnrollment();
-        String cert = enrollment.getCert();
-        String certDec = getStringCert(cert);
-
-        System.out.println("certDec:" + certDec);
-
-        // 下面测试属性
-        assertTrue(format("Missing testattrDEFAULTATTR in certficate decoded: %s", certDec), certDec.contains("\"testattrDEFAULTATTR\":\"mrAttributesValueDEFAULTATTR\""));
-        assertFalse(format("Contains testattr1 in certificate decoded: %s", certDec), certDec.contains("\"testattr1\"") || certDec.contains("\"mrAttributesValue1\""));
-        assertFalse(format("Contains testattr2 in certificate decoded: %s", certDec), certDec.contains("\"testattr2\"") || certDec.contains("\"mrAttributesValue2\""));
-    }
 
     /**
      * 测试登记时没有属性
@@ -465,7 +413,7 @@ public class HFCAClientIT {
         Calendar calendar = Calendar.getInstance(); // gets a calendar using the default time zone and locale.
         Date revokedTinyBitAgoTime = calendar.getTime(); //avoid any clock skewing.
 
-        MedicalUser user = getTestUser(TEST_USER1_ORG);
+        MedicalUser user = getTestUser(USER1_ORG);
 
         if (!user.isRegistered()) {
             RegistrationRequest rr = new RegistrationRequest(user.getName(), USER1_AFFILIATION);
@@ -522,7 +470,7 @@ public class HFCAClientIT {
     @Test
     public void testCertificateRevoke() throws Exception {
 
-        MedicalUser user = getTestUser(TEST_USER1_ORG);
+        MedicalUser user = getTestUser(USER1_ORG);
 
         // 如果用户没有注册
         if (!user.isRegistered()) {
@@ -579,61 +527,6 @@ public class HFCAClientIT {
         }
     }
 
-    // Tests attempting to revoke a user with Null reason
-    @Test
-    public void testUserRevokeNullReason() throws Exception {
-
-        thrown.expect(EnrollmentException.class);
-        thrown.expectMessage("Failed to re-enroll user");
-
-        Calendar calendar = Calendar.getInstance(); // gets a calendar using the default time zone and locale.
-        calendar.add(Calendar.SECOND, -1);
-        Date revokedTinyBitAgoTime = calendar.getTime(); //avoid any clock skewing.
-
-        MedicalUser user = getTestUser(TEST_USER1_ORG);
-
-        if (!user.isRegistered()) {
-            RegistrationRequest rr = new RegistrationRequest(user.getName(), USER1_AFFILIATION);
-            String password = "testUserRevoke";
-            rr.setSecret(password);
-            rr.addAttribute(new Attribute("user.role", "department lead"));
-            rr.addAttribute(new Attribute(HFCAClient.HFCA_ATTRIBUTE_HFREVOKER, "true"));
-            user.setEnrollmentSecret(caClient.register(rr, adminUser)); // Admin can register other users.
-            if (!user.getEnrollmentSecret().equals(password)) {
-                fail("Secret returned from RegistrationRequest not match : " + user.getEnrollmentSecret());
-            }
-        }
-
-        sleepALittle();
-
-        if (!user.isEnrolled()) {
-            EnrollmentRequest req = new EnrollmentRequest(DEFAULT_PROFILE_NAME, "label 2", null);
-            req.addHost("example3.ibm.com");
-            user.setEnrollment(caClient.enroll(user.getName(), user.getEnrollmentSecret(), req));
-
-            // verify
-            String cert = user.getEnrollment().getCert();
-            verifyOptions(cert, req);
-        }
-
-        sleepALittle();
-
-        int startedWithRevokes = -1;
-
-        if (!testConfig.isRunningAgainstFabric10()) {
-
-            startedWithRevokes = getRevokes(null).length; //one more after we do this revoke.
-        }
-
-        // revoke all enrollment of this user
-        caClient.revoke(adminUser, user.getName(), null);
-        if (!testConfig.isRunningAgainstFabric10()) {
-            final int newRevokes = getRevokes(null).length;
-            assertEquals(format("Expected one more revocation %d, but got %d", startedWithRevokes + 1, newRevokes), startedWithRevokes + 1, newRevokes);
-        }
-        // trying to reenroll the revoked user should fail with an EnrollmentException
-        caClient.reenroll(user);
-    }
 
     // Tests revoking a user with genCRL using the revoke API
     @Test
@@ -650,8 +543,8 @@ public class HFCAClientIT {
         calendar.add(Calendar.SECOND, -1);
         Date revokedTinyBitAgoTime = calendar.getTime(); //avoid any clock skewing.
 
-        MedicalUser user1 = getTestUser(TEST_USER1_ORG);
-        MedicalUser user2 = getTestUser(TEST_USER1_ORG);
+        MedicalUser user1 = getTestUser(USER1_ORG);
+        MedicalUser user2 = getTestUser(USER1_ORG);
 
         MedicalUser[] users = new MedicalUser[]{user1, user2};
 
@@ -767,24 +660,6 @@ public class HFCAClientIT {
         }
     }
 
-    /**
-     * 测试获取一个不存在的Identity
-     * Tests getting an identity that does not exist
-     */
-    @Test
-    public void testGetIdentityNotExist() throws Exception {
-        if (testConfig.isRunningAgainstFabric10()) {
-            return; // needs v1.1
-        }
-
-        setField(caClient, "statusCode", 405);
-        HFCAIdentity identity = caClient.newHFCAIdentity("fakeUser");
-        int statusCode = identity.read(adminUser);
-        if (statusCode != 404) {
-            fail("Incorrect status code return for an identity that is not found, should have returned 404 and not thrown an excpetion");
-        }
-        setField(caClient, "statusCode", 400);
-    }
 
     /**
      * 测试获取一个调用者的全部identity
@@ -857,7 +732,7 @@ public class HFCAClientIT {
         thrown.expect(IdentityException.class);
         thrown.expectMessage("Failed to get User");
 
-        MedicalUser user = new MedicalUser("testuser4", TEST_ADMIN_ORG, sampleStore, caClient.getCryptoSuite());
+        MedicalUser user = new MedicalUser("testuser4", ADMIN_ORG, sampleStore, caClient.getCryptoSuite());
 
         HFCAIdentity identity = caClient.newHFCAIdentity(user.getName());
         // 创建
@@ -891,59 +766,6 @@ public class HFCAClientIT {
         identity.update(adminUser);
     }
 
-    /**
-     * 测试重复删除identity是不行的
-     * Tests deleting an identity and making sure it can't delete again
-     */
-    @Test
-    public void testDeleteIdentityFailSecondDelete() throws Exception {
-
-        if (testConfig.isRunningAgainstFabric10()) {
-            return; // needs v1.1
-        }
-
-        thrown.expect(IdentityException.class);
-        thrown.expectMessage("Identity has been deleted");
-
-        HFCAIdentity identity = caClient.newHFCAIdentity("deletedUser2");
-
-        identity.create(adminUser);
-        identity.delete(adminUser);
-        // 再次删除是不行的(失败)
-        identity.delete(adminUser);
-    }
-
-    /**
-     * 测试从一个不允许删除identity的CA删除identity(这里指定CA2不能删除Identity)
-     * Tests deleting an identity on CA that does not allow identity removal
-     */
-    @Test
-    public void testDeleteIdentityNotAllowed() throws Exception {
-
-        if (testConfig.isRunningAgainstFabric10()) {
-            return; // needs v1.1
-        }
-
-        thrown.expectMessage("Identity removal is disabled");
-        MedicalUser user = new MedicalUser("testuser6", "org2", sampleStore, caClient.getCryptoSuite());
-        // 创建CA代理对象
-        HFCAClient client2 = HFCAClient.createNewInstance(
-                // CA2的地址
-                "http://172.20.29.67:8054",
-                testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG2).getCAProperties());
-        client2.setCryptoSuite(crypto);
-
-        // SampleUser can be any implementation that implements org.hyperledger.fabric.sdk.User Interface
-        MedicalUser admin2 = sampleStore.getMember(TEST_ADMIN_NAME, "org2");
-        if (!admin2.isEnrolled()) { // Preregistered admin only needs to be enrolled with Fabric CA.
-            admin2.setEnrollment(client2.enroll(adminUser.getName(), TEST_ADMIN_PW));
-        }
-
-        HFCAIdentity identity = client2.newHFCAIdentity(user.getName());
-        identity.create(admin2);
-        // 这里会删除失败(因为CA2不允许删除Identity)
-        identity.delete(admin2);
-    }
 
     /**
      * 测试获取一个affiliation隶属关系
@@ -1310,9 +1132,9 @@ public class HFCAClientIT {
                 testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG2).getCAProperties());
         client2.setCryptoSuite(crypto);
 
-        MedicalUser admin2 = sampleStore.getMember(TEST_ADMIN_NAME, "org2");
+        MedicalUser admin2 = sampleStore.getMember(ADMIN_NAME, "org2");
         if (!admin2.isEnrolled()) { // Preregistered admin only needs to be enrolled with Fabric CA.
-            admin2.setEnrollment(client2.enroll(admin2.getName(), TEST_ADMIN_PW));
+            admin2.setEnrollment(client2.enroll(admin2.getName(), ADMIN_PW));
         }
 
         // CA2不允许删除联盟
@@ -1362,25 +1184,20 @@ public class HFCAClientIT {
     @Test
     public void testGetCertificates() throws Exception {
 
-        if (testConfig.isRunningAgainstFabric10()) {
-            return;
-        }
-
         // 构造证书请求
         HFCACertificateRequest certRequest = caClient.newHFCACertificateRequest();
-
         // 获取联盟2的Admin
         MedicalUser admin2 = sampleStore.getMember("admin2", "org2.department1");
-
         // 注册请求
         RegistrationRequest registerRequest = new RegistrationRequest(admin2.getName(), "org2.department1");
+        // 密码
         String password = "password";
         // 设置密码
         registerRequest.setSecret(password);
         // 添加属性
         registerRequest.addAttribute(new Attribute("hf.Registrar.Roles", "client,peer,user"));
 
-        // 使用AdminUser来注册
+        // 注册AdminUser
         caClient.register(registerRequest, adminUser);
         // 进行Enroll
         admin2.setEnrollment(caClient.enroll(admin2.getName(), password));
@@ -1404,7 +1221,8 @@ public class HFCAClientIT {
         assertTrue(resultContains(certResponse.getCerts(), new String[]{"admin", "testUser"}));
 
         // Get certificate for a specific enrollment id
-        // 获取指定的Enrollment来获取证书cert
+        // 获取指定的EnrollmentID来获取证书cert
+        // admin2是用户名
         certRequest.setEnrollmentID("admin2");
         certResponse = caClient.getHFCACertificates(adminUser, certRequest);
         assertEquals(1, certResponse.getCerts().size());
@@ -1555,61 +1373,8 @@ public class HFCAClientIT {
         caClient.enroll(user.getName(), user.getEnrollmentSecret(), enrollmentRequest);
     }
 
-    /**
-     * 测试在没有授权的情况下撤销用户
-     */
-    @Test
-    public void testRevokeNotAuthorized() throws Exception {
-        thrown.expect(RevocationException.class);
-        thrown.expectMessage("Error while revoking the user");
 
-        // See if a normal user can revoke the admin...
-        // 看看一个普通用户是否能撤销Admin
-        MedicalUser user = getEnrolledUser(TEST_ADMIN_ORG);
-        caClient.revoke(user, adminUser.getName(), "revoke admin");
-    }
 
-    /**
-     * 测试Enroll相同的User
-     */
-    @Test
-    public void testEnrollSameUser() throws Exception {
-
-        // See if a normal user can revoke the admin...
-        MedicalUser user1 = getEnrolledUser(TEST_ADMIN_ORG);
-        //  File sampleStoreFile = new File(System.getProperty("java.io.tmpdir") + "/HFCSampletest.properties");
-        File sampleStoreFile = new File("G:\\HFCSampletest.properties");
-        if (sampleStoreFile.exists()) { // For testing start fresh
-            sampleStoreFile.delete();
-        }
-        sampleStore = new SampleStore(sampleStoreFile);
-        sampleStoreFile.deleteOnExit();
-
-        MedicalUser user2 = getEnrolledUser(TEST_ADMIN_ORG);
-
-        // client.revoke(user, admin.getName(), "revoke admin");
-        caClient.enroll(user1.getName(), user2.getEnrollmentSecret());
-    }
-
-    // Tests enrolling a user to an unknown CA client
-    @Test
-    public void testEnrollUnknownClient() throws Exception {
-
-        thrown.expect(EnrollmentException.class);
-        thrown.expectMessage("Failed to enroll user");
-
-        CryptoSuite cryptoSuite = CryptoSuite.Factory.getCryptoSuite();
-
-        // This client does not exist
-        String clientName = "test CA client";
-
-        HFCAClient clientWithName = HFCAClient.createNewInstance(clientName,
-                testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG).getCALocation(),
-                testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG).getCAProperties());
-        clientWithName.setCryptoSuite(cryptoSuite);
-
-        clientWithName.enroll(adminUser.getName(), TEST_ADMIN_PW);
-    }
 
     // Tests getting an Idemix credential(凭据) using an x509 enrollment credential
     @Test
@@ -1651,7 +1416,7 @@ public class HFCAClientIT {
                 testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG).getCAProperties());
         mockClient.setCryptoSuite(crypto);
 
-        MedicalUser user = getEnrolledUser(TEST_ADMIN_ORG);
+        MedicalUser user = getEnrolledUser(ADMIN_ORG);
 
         mockClient.setHttpPostResponse("{\"success\":false}");
         mockClient.enroll(user.getName(), user.getEnrollmentSecret());
@@ -1669,7 +1434,7 @@ public class HFCAClientIT {
                 testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG).getCAProperties());
         mockClient.setCryptoSuite(crypto);
 
-        MedicalUser user = getEnrolledUser(TEST_ADMIN_ORG);
+        MedicalUser user = getEnrolledUser(ADMIN_ORG);
 
         mockClient.setHttpPostResponse("{\"success\":true}");
         mockClient.enroll(user.getName(), user.getEnrollmentSecret());
@@ -1686,7 +1451,7 @@ public class HFCAClientIT {
                 testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG).getCAProperties());
         mockClient.setCryptoSuite(crypto);
 
-        MedicalUser user = getEnrolledUser(TEST_ADMIN_ORG);
+        MedicalUser user = getEnrolledUser(ADMIN_ORG);
 
         mockClient.setHttpPostResponse("{\"success\":true}");
         mockClient.enroll(user.getName(), user.getEnrollmentSecret());
@@ -1700,7 +1465,7 @@ public class HFCAClientIT {
                 testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG).getCAProperties());
         mockClient.setCryptoSuite(crypto);
 
-        MedicalUser user = getEnrolledUser(TEST_ADMIN_ORG);
+        MedicalUser user = getEnrolledUser(ADMIN_ORG);
 
         mockClient.setHttpPostResponse(
                 "{\"success\":true, \"result\":{\"Cert\":\"abc\"}, \"messages\":[{\"code\":123, \"message\":\"test message\"}]}");
@@ -1718,7 +1483,7 @@ public class HFCAClientIT {
                 testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG).getCAProperties());
         mockClient.setCryptoSuite(crypto);
 
-        MedicalUser user = getEnrolledUser(TEST_ADMIN_ORG);
+        MedicalUser user = getEnrolledUser(ADMIN_ORG);
 
         mockClient.setHttpPostResponse("{\"success\":true}");
         mockClient.reenroll(user);
@@ -1737,7 +1502,7 @@ public class HFCAClientIT {
                 testConfig.getIntegrationTestsSampleOrg(TEST_WITH_INTEGRATION_ORG).getCAProperties());
         mockClient.setCryptoSuite(crypto);
 
-        MedicalUser user = getEnrolledUser(TEST_ADMIN_ORG);
+        MedicalUser user = getEnrolledUser(ADMIN_ORG);
 
         mockClient.setHttpPostResponse("{\"success\":true}");
         mockClient.reenroll(user);

@@ -255,7 +255,7 @@ public class LocalStore {
      *
      * @param channel channel
      */
-    void saveChannel(Channel channel) throws IOException, InvalidArgumentException {
+    public void saveChannel(Channel channel) throws IOException, InvalidArgumentException {
         setValue("channel." + channel.getName(), Hex.toHexString(channel.serializeChannel()));
     }
 
@@ -265,7 +265,7 @@ public class LocalStore {
      * @param client 代理对象
      * @param name channel名称
      */
-    Channel getChannel(HFClient client, String name) throws IOException, ClassNotFoundException, InvalidArgumentException {
+    public Channel getChannel(HFClient client, String name) throws IOException, ClassNotFoundException, InvalidArgumentException {
         Channel channel = null;
         String channelHex = getValue("channel." + name);
         if (channelHex != null) {

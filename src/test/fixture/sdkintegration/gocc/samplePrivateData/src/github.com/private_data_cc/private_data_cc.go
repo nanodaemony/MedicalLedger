@@ -35,7 +35,6 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### private_data_cc Init ###########")
 
 	return shim.Success(nil)
-
 }
 
 // Invoke makes payment of X units from A to B
