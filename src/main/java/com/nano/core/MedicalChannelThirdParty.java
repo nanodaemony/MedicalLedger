@@ -14,6 +14,9 @@
 
 package com.nano.core;
 
+import com.alibaba.fastjson.JSON;
+import com.nano.medical.DataUsageEntity;
+
 import org.apache.commons.codec.binary.Hex;
 import org.bouncycastle.openssl.PEMWriter;
 import org.hyperledger.fabric.protos.ledger.rwset.kvrwset.KvRwset;
@@ -124,8 +127,8 @@ public class MedicalChannelThirdParty {
      */
     private static final String CHAIN_CODE_FILEPATH = "sdkintegration/gocc/thirdparty";
     private static final String CHAIN_CODE_NAME = "datause_cc_go";
-    private static final String CHAIN_CODE_PATH = "github.com/example_cc";
-    private static final String CHAIN_CODE_VERSION = "1";
+    private static final String CHAIN_CODE_PATH = "github.com/medical_cc";
+    private static final String CHAIN_CODE_VERSION = "" + System.currentTimeMillis();
     private static final Type CHAIN_CODE_LANG = Type.GO_LANG;
 
 
@@ -267,7 +270,6 @@ public class MedicalChannelThirdParty {
             // 初始化链码ID对象
             initChainCodeIdTest();
 
-
             // 安装链码
             installChaincodePatient();
 
@@ -278,11 +280,22 @@ public class MedicalChannelThirdParty {
 
             Thread.sleep(2000);
 
+            logger.info("************************************开始存数据********************************************");
             // 转账操作
             transferMoney();
+            queryBySenderId();
 
+            logger.info("************************************开始存数据********************************************");
+            transferMoney();
+            queryBySenderId();
+
+            logger.info("************************************开始存数据********************************************");
+            transferMoney();
+            queryBySenderId();
+
+            logger.info("************************************通过发送PID与治疗ID查询数据********************************************");
             // 进行查询
-            queryLedger();
+            queryBySenderIdAndTreatmentId();
 
             // 查询账本信息
             queryLedgerInfo();
@@ -373,6 +386,7 @@ public class MedicalChannelThirdParty {
 
     }
 
+    private DataUsageEntity entity;
 
     /**
      * 进行转账
@@ -381,23 +395,23 @@ public class MedicalChannelThirdParty {
         // 设置成普通的用户!!!
         fabricClientThirdParty.setUserContext(organizationPatient.getUser(normalUser1));
         // 构造交易提案请求
-        TransactionProposalRequest transactionProposalRequest = fabricClientThirdParty.newTransactionProposalRequest();
+        TransactionProposalRequest request = fabricClientThirdParty.newTransactionProposalRequest();
         // 设置需要执行的链码ID
-        transactionProposalRequest.setChaincodeID(chaincodeId);
+        request.setChaincodeID(chaincodeId);
         // 链码语言
-        transactionProposalRequest.setChaincodeLanguage(CHAIN_CODE_LANG);
+        request.setChaincodeLanguage(CHAIN_CODE_LANG);
         //transactionProposalRequest.setFcn("invoke");
-        transactionProposalRequest.setFcn("move");
-        transactionProposalRequest.setProposalWaitTime(medicalConfig.getProposalWaitTime());
+        request.setFcn("saveDataUsageData");
+        request.setProposalWaitTime(medicalConfig.getProposalWaitTime());
+
+        entity = DataUsageEntity.getInstance();
+
         // 设置参数
-        transactionProposalRequest.setArgs("a", "b", "100");
+        request.setArgs(entity.getSenderPseudonymId(), entity.getReceiverPseudonymId(), JSON.toJSONString(entity));
         // 母鸡在干啥
         Map<String, byte[]> tm2 = new HashMap<>();
-        // Just some extra junk in transient map
         tm2.put("HyperLedgerFabric", "TransactionProposalRequest:JavaSDK".getBytes(UTF_8));
-        // ditto
         tm2.put("method", "TransactionProposalRequest".getBytes(UTF_8));
-        // This should be returned in the payload see chaincode why.
         tm2.put("result", ":)".getBytes(UTF_8));
 
         // 如果是GO语言且版本大于1.2
@@ -414,14 +428,14 @@ public class MedicalChannelThirdParty {
         }
         // This should trigger an event see chaincode why.
         tm2.put(EXPECTED_EVENT_NAME, EXPECTED_EVENT_DATA);
-        transactionProposalRequest.setTransientMap(tm2);
+        request.setTransientMap(tm2);
 
-        logger.info("Sending transactionProposal to all peers with arguments: move(a,b,100)");
+        logger.info("插入数据使用记录.");
 
 
         // Collection<ProposalResponse> transactionPropResp = channel.sendTransactionProposalToEndorsers(transactionProposalRequest);
         // 往所有的Peer结点发送交易并得到响应
-        Collection<ProposalResponse> transactionResponse = channelThirdParty.sendTransactionProposal(transactionProposalRequest, channelThirdParty.getPeers());
+        Collection<ProposalResponse> transactionResponse = channelThirdParty.sendTransactionProposal(request, channelThirdParty.getPeers());
         Collection<ProposalResponse> successResponseList = new HashSet<>();
         Collection<ProposalResponse> failedResponseList = new HashSet<>();
         // 康康结果是否OK
@@ -472,9 +486,9 @@ public class MedicalChannelThirdParty {
             resultAsString = new String(dataBytes, UTF_8);
         }
         // 判断是否是下面的图像
-        assertEquals(":)", resultAsString);
+//        assertEquals(":)", resultAsString);
         // Chaincode's status.
-        assertEquals(expectedMoveRCMap.get(MedicalConfig.CHANNEL_NAME_THIRD_PARTY).longValue(), successResponse.getChaincodeActionResponseStatus());
+//        assertEquals(expectedMoveRCMap.get(MedicalConfig.CHANNEL_NAME_THIRD_PARTY).longValue(), successResponse.getChaincodeActionResponseStatus());
 
         // 获取读写集的信息
         TxReadWriteSetInfo readWriteSetInfo = successResponse.getChaincodeActionResponseReadWriteSetInfo();
@@ -836,15 +850,60 @@ public class MedicalChannelThirdParty {
     /**
      * 查询方法
      */
-    public void queryLedger() {
+    public void queryBySenderId() {
         try {
-            logger.info("查询账户B的余额...");
+            logger.info("查询数据使用信息...");
             // 构造查询请求
             QueryByChaincodeRequest queryRequest = fabricClientThirdParty.newQueryProposalRequest();
-            // 设置参数
-            queryRequest.setArgs("b");
             // 设置调用方法
-            queryRequest.setFcn("query");
+            queryRequest.setFcn("queryByPseudonymId");
+
+            // 设置参数
+            queryRequest.setArgs(entity.getSenderPseudonymId());
+            // 设置链码Id
+            queryRequest.setChaincodeID(chaincodeId);
+            // 不知道在干啥
+            Map<String, byte[]> tm2 = new HashMap<>();
+            tm2.put("HyperLedgerFabric", "QueryByChaincodeRequest:JavaSDK".getBytes(UTF_8));
+            tm2.put("method", "QueryByChaincodeRequest".getBytes(UTF_8));
+            queryRequest.setTransientMap(tm2);
+
+            // 发送查询请求并获取响应结果
+            Collection<ProposalResponse> queryResponses = channelThirdParty.queryByChaincode(queryRequest, channelThirdParty.getPeers());
+            // 分析响应结果
+            for (ProposalResponse proposalResponse : queryResponses) {
+                // 查询不成功
+                if (!proposalResponse.isVerified() || proposalResponse.getStatus() != ProposalResponse.Status.SUCCESS) {
+                    fail("Failed query proposal from peer " + proposalResponse.getPeer().getName() + " status: " + proposalResponse.getStatus() +
+                            ". Messages: " + proposalResponse.getMessage() + ". Was verified : " + proposalResponse.isVerified());
+                    throw new RuntimeException("查询操作失败...");
+                } else {
+                    // 查询成功,获取返回的数据
+                    String payload = proposalResponse.getProposalResponse().getResponse().getPayload().toStringUtf8();
+                    logger.info(proposalResponse.getTransactionID());
+                    logger.info(proposalResponse.getMessage());
+                    logger.info("余额为: " + payload);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 查询方法
+     */
+    public void queryBySenderIdAndTreatmentId() {
+        try {
+            logger.info("查询数据使用信息...");
+            // 构造查询请求
+            QueryByChaincodeRequest queryRequest = fabricClientThirdParty.newQueryProposalRequest();
+            // 设置调用方法
+            queryRequest.setFcn("queryByTreatmentId");
+
+            // 设置参数
+            queryRequest.setArgs(entity.getSenderPseudonymId(), entity.getTreatmentId());
             // 设置链码Id
             queryRequest.setChaincodeID(chaincodeId);
             // 不知道在干啥

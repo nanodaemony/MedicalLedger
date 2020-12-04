@@ -1,7 +1,6 @@
 package com.nano.core;
 
 import org.apache.commons.compress.utils.IOUtils;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMKeyPair;
 import org.bouncycastle.openssl.PEMParser;
 import org.hyperledger.fabric.sdk.ChaincodeID;
@@ -9,11 +8,9 @@ import org.hyperledger.fabric.sdk.Channel;
 import org.hyperledger.fabric.sdk.Enrollment;
 import org.hyperledger.fabric.sdk.HFClient;
 import org.hyperledger.fabric.sdk.TransactionRequest;
-import org.hyperledger.fabric.sdk.exception.CryptoException;
 import org.hyperledger.fabric.sdk.helper.Config;
 import org.hyperledger.fabric.sdk.identity.X509Enrollment;
 import org.hyperledger.fabric.sdk.security.CryptoPrimitives;
-import org.hyperledger.fabric.sdk.security.CryptoSuite;
 import org.hyperledger.fabric_ca.sdk.EnrollmentRequest;
 import org.hyperledger.fabric_ca.sdk.HFCAClient;
 import org.hyperledger.fabric_ca.sdk.HFCAInfo;
@@ -30,29 +27,19 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.CryptoPrimitive;
-import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.Provider;
 import java.security.PublicKey;
-import java.security.Security;
-import java.security.Signature;
-import java.security.SignatureException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -377,20 +364,41 @@ public class TestRegisterUser {
                 localStore.storeClientPemTlsCertificate(organization, tlsCertPem);
                 localStore.storeClientPemTlsKey(organization, tlsKeyPem);
             }
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // 在这里生成多个结点的Admin用户
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             // 获取这个组织的Admin用户
-            MedicalUser admin = new MedicalUser("admin", orgName, localStore, caClient.getCryptoSuite());
-            logger.info("Admin用户信息: " + admin.toString());
+            MedicalUser adminXinQiao = new MedicalUser("adminXinQiao", orgName, localStore, caClient.getCryptoSuite());
+            logger.info("Admin用户信息: " + adminXinQiao.toString());
             // Preregistered admin only needs to be enrolled with Fabric caClient.
             // 如果Admin没有登记就进行登记
-            if (!admin.isEnrolled()) {
+            if (!adminXinQiao.isEnrolled()) {
                 logger.info("登记AdminUser");
                 // Admin登记(使用CA启动时的用户名与密码)
                 Enrollment enrollment = caClient.enroll("admin", "adminpw");
                 logger.info("AdminUser的私钥:" + enrollment.getKey().toString());
-                admin.setEnrollment(enrollment);
+                adminXinQiao.setEnrollment(enrollment);
                 // 设置MSPID
                 // Org1MSP Org2MSP
-                admin.setMspId(mspId);
+                adminXinQiao.setMspId(mspId);
+            }
+
+            // 获取这个组织的Admin用户
+            MedicalUser adminKunYi = new MedicalUser("adminKunYi", orgName, localStore, caClient.getCryptoSuite());
+            logger.info("Admin用户信息: " + adminKunYi.toString());
+            // Preregistered admin only needs to be enrolled with Fabric caClient.
+            // 如果Admin没有登记就进行登记
+            if (!adminKunYi.isEnrolled()) {
+                logger.info("登记AdminUser");
+                // Admin登记(使用CA启动时的用户名与密码)
+                Enrollment enrollment = caClient.enroll("admin", "adminpw");
+                logger.info("AdminUser的私钥:" + enrollment.getKey().toString());
+                adminKunYi.setEnrollment(enrollment);
+                // 设置MSPID
+                // Org1MSP Org2MSP
+                adminKunYi.setMspId(mspId);
             }
 
             // 生成一个User
@@ -400,9 +408,10 @@ public class TestRegisterUser {
                 logger.info("注册普通User");
                 // 设置用户的名称及其所属组织属性
                 RegistrationRequest registerRequest = new RegistrationRequest(user.getName());
+                // 这里可以设置用户的密码!!!!!
                 registerRequest.setSecret("password");
                 // 利用组织的Admin用户进行注册并获取登记密码
-                String secret = caClient.register(registerRequest, admin);
+                String secret = caClient.register(registerRequest, adminXinQiao);
                 user.setEnrollmentSecret(secret);
             }
             // 用户登记
@@ -419,11 +428,9 @@ public class TestRegisterUser {
                 logger.info("自己生产的公钥:" + publicKey.toString());
                 logger.info("自己生产的私钥:" + privateKey.toString());
 
-                String sign = sign("1234545".getBytes(UTF_8), privateKey);
-                boolean varifeied = verify("1234545".getBytes(UTF_8), publicKey, sign);
-                System.out.println("自定义方法验证:" + varifeied);
-
-
+                String signature = CipherUtil.sign("1234545".getBytes(UTF_8), privateKey);
+                boolean verified = CipherUtil.verifySignature("1234545".getBytes(UTF_8), publicKey, signature);
+                System.out.println("自定义方法验证:" + verified);
 
                 EnrollmentRequest enrollmentRequest = new EnrollmentRequest();
                 // 设置密钥对
@@ -438,6 +445,8 @@ public class TestRegisterUser {
 
             Enrollment enrollment = user.enrollment;
             PrivateKey privateKey = enrollment.getKey();
+            String signature22 = CipherUtil.sign("1234545".getBytes(UTF_8), privateKey);
+
             logger.info("返回的私钥:" + privateKey);
             logger.info("Private Key:" + privateKey.toString());
             logger.info("Private Key:" + privateKey.getFormat());
@@ -484,6 +493,10 @@ public class TestRegisterUser {
             //  public y coord: 66432806281588174649157141113246971496950139544830570332248457713006719757742
             //  parameters: secp256r1 [NIST P-256, X9.62 prime256v1] (1.2.840.10045.3.1.7)
             PublicKey publicKey = x509Certificate.getPublicKey();
+
+            boolean verified = CipherUtil.verifySignature("1234545".getBytes(UTF_8), publicKey, signature22);
+            System.out.println("自定义方法验证2:" + verified);
+
             logger.info("返回的公钥:" + publicKey.toString());
             System.out.println(publicKey.toString());
             System.out.println("----");
@@ -530,6 +543,28 @@ public class TestRegisterUser {
 
             logger.info("验证签名:" + isValid);
 
+            String data = "123456";
+
+            EccHelper eccHelper = new EccHelper(publicKey.getEncoded(), privateKey.getEncoded());
+
+            System.out.println("完成构建ECCHelper.");
+            //byte[] engypt = CipherUtil.encryptByPrivateKey(data.getBytes(), privateKey);
+
+
+            byte[] sig = eccHelper.sign(data.getBytes());
+
+            System.out.println(eccHelper.verifySignature(sig, data.getBytes()));
+
+            byte[] secret = EccHelper.encrypt(data.getBytes(), publicKey.getEncoded());
+            System.out.println("密文:" + new String(secret));
+            byte[] plain = EccHelper.decrypt(secret, privateKey.getEncoded());
+            System.out.println("明文:" + new String(plain));
+
+
+            //byte[] res = CipherUtil.decrypt(engypt, privateKey);
+
+            //System.out.println("采用公钥加密私钥解密:" + new String(res));
+
 
             // 获取组织名称 peerOrg1 peerOrg2
             final String organizationName = organization.getName();
@@ -557,7 +592,7 @@ public class TestRegisterUser {
             // 将普通用户加入当前组织
             organization.addUser(user);
             // 将AdminUser用户加入当前组织
-            organization.setAdminUser(admin);
+            organization.setAdminUser(adminXinQiao);
             logger.info("完成组织用户加载.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -566,42 +601,6 @@ public class TestRegisterUser {
 
     }
 
-
-    /**
-     * <p>
-     * 用私钥对信息生成数字签名
-     * </p>
-     *
-     * @param data       已加密数据
-     * @param privateKey 私钥(BASE64编码)
-     */
-    public static String sign(byte[] data, String privateKey) throws Exception {
-        byte[] keyBytes = Base64.getDecoder().decode(privateKey);
-        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance("EC");
-        PrivateKey privateK = keyFactory.generatePrivate(pkcs8KeySpec);
-        Signature signature = Signature.getInstance("SHA2");
-        signature.initSign(privateK);
-        signature.update(data);
-        return Base64.getEncoder().encodeToString(signature.sign());
-    }
-
-
-    public static String sign(byte[] data, PrivateKey privateKey) throws Exception {
-        Signature signature = Signature.getInstance("SHA384withECDSA");
-        signature.initSign(privateKey);
-        signature.update(data);
-        return Base64.getEncoder().encodeToString(signature.sign());
-    }
-
-
-    public static boolean verify(byte[] data, PublicKey publicKey, String sign)
-            throws Exception {
-        Signature signature = Signature.getInstance("SHA384withECDSA");
-        signature.initVerify(publicKey);
-        signature.update(data);
-        return signature.verify(Base64.getDecoder().decode(sign));
-    }
 
     private Enrollment loadFromPemFile(String keyFile, String certFile) throws Exception {
         byte[] keyPem = Files.readAllBytes(Paths.get(keyFile));     //载入私钥PEM文本

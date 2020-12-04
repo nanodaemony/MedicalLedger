@@ -14,8 +14,10 @@
 
 package com.nano.core;
 
+import com.alibaba.fastjson.JSON;
+import com.nano.medical.PatientDataEntity;
+
 import org.apache.commons.codec.binary.Hex;
-import org.bouncycastle.openssl.PEMWriter;
 import org.hyperledger.fabric.protos.ledger.rwset.kvrwset.KvRwset;
 import org.hyperledger.fabric.sdk.BlockEvent;
 import org.hyperledger.fabric.sdk.BlockInfo;
@@ -53,10 +55,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.PrivateKey;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -121,11 +121,11 @@ public class MedicalChannelPatient {
     /**
      * 链码相关配置
      */
-    private static final String CHAIN_CODE_FILEPATH = "sdkintegration/gocc/patient";
-    private static final String CHAIN_CODE_NAME = "patientdata_cc_go";
-    private static final String CHAIN_CODE_PATH= "github.com/example_cc";
-    private static final String CHAIN_CODE_VERSION = "1";
-    private static final Type CHAIN_CODE_LANG = Type.GO_LANG;
+    private static String CHAIN_CODE_FILEPATH = "sdkintegration/gocc/patient";
+    private static String CHAIN_CODE_NAME = "patientdata_cc_go";
+    private static String CHAIN_CODE_PATH = "github.com/medical_cc";
+    private static String CHAIN_CODE_VERSION = "" + System.currentTimeMillis();
+    private static Type CHAIN_CODE_LANG = Type.GO_LANG;
 
 
     // 静态初始化
@@ -166,7 +166,7 @@ public class MedicalChannelPatient {
     public HFClient fabricClientThirdParty;
 
     /**
-     * Foo通道对象
+     *
      */
     public Channel channelPatient;
 
@@ -202,6 +202,20 @@ public class MedicalChannelPatient {
      */
     private boolean isInit = false;
 
+    // 初始化,覆盖父类的路径设置
+//    {
+//        // Just print out what test is really running.
+//
+//        // this is relative to src/test/fixture and is where the Java chaincode source is.
+//        CHAIN_CODE_FILEPATH = "sdkintegration/javacc/sample1";
+//        // This is used only for GO.
+//        // 只需要对GO语言配置,其他的不需要
+//        CHAIN_CODE_PATH = null;
+//        // 链码名称
+//        CHAIN_CODE_NAME = "example_cc_java";
+//        CHAIN_CODE_LANG = Type.JAVA;
+//    }
+
 
     public static void main(String[] args) {
         new MedicalChannelPatient().init();
@@ -234,7 +248,7 @@ public class MedicalChannelPatient {
             fabricClientThirdParty.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
 
             // 构造FooChannel
-            channelPatient = buildThirdPartyChannel();
+            channelPatient = buildChannel();
 
             // 将创建好的通道对象存入本地
             localStore.saveChannel(channelPatient);
@@ -269,14 +283,29 @@ public class MedicalChannelPatient {
 
             Thread.sleep(2000);
 
+//            savePatientData();
+
             // 转账操作
             transferMoney();
-
-            // 进行查询
             queryLedger();
 
-            // 查询账本信息
-            queryLedgerInfo();
+            System.out.println("********************************************************");
+
+            transferMoney();
+            queryLedger();
+            System.out.println("********************************************************");
+            transferMoney();
+            queryLedger();
+            System.out.println("********************************************************");
+//
+//            // 进行查询
+
+
+            queryByPidAndTreatmentId();
+
+//
+//            // 查询账本信息
+//            queryLedgerInfo();
             logger.info("Finished all the steps.");
         } catch (Exception e) {
             print("Caught an exception running channel %s", channelPatient.getName());
@@ -364,31 +393,34 @@ public class MedicalChannelPatient {
 
     }
 
+    private PatientDataEntity entity;
 
     /**
      * 进行转账
      */
     public void transferMoney() throws Exception {
+        logger.info("开始转账.");
         // 设置成普通的用户!!!
         fabricClientThirdParty.setUserContext(organizationPatient.getUser(normalUser));
         // 构造交易提案请求
-        TransactionProposalRequest transactionProposalRequest = fabricClientThirdParty.newTransactionProposalRequest();
+        TransactionProposalRequest request = fabricClientThirdParty.newTransactionProposalRequest();
         // 设置需要执行的链码ID
-        transactionProposalRequest.setChaincodeID(chaincodeId);
+        request.setChaincodeID(chaincodeId);
         // 链码语言
-        transactionProposalRequest.setChaincodeLanguage(CHAIN_CODE_LANG);
-        //transactionProposalRequest.setFcn("invoke");
-        transactionProposalRequest.setFcn("move");
-        transactionProposalRequest.setProposalWaitTime(medicalConfig.getProposalWaitTime());
+        request.setChaincodeLanguage(CHAIN_CODE_LANG);
+        // request.setFcn("Invoke");
+        request.setFcn("savePatientData");
+        request.setProposalWaitTime(medicalConfig.getProposalWaitTime());
+
+        entity = PatientDataEntity.getInstance();
+        String[] args = {entity.getPatientPseudonymId(), JSON.toJSONString(entity)};
+        //String[] args = {"user1", "987654321", "10000"};
         // 设置参数
-        transactionProposalRequest.setArgs("a", "b", "100");
+        request.setArgs(args);
         // 母鸡在干啥
         Map<String, byte[]> tm2 = new HashMap<>();
-        // Just some extra junk in transient map
         tm2.put("HyperLedgerFabric", "TransactionProposalRequest:JavaSDK".getBytes(UTF_8));
-        // ditto
         tm2.put("method", "TransactionProposalRequest".getBytes(UTF_8));
-        // This should be returned in the payload see chaincode why.
         tm2.put("result", ":)".getBytes(UTF_8));
 
         // 如果是GO语言且版本大于1.2
@@ -405,14 +437,14 @@ public class MedicalChannelPatient {
         }
         // This should trigger an event see chaincode why.
         tm2.put(EXPECTED_EVENT_NAME, EXPECTED_EVENT_DATA);
-        transactionProposalRequest.setTransientMap(tm2);
+        request.setTransientMap(tm2);
 
         logger.info("Sending transactionProposal to all peers with arguments: move(a,b,100)");
 
 
         // Collection<ProposalResponse> transactionPropResp = channel.sendTransactionProposalToEndorsers(transactionProposalRequest);
         // 往所有的Peer结点发送交易并得到响应
-        Collection<ProposalResponse> transactionResponse = channelPatient.sendTransactionProposal(transactionProposalRequest, channelPatient.getPeers());
+        Collection<ProposalResponse> transactionResponse = channelPatient.sendTransactionProposal(request, channelPatient.getPeers());
         Collection<ProposalResponse> successResponseList = new HashSet<>();
         Collection<ProposalResponse> failedResponseList = new HashSet<>();
         // 康康结果是否OK
@@ -427,9 +459,10 @@ public class MedicalChannelPatient {
         print("Received %d transaction proposal responses. Successful + verified: %d . Failed: %d",
                 transactionResponse.size(), successResponseList.size(), failedResponseList.size());
         if (failedResponseList.size() > 0) {
-            ProposalResponse firstTransactionProposalResponse = failedResponseList.iterator().next();
+            ProposalResponse firstFailResponse = failedResponseList.iterator().next();
             fail("Not enough endorsers for invoke(move a,b,100):" + failedResponseList.size() + " endorser error: " +
-                    firstTransactionProposalResponse.getMessage() + ". Was verified: " + firstTransactionProposalResponse.isVerified());
+                    firstFailResponse.getMessage() + ". Was verified: " + firstFailResponse.isVerified()
+                    + " " + firstFailResponse.getChaincodeID().getName());
         }
 
         // 检查是否全部的提案都是一致的,这在发送给Orderer时是自动执行的.这里写出来只是说明应用程序可以自己选择使用
@@ -463,9 +496,9 @@ public class MedicalChannelPatient {
             resultAsString = new String(dataBytes, UTF_8);
         }
         // 判断是否是下面的图像
-        assertEquals(":)", resultAsString);
+        // assertEquals(":)", resultAsString);
         // Chaincode's status.
-        assertEquals(expectedMoveRCMap.get(MedicalConfig.CHANNEL_NAME_THIRD_PARTY).longValue(), successResponse.getChaincodeActionResponseStatus());
+        //assertEquals(expectedMoveRCMap.get(MedicalConfig.CHANNEL_NAME_THIRD_PARTY).longValue(), successResponse.getChaincodeActionResponseStatus());
 
         // 获取读写集的信息
         TxReadWriteSetInfo readWriteSetInfo = successResponse.getChaincodeActionResponseReadWriteSetInfo();
@@ -725,7 +758,7 @@ public class MedicalChannelPatient {
         // 指定实例化的init方法
         instantiateProposalRequestPatient.setFcn("init");
         // 设置实例化的参数(这里设置每个用户初始有多少钱)
-        instantiateProposalRequestPatient.setArgs("a", "500", "b", "200");
+        instantiateProposalRequestPatient.setArgs("user1", "500", "987654321", "200");
         // 母鸡在干啥
         Map<String, byte[]> tm = new HashMap<>();
         tm.put("HyperLedgerFabric", "InstantiateProposalRequest:JavaSDK".getBytes(UTF_8));
@@ -765,7 +798,7 @@ public class MedicalChannelPatient {
         instantiateProposalRequestThirdParty.setChaincodeLanguage(CHAIN_CODE_LANG);
         // 指定实例化的init方法
         instantiateProposalRequestThirdParty.setFcn("init");
-        instantiateProposalRequestThirdParty.setArgs("a", "500", "b", "200");
+        instantiateProposalRequestThirdParty.setArgs("user1", "500", "987654321", "200");
         // 母鸡在干啥
         Map<String, byte[]> tm2 = new HashMap<>();
         tm2.put("HyperLedgerFabric", "InstantiateProposalRequest:JavaSDK".getBytes(UTF_8));
@@ -832,10 +865,10 @@ public class MedicalChannelPatient {
             logger.info("查询账户B的余额...");
             // 构造查询请求
             QueryByChaincodeRequest queryRequest = fabricClientThirdParty.newQueryProposalRequest();
-            // 设置参数
-            queryRequest.setArgs("b");
             // 设置调用方法
-            queryRequest.setFcn("query");
+            queryRequest.setFcn("queryByPseudonymId");
+            // 设置参数
+            queryRequest.setArgs(entity.getPatientPseudonymId());
             // 设置链码Id
             queryRequest.setChaincodeID(chaincodeId);
             // 不知道在干啥
@@ -866,6 +899,48 @@ public class MedicalChannelPatient {
         }
     }
 
+
+    /**
+     * 查询方法
+     */
+    public void queryByPidAndTreatmentId() {
+        try {
+            logger.info("查询账户B的余额...");
+            // 构造查询请求
+            QueryByChaincodeRequest queryRequest = fabricClientThirdParty.newQueryProposalRequest();
+            // 设置调用方法
+            queryRequest.setFcn("queryByTreatmentId");
+            // 设置参数
+            queryRequest.setArgs(entity.getPatientPseudonymId(), entity.getTreatmentId());
+            // 设置链码Id
+            queryRequest.setChaincodeID(chaincodeId);
+            // 不知道在干啥
+            Map<String, byte[]> tm2 = new HashMap<>();
+            tm2.put("HyperLedgerFabric", "QueryByChaincodeRequest:JavaSDK".getBytes(UTF_8));
+            tm2.put("method", "QueryByChaincodeRequest".getBytes(UTF_8));
+            queryRequest.setTransientMap(tm2);
+
+            // 发送查询请求并获取响应结果
+            Collection<ProposalResponse> queryResponses = channelPatient.queryByChaincode(queryRequest, channelPatient.getPeers());
+            // 分析响应结果
+            for (ProposalResponse proposalResponse : queryResponses) {
+                // 查询不成功
+                if (!proposalResponse.isVerified() || proposalResponse.getStatus() != ProposalResponse.Status.SUCCESS) {
+                    fail("Failed query proposal from peer " + proposalResponse.getPeer().getName() + " status: " + proposalResponse.getStatus() +
+                            ". Messages: " + proposalResponse.getMessage() + ". Was verified : " + proposalResponse.isVerified());
+                    throw new RuntimeException("查询操作失败...");
+                } else {
+                    // 查询成功,获取返回的数据
+                    String payload = proposalResponse.getProposalResponse().getResponse().getPayload().toStringUtf8();
+                    logger.info(proposalResponse.getTransactionID());
+                    logger.info(proposalResponse.getMessage());
+                    logger.info("余额为: " + payload);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 测试之前执行的默认配置
@@ -912,7 +987,7 @@ public class MedicalChannelPatient {
     /**
      * 构造通道
      */
-    private Channel buildThirdPartyChannel() {
+    private Channel buildChannel() {
         final String channelName = MedicalConfig.CHANNEL_NAME_PATIENT;
         try {
             // 创建Foo通道(完成网络中通道的创建与结点的加入)(仅使用了组织1创建?)
@@ -974,6 +1049,7 @@ public class MedicalChannelPatient {
             // 获取组织的全部Peer结点
             logger.info("组织1加入Channel");
             for (String peerName : organizationPatient.getPeerNames()) {
+
                 // 获取Peer的地址
                 String peerLocation = organizationPatient.getPeerLocation(peerName);
                 // 获取Peer结点的配置属性

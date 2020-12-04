@@ -48,7 +48,7 @@ public class ControllerThirdParty {
     public CommonResult<String> qury() throws Exception{
 
         log.info("查询MyChannel");
-        fabricCore.queryLedger();
+        fabricCore.queryBySenderIdAndTreatmentId();
         log.info("查询PatientChannel");
         // 进行数据处理并返回结果
         return CommonResult.success();
