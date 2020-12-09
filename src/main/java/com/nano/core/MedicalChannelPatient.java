@@ -286,16 +286,16 @@ public class MedicalChannelPatient {
 //            savePatientData();
 
             // 转账操作
-            transferMoney();
-            queryLedger();
+            addPatientData();
+            queryAllPatientDataByPid();
 
             System.out.println("********************************************************");
 
-            transferMoney();
-            queryLedger();
+            addPatientData();
+            queryAllPatientDataByPid();
             System.out.println("********************************************************");
-            transferMoney();
-            queryLedger();
+            addPatientData();
+            queryAllPatientDataByPid();
             System.out.println("********************************************************");
 //
 //            // 进行查询
@@ -398,8 +398,7 @@ public class MedicalChannelPatient {
     /**
      * 进行转账
      */
-    public void transferMoney() throws Exception {
-        logger.info("开始转账.");
+    public void addPatientData() throws Exception {
         // 设置成普通的用户!!!
         fabricClientThirdParty.setUserContext(organizationPatient.getUser(normalUser));
         // 构造交易提案请求
@@ -411,7 +410,7 @@ public class MedicalChannelPatient {
         // request.setFcn("Invoke");
         request.setFcn("savePatientData");
         request.setProposalWaitTime(medicalConfig.getProposalWaitTime());
-
+        // 每次生成新的结构体数据
         entity = PatientDataEntity.getInstance();
         String[] args = {entity.getPatientPseudonymId(), JSON.toJSONString(entity)};
         //String[] args = {"user1", "987654321", "10000"};
@@ -438,11 +437,6 @@ public class MedicalChannelPatient {
         // This should trigger an event see chaincode why.
         tm2.put(EXPECTED_EVENT_NAME, EXPECTED_EVENT_DATA);
         request.setTransientMap(tm2);
-
-        logger.info("Sending transactionProposal to all peers with arguments: move(a,b,100)");
-
-
-        // Collection<ProposalResponse> transactionPropResp = channel.sendTransactionProposalToEndorsers(transactionProposalRequest);
         // 往所有的Peer结点发送交易并得到响应
         Collection<ProposalResponse> transactionResponse = channelPatient.sendTransactionProposal(request, channelPatient.getPeers());
         Collection<ProposalResponse> successResponseList = new HashSet<>();
@@ -450,87 +444,84 @@ public class MedicalChannelPatient {
         // 康康结果是否OK
         for (ProposalResponse response : transactionResponse) {
             if (response.getStatus() == ProposalResponse.Status.SUCCESS) {
-                print("Successful transaction proposal response Txid: %s from peer %s", response.getTransactionID(), response.getPeer().getName());
+                // print("Successful transaction proposal response Txid: %s from peer %s", response.getTransactionID(), response.getPeer().getName());
                 successResponseList.add(response);
             } else {
                 failedResponseList.add(response);
             }
         }
-        print("Received %d transaction proposal responses. Successful + verified: %d . Failed: %d",
-                transactionResponse.size(), successResponseList.size(), failedResponseList.size());
+        // print("Received %d transaction proposal responses. Successful + verified: %d . Failed: %d", transactionResponse.size(), successResponseList.size(), failedResponseList.size());
         if (failedResponseList.size() > 0) {
-            ProposalResponse firstFailResponse = failedResponseList.iterator().next();
-            fail("Not enough endorsers for invoke(move a,b,100):" + failedResponseList.size() + " endorser error: " +
-                    firstFailResponse.getMessage() + ". Was verified: " + firstFailResponse.isVerified()
-                    + " " + firstFailResponse.getChaincodeID().getName());
+            // ProposalResponse firstFailResponse = failedResponseList.iterator().next();
+//            fail("Not enough endorsers for invoke(move a,b,100):" + failedResponseList.size() + " endorser error: " +
+//                    firstFailResponse.getMessage() + ". Was verified: " + firstFailResponse.isVerified()
+//                    + " " + firstFailResponse.getChaincodeID().getName());
+            logger.info("Failed.");
+            throw new RuntimeException("Error");
         }
-
-        // 检查是否全部的提案都是一致的,这在发送给Orderer时是自动执行的.这里写出来只是说明应用程序可以自己选择使用
-        // Check that all the proposals are consistent with each other. We should have only one set
-        // where all the proposals above are consistent.
-        // Note the when sending to Orderer this is done automatically.
-        // Shown here as an example that applications can invoke and select.
-        // See org.hyperledger.fabric.sdk.proposal.consistency_validation config property.
-        // 获取响应集
-        Collection<Set<ProposalResponse>> proposalConsistencySets = SDKUtils.getProposalConsistencySets(transactionResponse);
-        if (proposalConsistencySets.size() != 1) {
-            fail(format("Expected only one set of consistent proposal responses but got %d", proposalConsistencySets.size()));
-        }
-        // 到这里验证成功
-        logger.info("Successfully received transaction proposal responses.");
-
-        // 可以退出了,因为交易执行完毕
-        //  System.exit(10);
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// 下面分析交易的返回结果
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        ProposalResponse successResponse = successResponseList.iterator().next();
-        // This is the data returned by the chaincode.
-        // 这里分析一下从链码返回的数据
-        byte[] dataBytes = successResponse.getChaincodeActionResponsePayload();
-        // 解析成字符串形式
-        String resultAsString = null;
-        if (dataBytes != null) {
-            resultAsString = new String(dataBytes, UTF_8);
-        }
-        // 判断是否是下面的图像
-        // assertEquals(":)", resultAsString);
-        // Chaincode's status.
-        //assertEquals(expectedMoveRCMap.get(MedicalConfig.CHANNEL_NAME_THIRD_PARTY).longValue(), successResponse.getChaincodeActionResponseStatus());
-
-        // 获取读写集的信息
-        TxReadWriteSetInfo readWriteSetInfo = successResponse.getChaincodeActionResponseReadWriteSetInfo();
-        // See block walker below how to transverse this
-        assertNotNull(readWriteSetInfo);
-        assertTrue(readWriteSetInfo.getNsRwsetCount() > 0);
-        // 获取响应的ChaincodeId
-        ChaincodeID cid = successResponse.getChaincodeID();
-        assertNotNull(cid);
-
-        // 看看链码Id的路径是否是本地链码的路径
-        final String path = cid.getPath();
-        if (CHAIN_CODE_PATH == null) {
-            assertTrue(path == null || "".equals(path));
-        } else {
-            assertEquals(CHAIN_CODE_PATH, path);
-        }
-
-        assertEquals(CHAIN_CODE_NAME, cid.getName());
-        assertEquals(CHAIN_CODE_VERSION, cid.getVersion());
+        logger.info("Add data successful.");
+//
+//        // 检查是否全部的提案都是一致的,这在发送给Orderer时是自动执行的.这里写出来只是说明应用程序可以自己选择使用
+//        // 获取响应集
+//        Collection<Set<ProposalResponse>> proposalConsistencySets = SDKUtils.getProposalConsistencySets(transactionResponse);
+//        if (proposalConsistencySets.size() != 1) {
+//            fail(format("Expected only one set of consistent proposal responses but got %d", proposalConsistencySets.size()));
+//        }
+//        // 到这里验证成功
+//        logger.info("Successfully received transaction proposal responses.");
+//
+//        // 可以退出了,因为交易执行完毕
+//        //  System.exit(10);
+//
+//        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+//        /// 下面分析交易的返回结果
+//        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//        ProposalResponse successResponse = successResponseList.iterator().next();
+//        // This is the data returned by the chaincode.
+//        // 这里分析一下从链码返回的数据
+//        byte[] dataBytes = successResponse.getChaincodeActionResponsePayload();
+//        // 解析成字符串形式
+//        String resultAsString = null;
+//        if (dataBytes != null) {
+//            resultAsString = new String(dataBytes, UTF_8);
+//        }
+//        // 判断是否是下面的图像
+//        // assertEquals(":)", resultAsString);
+//        // Chaincode's status.
+//        //assertEquals(expectedMoveRCMap.get(MedicalConfig.CHANNEL_NAME_THIRD_PARTY).longValue(), successResponse.getChaincodeActionResponseStatus());
+//
+//        // 获取读写集的信息
+//        TxReadWriteSetInfo readWriteSetInfo = successResponse.getChaincodeActionResponseReadWriteSetInfo();
+//        // See block walker below how to transverse this
+//        assertNotNull(readWriteSetInfo);
+//        assertTrue(readWriteSetInfo.getNsRwsetCount() > 0);
+//        // 获取响应的ChaincodeId
+//        ChaincodeID cid = successResponse.getChaincodeID();
+//        assertNotNull(cid);
+//
+//        // 看看链码Id的路径是否是本地链码的路径
+//        final String path = cid.getPath();
+//        if (CHAIN_CODE_PATH == null) {
+//            assertTrue(path == null || "".equals(path));
+//        } else {
+//            assertEquals(CHAIN_CODE_PATH, path);
+//        }
+//
+//        assertEquals(CHAIN_CODE_NAME, cid.getName());
+//        assertEquals(CHAIN_CODE_VERSION, cid.getVersion());
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
         // 将成功的交易信息发送到Orderer结点
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
-        logger.info("Sending chaincode transaction(move a,b,100) to orderer.");
+        // logger.info("Sending chaincode transaction(move a,b,100) to orderer.");
 
         // 将交易发送出去
         BlockEvent.TransactionEvent transactionEvent = channelPatient.sendTransaction(successResponseList).get(32000, TimeUnit.SECONDS);
 
         // 记录一下ID,方便后面的查询
         testTxId = transactionEvent.getTransactionID();
-        logger.info("Finished transaction with transaction id " + transactionEvent.getTransactionID());
+        // logger.info("Finished transaction with transaction id " + transactionEvent.getTransactionID());
     }
 
 
@@ -860,9 +851,9 @@ public class MedicalChannelPatient {
     /**
      * 查询方法
      */
-    public void queryLedger() {
+    public boolean queryAllPatientDataByPid() {
         try {
-            logger.info("查询账户B的余额...");
+//            logger.info("通过PID查询用户全部数据...");
             // 构造查询请求
             QueryByChaincodeRequest queryRequest = fabricClientThirdParty.newQueryProposalRequest();
             // 设置调用方法
@@ -876,27 +867,28 @@ public class MedicalChannelPatient {
             tm2.put("HyperLedgerFabric", "QueryByChaincodeRequest:JavaSDK".getBytes(UTF_8));
             tm2.put("method", "QueryByChaincodeRequest".getBytes(UTF_8));
             queryRequest.setTransientMap(tm2);
-
             // 发送查询请求并获取响应结果
             Collection<ProposalResponse> queryResponses = channelPatient.queryByChaincode(queryRequest, channelPatient.getPeers());
             // 分析响应结果
             for (ProposalResponse proposalResponse : queryResponses) {
                 // 查询不成功
                 if (!proposalResponse.isVerified() || proposalResponse.getStatus() != ProposalResponse.Status.SUCCESS) {
-                    fail("Failed query proposal from peer " + proposalResponse.getPeer().getName() + " status: " + proposalResponse.getStatus() +
-                            ". Messages: " + proposalResponse.getMessage() + ". Was verified : " + proposalResponse.isVerified());
-                    throw new RuntimeException("查询操作失败...");
+                    logger.info("Query Failed....................................................");
+                    return false;
                 } else {
                     // 查询成功,获取返回的数据
                     String payload = proposalResponse.getProposalResponse().getResponse().getPayload().toStringUtf8();
-                    logger.info(proposalResponse.getTransactionID());
-                    logger.info(proposalResponse.getMessage());
-                    logger.info("余额为: " + payload);
+//                    logger.info(proposalResponse.getTransactionID());
+//                    logger.info(proposalResponse.getMessage());
+//                    logger.info("余额为: " + payload);
                 }
             }
+            logger.info("Query Success.");
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
 

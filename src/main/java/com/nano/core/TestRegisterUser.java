@@ -32,12 +32,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.KeyPair;
+import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -428,8 +430,11 @@ public class TestRegisterUser {
                 logger.info("自己生产的公钥:" + publicKey.toString());
                 logger.info("自己生产的私钥:" + privateKey.toString());
 
-                String signature = CipherUtil.sign("1234545".getBytes(UTF_8), privateKey);
-                boolean verified = CipherUtil.verifySignature("1234545".getBytes(UTF_8), publicKey, signature);
+                String signature = CipherUtil.sign("1231123123".getBytes(UTF_8), privateKey);
+
+                System.out.println("签名:" + signature);
+
+                boolean verified = CipherUtil.verifySignature("1231123123".getBytes(UTF_8), publicKey, signature);
                 System.out.println("自定义方法验证:" + verified);
 
                 EnrollmentRequest enrollmentRequest = new EnrollmentRequest();
@@ -561,6 +566,31 @@ public class TestRegisterUser {
             System.out.println("明文:" + new String(plain));
 
 
+            String test = "[{\"deviceCode\":21,\"deviceData\":\"{\\\"aaEt\\\":-1000,\\\"aaFi\\\":-1000,\\\"breatheRate\\\":-1000,\\\"co2Et\\\":-1000,\\\"co2Fi\\\":-1000,\\\"gmtCreate\\\":\\\"2020-12-05 15:56:03\\\",\\\"hr\\\":80,\\\"ibpDia\\\":80,\\\"ibpMap\\\":90,\\\"ibpSys\\\":120,\\\"icgCi\\\":-1000,\\\"icgCo\\\":-1000,\\\"icgHr\\\":-1000,\\\"icgSi\\\":-1000,\\\"icgSv\\\":-1000,\\\"icgSvr\\\":-1000,\\\"icgSvri\\\":-1000,\\\"icgTfc\\\":-1000,\\\"icgTfi\\\":-1000,\\\"n2oEt\\\":-1000,\\\"n2oFi\\\":-1000,\\\"nibpDia\\\":80,\\\"nibpMap\\\":90,\\\"nibpSys\\\":120,\\\"o2Et\\\":-1000,\\\"o2Fi\\\":-1000,\\\"operationNumber\\\":0,\\\"pr\\\":80,\\\"serialNumber\\\":\\\"213198A32\\\",\\\"spo2\\\":99,\\\"temperature\\\":37.2}\"}\n" +
+                    ",{\"deviceCode\":21,\"deviceData\":\"{\\\"aaEt\\\":-1000,\\\"aaFi\\\":-1000,\\\"breatheRate\\\":-1000,\\\"co2Et\\\":-1000,\\\"co2Fi\\\":-1000,\\\"gmtCreate\\\":\\\"2020-12-05 15:56:03\\\",\\\"hr\\\":80,\\\"ibpDia\\\":80,\\\"ibpMap\\\":90,\\\"ibpSys\\\":120,\\\"icgCi\\\":-1000,\\\"icgCo\\\":-1000,\\\"icgHr\\\":-1000,\\\"icgSi\\\":-1000,\\\"icgSv\\\":-1000,\\\"icgSvr\\\":-1000,\\\"icgSvri\\\":-1000,\\\"icgTfc\\\":-1000,\\\"icgTfi\\\":-1000,\\\"n2oEt\\\":-1000,\\\"n2oFi\\\":-1000,\\\"nibpDia\\\":80,\\\"nibpMap\\\":90,\\\"nibpSys\\\":120,\\\"o2Et\\\":-1000,\\\"o2Fi\\\":-1000,\\\"operationNumber\\\":0,\\\"pr\\\":80,\\\"serialNumber\\\":\\\"213198A32\\\",\\\"spo2\\\":99,\\\"temperature\\\":37.2}\"}\n" +
+                    ",{\"deviceCode\":21,\"deviceData\":\"{\\\"aaEt\\\":-1000,\\\"aaFi\\\":-1000,\\\"breatheRate\\\":-1000,\\\"co2Et\\\":-1000,\\\"co2Fi\\\":-1000,\\\"gmtCreate\\\":\\\"2020-12-05 15:56:03\\\",\\\"hr\\\":80,\\\"ibpDia\\\":80,\\\"ibpMap\\\":90,\\\"ibpSys\\\":120,\\\"icgCi\\\":-1000,\\\"icgCo\\\":-1000,\\\"icgHr\\\":-1000,\\\"icgSi\\\":-1000,\\\"icgSv\\\":-1000,\\\"icgSvr\\\":-1000,\\\"icgSvri\\\":-1000,\\\"icgTfc\\\":-1000,\\\"icgTfi\\\":-1000,\\\"n2oEt\\\":-1000,\\\"n2oFi\\\":-1000,\\\"nibpDia\\\":80,\\\"nibpMap\\\":90,\\\"nibpSys\\\":120,\\\"o2Et\\\":-1000,\\\"o2Fi\\\":-1000,\\\"operationNumber\\\":0,\\\"pr\\\":80,\\\"serialNumber\\\":\\\"213198A32\\\",\\\"spo2\\\":99,\\\"temperature\\\":37.2}\"}\n" +
+                    ",{\"deviceCode\":21,\"deviceData\":\"{\\\"aaEt\\\":-1000,\\\"aaFi\\\":-1000,\\\"breatheRate\\\":-1000,\\\"co2Et\\\":-1000,\\\"co2Fi\\\":-1000,\\\"gmtCreate\\\":\\\"2020-12-05 15:56:03\\\",\\\"hr\\\":80,\\\"ibpDia\\\":80,\\\"ibpMap\\\":90,\\\"ibpSys\\\":120,\\\"icgCi\\\":-1000,\\\"icgCo\\\":-1000,\\\"icgHr\\\":-1000,\\\"icgSi\\\":-1000,\\\"icgSv\\\":-1000,\\\"icgSvr\\\":-1000,\\\"icgSvri\\\":-1000,\\\"icgTfc\\\":-1000,\\\"icgTfi\\\":-1000,\\\"n2oEt\\\":-1000,\\\"n2oFi\\\":-1000,\\\"nibpDia\\\":80,\\\"nibpMap\\\":90,\\\"nibpSys\\\":120,\\\"o2Et\\\":-1000,\\\"o2Fi\\\":-1000,\\\"operationNumber\\\":0,\\\"pr\\\":80,\\\"serialNumber\\\":\\\"213198A32\\\",\\\"spo2\\\":99,\\\"temperature\\\":37.2}\"}\n" +
+                    ",{\"deviceCode\":21,\"deviceData\":\"{\\\"aaEt\\\":-1000,\\\"aaFi\\\":-1000,\\\"breatheRate\\\":-1000,\\\"co2Et\\\":-1000,\\\"co2Fi\\\":-1000,\\\"gmtCreate\\\":\\\"2020-12-05 15:56:03\\\",\\\"hr\\\":80,\\\"ibpDia\\\":80,\\\"ibpMap\\\":90,\\\"ibpSys\\\":120,\\\"icgCi\\\":-1000,\\\"icgCo\\\":-1000,\\\"icgHr\\\":-1000,\\\"icgSi\\\":-1000,\\\"icgSv\\\":-1000,\\\"icgSvr\\\":-1000,\\\"icgSvri\\\":-1000,\\\"icgTfc\\\":-1000,\\\"icgTfi\\\":-1000,\\\"n2oEt\\\":-1000,\\\"n2oFi\\\":-1000,\\\"nibpDia\\\":80,\\\"nibpMap\\\":90,\\\"nibpSys\\\":120,\\\"o2Et\\\":-1000,\\\"o2Fi\\\":-1000,\\\"operationNumber\\\":0,\\\"pr\\\":80,\\\"serialNumber\\\":\\\"213198A32\\\",\\\"spo2\\\":99,\\\"temperature\\\":37.2}\"}\n" +
+                    ",{\"deviceCode\":21,\"deviceData\":\"{\\\"aaEt\\\":-1000,\\\"aaFi\\\":-1000,\\\"breatheRate\\\":-1000,\\\"co2Et\\\":-1000,\\\"co2Fi\\\":-1000,\\\"gmtCreate\\\":\\\"2020-12-05 15:56:03\\\",\\\"hr\\\":80,\\\"ibpDia\\\":80,\\\"ibpMap\\\":90,\\\"ibpSys\\\":120,\\\"icgCi\\\":-1000,\\\"icgCo\\\":-1000,\\\"icgHr\\\":-1000,\\\"icgSi\\\":-1000,\\\"icgSv\\\":-1000,\\\"icgSvr\\\":-1000,\\\"icgSvri\\\":-1000,\\\"icgTfc\\\":-1000,\\\"icgTfi\\\":-1000,\\\"n2oEt\\\":-1000,\\\"n2oFi\\\":-1000,\\\"nibpDia\\\":80,\\\"nibpMap\\\":90,\\\"nibpSys\\\":120,\\\"o2Et\\\":-1000,\\\"o2Fi\\\":-1000,\\\"operationNumber\\\":0,\\\"pr\\\":80,\\\"serialNumber\\\":\\\"213198A32\\\",\\\"spo2\\\":99,\\\"temperature\\\":37.2}\"}\n" +
+                    ",{\"deviceCode\":21,\"deviceData\":\"{\\\"aaEt\\\":-1000,\\\"aaFi\\\":-1000,\\\"breatheRate\\\":-1000,\\\"co2Et\\\":-1000,\\\"co2Fi\\\":-1000,\\\"gmtCreate\\\":\\\"2020-12-05 15:56:03\\\",\\\"hr\\\":80,\\\"ibpDia\\\":80,\\\"ibpMap\\\":90,\\\"ibpSys\\\":120,\\\"icgCi\\\":-1000,\\\"icgCo\\\":-1000,\\\"icgHr\\\":-1000,\\\"icgSi\\\":-1000,\\\"icgSv\\\":-1000,\\\"icgSvr\\\":-1000,\\\"icgSvri\\\":-1000,\\\"icgTfc\\\":-1000,\\\"icgTfi\\\":-1000,\\\"n2oEt\\\":-1000,\\\"n2oFi\\\":-1000,\\\"nibpDia\\\":80,\\\"nibpMap\\\":90,\\\"nibpSys\\\":120,\\\"o2Et\\\":-1000,\\\"o2Fi\\\":-1000,\\\"operationNumber\\\":0,\\\"pr\\\":80,\\\"serialNumber\\\":\\\"213198A32\\\",\\\"spo2\\\":99,\\\"temperature\\\":37.2}\"}\n" +
+                    ",{\"deviceCode\":21,\"deviceData\":\"{\\\"aaEt\\\":-1000,\\\"aaFi\\\":-1000,\\\"breatheRate\\\":-1000,\\\"co2Et\\\":-1000,\\\"co2Fi\\\":-1000,\\\"gmtCreate\\\":\\\"2020-12-05 15:56:03\\\",\\\"hr\\\":80,\\\"ibpDia\\\":80,\\\"ibpMap\\\":90,\\\"ibpSys\\\":120,\\\"icgCi\\\":-1000,\\\"icgCo\\\":-1000,\\\"icgHr\\\":-1000,\\\"icgSi\\\":-1000,\\\"icgSv\\\":-1000,\\\"icgSvr\\\":-1000,\\\"icgSvri\\\":-1000,\\\"icgTfc\\\":-1000,\\\"icgTfi\\\":-1000,\\\"n2oEt\\\":-1000,\\\"n2oFi\\\":-1000,\\\"nibpDia\\\":80,\\\"nibpMap\\\":90,\\\"nibpSys\\\":120,\\\"o2Et\\\":-1000,\\\"o2Fi\\\":-1000,\\\"operationNumber\\\":0,\\\"pr\\\":80,\\\"serialNumber\\\":\\\"213198A32\\\",\\\"spo2\\\":99,\\\"temperature\\\":37.2}\"}\n" +
+                    "]";
+
+            byte[] res = EccHelper.encrypt(test.getBytes(), publicKey.getEncoded());
+
+            // 求消息摘要
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] digest = md.digest(res);
+
+            System.out.println("消息摘要:" + byteArrayToHexString(digest));
+
+            byte[] patientSign = eccHelper.sign(digest);
+
+            System.out.println("签名:" + byteArrayToHexString(patientSign));
+
+            System.out.println("加密数据结构:" + new String(res));
+
+
             //byte[] res = CipherUtil.decrypt(engypt, privateKey);
 
             //System.out.println("采用公钥加密私钥解密:" + new String(res));
@@ -599,6 +629,19 @@ public class TestRegisterUser {
         }
 
 
+    }
+
+    private static final char[] HEX_CHAR_TABLE = {
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+    };
+
+    public static String byteArrayToHexString(byte[] array) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : array) {
+            sb.append(HEX_CHAR_TABLE[(b & 0xf0) >> 4]);
+            sb.append(HEX_CHAR_TABLE[b & 0x0f]);
+        }
+        return sb.toString();
     }
 
 

@@ -2,6 +2,7 @@ package com.nano.controller;
 
 import com.nano.common.vo.CommonResult;
 import com.nano.core.MedicalChannelThirdParty;
+import com.nano.sharing.test.ProxyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,11 @@ public class ControllerThirdParty {
 
 
     @Autowired
-    private MedicalChannelThirdParty fabricCore;
+    private MedicalChannelThirdParty thirdParty;
+
+
+    @Autowired
+    private ProxyService service;
 
     /**
      * 接收平板上传的各种仪器数据并解析并存储
@@ -37,7 +42,7 @@ public class ControllerThirdParty {
     @GetMapping("/init")
     @ApiOperation(value = "初始化网络")
     public CommonResult<String> init() {
-        fabricCore.init();
+        thirdParty.init();
         // 进行数据处理并返回结果
         return CommonResult.success();
     }
@@ -48,10 +53,31 @@ public class ControllerThirdParty {
     public CommonResult<String> qury() throws Exception{
 
         log.info("查询MyChannel");
-        fabricCore.queryBySenderIdAndTreatmentId();
+        thirdParty.queryBySenderIdAndTreatmentId();
         log.info("查询PatientChannel");
         // 进行数据处理并返回结果
         return CommonResult.success();
+    }
+
+
+    @GetMapping("/test_share_data")
+    @ApiOperation(value = "测试添加分享数据")
+    public CommonResult<String> testShareData() throws Exception{
+        service.doTest();
+        // 进行数据处理并返回结果
+        return CommonResult.success();
+    }
+
+
+    @GetMapping("/test_get_share_data")
+    @ApiOperation(value = "测试查询分享数据")
+    public CommonResult<String> testGetShareData() throws Exception{
+        boolean success = thirdParty.testQuery();
+        if (success) {
+            return CommonResult.success();
+        } else {
+            return CommonResult.failed("Failed.");
+        }
     }
 
 }

@@ -30,7 +30,7 @@ services:
       - CORE_PEER_CHAINCODELISTENADDRESS=peercqu.orgthirdparty.medical.com:7052
       - CORE_PEER_LOCALMSPID=OrgThirdPartyMSP
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_LOGGING_SPEC=ERROR
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_PROFILE_ENABLED=true

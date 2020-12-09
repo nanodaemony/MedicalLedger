@@ -24,7 +24,7 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca1.medical.com
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.orgthirdparty.medical.com-cert.pem
       # 私钥名称(需要修改!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ccc7d2e875876db89e1c447131057912d2c162242f7f27ce7f5b666b3b934bb9_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/4512ca8fba31123d3d087dc7295b077b033bd41b185231489788ffbac2ffa3ab_sk
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw'  # 启动命令
@@ -47,7 +47,7 @@ services:
       - CORE_PEER_LOCALMSPID=OrgThirdPartyMSP
 
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_LOGGING_SPEC=ERROR
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_PROFILE_ENABLED=true

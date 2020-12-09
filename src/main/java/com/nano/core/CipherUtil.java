@@ -113,8 +113,6 @@ public class CipherUtil {
      *
      * @param encryptedData 已加密数据
      * @param privateKey 私钥(BASE64编码)
-     * @return
-     * @throws Exception
      */
     public static byte[] decryptByPrivateKey(byte[] encryptedData, String privateKey)
             throws Exception {

@@ -29,12 +29,6 @@ public class TestConfigHelper {
      * clearConfig "resets" Config so that the Config testcases can run without interference from other test suites.
      * Depending on what order JUnit decides to run the tests, Config could have been instantiated earlier and could
      * contain values that make the tests here fail.
-     *
-     * @throws SecurityException
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     *
      */
     public void clearConfig()
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
@@ -56,12 +50,6 @@ public class TestConfigHelper {
     /**
      * clearCaConfig "resets" Config used by fabric_ca so that the Config testcases can run without interference from
      * other test suites.
-     *
-     * @throws SecurityException
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     *
      * @see #clearConfig()
      */
     public void clearCaConfig()

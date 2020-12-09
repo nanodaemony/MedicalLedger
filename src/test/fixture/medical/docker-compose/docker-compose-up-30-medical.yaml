@@ -11,7 +11,7 @@ services:
     container_name: orderer0.medical.com
     image: hyperledger/fabric-orderer
     environment:
-      - FABRIC_LOGGING_SPEC=debug  # 日志级别
+      - FABRIC_LOGGING_SPEC=info  # 日志级别
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block    # Order的创世区块
@@ -56,7 +56,7 @@ services:
       - CORE_PEER_CHAINCODELISTENADDRESS=peerxinqiao.orgpatient.medical.com:7052
       - CORE_PEER_LOCALMSPID=OrgPatientMSP
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_LOGGING_SPEC=ERROR
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_PROFILE_ENABLED=true

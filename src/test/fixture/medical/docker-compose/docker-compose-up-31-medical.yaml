@@ -12,7 +12,7 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca0.medical.com    # CA名称
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.orgpatient.medical.com-cert.pem  # 服务器CA证书
       # 服务器CA私钥(需要根据生成的修改!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/afa6c2ced0ca898d8286139285a9677c0d188af23cdce09929a4b072a3b271d0_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/9bee5a2ede0c78bb7165e6dd0c5faea7b9abba89e93d8dfc05205862d17f8175_sk
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw'  # 开启CA
@@ -25,7 +25,7 @@ services:
     container_name: orderer1.medical.com
     image: hyperledger/fabric-orderer
     environment:
-      - ORDERER_GENERAL_LOGLEVEL=debug  # 日志级别
+      - ORDERER_GENERAL_LOGLEVEL=info  # 日志级别
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
@@ -70,7 +70,7 @@ services:
       - CORE_PEER_CHAINCODELISTENADDRESS=peerkunyi.orgpatient.medical.com:7052
       - CORE_PEER_LOCALMSPID=OrgPatientMSP
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_LOGGING_SPEC=ERROR
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_PROFILE_ENABLED=true
@@ -142,6 +142,7 @@ services:
     environment:
       - COUCHDB_USER=
       - COUCHDB_PASSWORD=
+      - COUCHDB_LOG_LEVEL=ERROR
     volumes:
       - ./data/couchdb-kunyi_data:/opt/couchdb/data
     ports:

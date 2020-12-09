@@ -164,6 +164,16 @@ public class MedicalChannelThirdParty {
      */
     static String normalUser1 = "user" + System.currentTimeMillis();
 
+
+    static String userSender = "sender" + System.currentTimeMillis();
+
+    static String userReceiver = "receiver" + System.currentTimeMillis();
+
+    public MedicalUser senderUser;
+
+    public MedicalUser receiverUser;
+
+
     /**
      * Fabric代理对象
      */
@@ -387,6 +397,72 @@ public class MedicalChannelThirdParty {
     }
 
     private DataUsageEntity entity;
+
+
+
+    /**
+     * 进行转账
+     */
+    public boolean saveDataUsageInfo(DataUsageEntity entity) throws Exception {
+        // 设置成普通的用户!!!
+        fabricClientThirdParty.setUserContext(organizationPatient.getUser(normalUser1));
+        // 构造交易提案请求
+        TransactionProposalRequest request = fabricClientThirdParty.newTransactionProposalRequest();
+        // 设置需要执行的链码ID
+        request.setChaincodeID(chaincodeId);
+        // 链码语言
+        request.setChaincodeLanguage(CHAIN_CODE_LANG);
+        //transactionProposalRequest.setFcn("invoke");
+        request.setFcn("saveDataUsageData");
+        request.setProposalWaitTime(medicalConfig.getProposalWaitTime());
+        // 设置参数
+        request.setArgs(entity.getSenderPseudonymId(), entity.getReceiverPseudonymId(), JSON.toJSONString(entity));
+        // 母鸡在干啥
+        Map<String, byte[]> tm2 = new HashMap<>();
+        tm2.put("HyperLedgerFabric", "TransactionProposalRequest:JavaSDK".getBytes(UTF_8));
+        tm2.put("method", "TransactionProposalRequest".getBytes(UTF_8));
+        tm2.put("result", ":)".getBytes(UTF_8));
+
+        // 如果是GO语言且版本大于1.2
+        if (Type.GO_LANG.equals(CHAIN_CODE_LANG) && medicalConfig.isFabricVersionAtOrAfter("1.2")) {
+            // the chaincode will return this as status see chaincode why.
+            expectedMoveRCMap.put(MedicalConfig.CHANNEL_NAME_THIRD_PARTY, random.nextInt(300) + 100L);
+            // This should be returned see chaincode why.
+            tm2.put("rc", (expectedMoveRCMap.get(MedicalConfig.CHANNEL_NAME_THIRD_PARTY) + "").getBytes(UTF_8));
+            // 400 and above results in the peer not endorsing!
+        } else {
+            // not really supported for Java or Node.
+            // 对Java或Go不太支持
+            expectedMoveRCMap.put(MedicalConfig.CHANNEL_NAME_THIRD_PARTY, 200L);
+        }
+        // This should trigger an event see chaincode why.
+        tm2.put(EXPECTED_EVENT_NAME, EXPECTED_EVENT_DATA);
+        request.setTransientMap(tm2);
+
+        // Collection<ProposalResponse> transactionPropResp = channel.sendTransactionProposalToEndorsers(transactionProposalRequest);
+        // 往所有的Peer结点发送交易并得到响应
+        Collection<ProposalResponse> transactionResponse = channelThirdParty.sendTransactionProposal(request, channelThirdParty.getPeers());
+        Collection<ProposalResponse> successResponseList = new HashSet<>();
+        Collection<ProposalResponse> failedResponseList = new HashSet<>();
+        // 康康结果是否OK
+        for (ProposalResponse response : transactionResponse) {
+            if (response.getStatus() == ProposalResponse.Status.SUCCESS) {
+                successResponseList.add(response);
+            } else {
+                failedResponseList.add(response);
+            }
+        }
+        if (failedResponseList.size() > 0) {
+            throw new RuntimeException("插入信息失败.");
+        }
+        logger.info("Add data success.");
+        // 将交易发送出去
+        BlockEvent.TransactionEvent transactionEvent = channelThirdParty.sendTransaction(successResponseList).get(32000, TimeUnit.SECONDS);
+        // 记录一下ID,方便后面的查询
+        testTxId = transactionEvent.getTransactionID();
+        return true;
+    }
+
 
     /**
      * 进行转账
@@ -935,6 +1011,48 @@ public class MedicalChannelThirdParty {
     }
 
 
+
+    /**
+     * 查询方法
+     */
+    public boolean testQuery() {
+        try {
+            // 构造查询请求
+            QueryByChaincodeRequest queryRequest = fabricClientThirdParty.newQueryProposalRequest();
+            // 设置调用方法
+            queryRequest.setFcn("queryByTreatmentId");
+            // 设置参数
+            queryRequest.setArgs(entity.getSenderPseudonymId(), entity.getTreatmentId());
+            // 设置链码Id
+            queryRequest.setChaincodeID(chaincodeId);
+            // 不知道在干啥
+            Map<String, byte[]> tm2 = new HashMap<>();
+            tm2.put("HyperLedgerFabric", "QueryByChaincodeRequest:JavaSDK".getBytes(UTF_8));
+            tm2.put("method", "QueryByChaincodeRequest".getBytes(UTF_8));
+            queryRequest.setTransientMap(tm2);
+
+            // 发送查询请求并获取响应结果
+            Collection<ProposalResponse> queryResponses = channelThirdParty.queryByChaincode(queryRequest, channelThirdParty.getPeers());
+            // 分析响应结果
+            for (ProposalResponse proposalResponse : queryResponses) {
+                // 查询不成功
+                if (!proposalResponse.isVerified() || proposalResponse.getStatus() != ProposalResponse.Status.SUCCESS) {
+                    logger.info("Failed get shared data....................................................................................");
+                    return false;
+                } else {
+                    // 查询成功,获取返回的数据
+                    String payload = proposalResponse.getProposalResponse().getResponse().getPayload().toStringUtf8();
+                }
+            }
+            logger.info("Success get shared data.");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
     /**
      * 测试之前执行的默认配置
      */
@@ -1265,6 +1383,51 @@ public class MedicalChannelThirdParty {
                 // Org1MSP Org2MSP
                 user.setMspId(mspId);
             }
+
+
+            // 创建一个新的普通用户
+            senderUser = localStore.getUser(userSender, organization.getName());
+            logger.info("普通用户信息: " + senderUser.toString());
+            // 对普通User用户进行登记与注册
+            if (!senderUser.isRegistered()) {
+                logger.info("注册普通User");
+                // 设置用户的名称及其所属组织属性
+                RegistrationRequest registerRequest = new RegistrationRequest(senderUser.getName());
+                // 利用组织的Admin用户进行注册并获取登记密码
+                String secret = caClient.register(registerRequest, admin);
+                senderUser.setEnrollmentSecret(secret);
+            }
+            // 用户登记
+            if (!senderUser.isEnrolled()) {
+                logger.info("登记普通User");
+                Enrollment enrollment = caClient.enroll(senderUser.getName(), senderUser.getEnrollmentSecret());
+                senderUser.setEnrollment(enrollment);
+                // Org1MSP Org2MSP
+                senderUser.setMspId(mspId);
+            }
+
+            // 创建一个新的普通用户
+            receiverUser = localStore.getUser(userSender, organization.getName());
+            logger.info("普通用户信息: " + receiverUser.toString());
+            // 对普通User用户进行登记与注册
+            if (!receiverUser.isRegistered()) {
+                logger.info("注册普通User");
+                // 设置用户的名称及其所属组织属性
+                RegistrationRequest registerRequest = new RegistrationRequest(receiverUser.getName());
+                // 利用组织的Admin用户进行注册并获取登记密码
+                String secret = caClient.register(registerRequest, admin);
+                receiverUser.setEnrollmentSecret(secret);
+            }
+            // 用户登记
+            if (!receiverUser.isEnrolled()) {
+                logger.info("登记普通User");
+                Enrollment enrollment = caClient.enroll(receiverUser.getName(), receiverUser.getEnrollmentSecret());
+                receiverUser.setEnrollment(enrollment);
+                // Org1MSP Org2MSP
+                receiverUser.setMspId(mspId);
+            }
+
+
             // 获取组织名称 peerOrg1 peerOrg2
             final String organizationName = organization.getName();
             // 组织域名 org1.example.com org2.example.com
@@ -1290,6 +1453,8 @@ public class MedicalChannelThirdParty {
             organization.setAdminPeer(peerOrgAdmin);
             // 将普通用户加入当前组织
             organization.addUser(user);
+            organization.addUser(senderUser);
+            organization.addUser(receiverUser);
             // 将AdminUser用户加入当前组织
             organization.setAdminUser(admin);
             logger.info("完成组织用户加载.");

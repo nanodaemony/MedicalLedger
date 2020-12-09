@@ -27,7 +27,7 @@ public class ControllerPatient {
 
 
     @Autowired
-    private MedicalChannelPatient fabricCore;
+    private MedicalChannelPatient patient;
 
     /**
      * 接收平板上传的各种仪器数据并解析并存储
@@ -37,7 +37,7 @@ public class ControllerPatient {
     @GetMapping("/init")
     @ApiOperation(value = "初始化网络")
     public CommonResult<String> init() {
-        fabricCore.init();
+        patient.init();
         // 进行数据处理并返回结果
         return CommonResult.success();
     }
@@ -45,13 +45,34 @@ public class ControllerPatient {
 
     @GetMapping("/query")
     @ApiOperation(value = "查询")
-    public CommonResult<String> qury() throws Exception{
-
+    public CommonResult<String> query() throws Exception{
         log.info("查询MyChannel");
-        fabricCore.queryLedger();
+        patient.queryAllPatientDataByPid();
         log.info("查询PatientChannel");
         // 进行数据处理并返回结果
         return CommonResult.success();
     }
+
+
+    @GetMapping("/test_query")
+    @ApiOperation(value = "测试查询")
+    public CommonResult<String> testQuery() throws Exception{
+        boolean success = patient.queryAllPatientDataByPid();
+        if (success) {
+            return CommonResult.success();
+        } else {
+            return CommonResult.failed("Failed.");
+        }
+    }
+
+
+    @GetMapping("/test_add_data")
+    @ApiOperation(value = "测试新增数据")
+    public CommonResult<String> testAddData() throws Exception{
+        patient.addPatientData();
+        // 进行数据处理并返回结果
+        return CommonResult.success();
+    }
+
 
 }
